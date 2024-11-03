@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Usuario } from '../../../services/login/usuario';
+import { UsuarioService } from '../../../services/usurio/usuario.service';
+import { enviroment } from '../../../../enviroment/enviroment';
 
 @Component({
   selector: 'app-header',
@@ -9,5 +12,19 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styles: ``
 })
 export class HeaderComponent {
+
+  errorMessage: string = '';
+
+  usuario?: Usuario;
+
+  constructor(private userService:UsuarioService){
+    this.userService.getUser(enviroment.userId).subscribe(
+      {
+        next: (usuario) => this.usuario = usuario,
+        error: (error) => this.errorMessage = error,
+        complete: () => console.log('Petición completada')  
+      }
+    )
+  }
 
 }
