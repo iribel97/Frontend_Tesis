@@ -3,16 +3,20 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
 import { enviroment } from '../../../enviroment/enviroment';
 import { LoginRequest } from '../login/LoginRequest';
+import { UsuarioService } from '../usurio/usuario.service';
+import { Usuario } from './usuario';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-
+  errorMessage: string = '';
+  usuario?: Usuario;
+  
   currentUserLoginOn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   currentUserData: BehaviorSubject<String> = new BehaviorSubject<String>("");
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private userService: UsuarioService) {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       this.currentUserLoginOn = new BehaviorSubject<boolean>(sessionStorage.getItem("token") != null);
       this.currentUserData = new BehaviorSubject<String>(sessionStorage.getItem("token") || "");
@@ -26,6 +30,19 @@ export class LoginService {
           sessionStorage.setItem("token", userData.token);
           this.currentUserData.next(userData.token);
           this.currentUserLoginOn.next(true);
+
+          // Llamada al servicio de usuario para obtener más detalles y almacenarlos
+          this.userService.getUser(credentials.cedula).subscribe({
+            next: (usuario) => {
+              this.usuario = usuario;
+              sessionStorage.setItem("usuarioInfo", JSON.stringify(usuario));
+            },
+            error: (error) => {
+              this.errorMessage = error;
+              console.error('Error al obtener el usuario:', error);
+            },
+            complete: () => console.log('Petición para obtener usuario completada')
+          });
         }
       }),
       map((userData) => userData.token),
@@ -36,14 +53,15 @@ export class LoginService {
   logout(): void {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       sessionStorage.removeItem("token");
+      sessionStorage.removeItem("usuarioInfo");
       this.currentUserData.next("");
       this.currentUserLoginOn.next(false);
     }
   }
 
   private handleError(error: any): Observable<never> {
-    // Manejo de errores
-    throw error;
+    console.error('Error en la solicitud:', error);
+    return throwError(() => new Error('Error en la solicitud, intente nuevamente más tarde.'));
   }
 
   get userData(): Observable<String> {

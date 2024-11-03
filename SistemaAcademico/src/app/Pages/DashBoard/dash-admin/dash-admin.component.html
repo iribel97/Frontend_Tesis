@@ -4,6 +4,8 @@
       <app-slidebar class="flex-shrink-0 md:w-48 w-32" />
       <main class="flex-grow p-4 md:p-8 lg:p-12">
         <h1 class="text-2xl font-bold">Prueba</h1>
+        <p *ngIf="!userLoginOn" class="alert alert-danger">Usuario NO autenticado</p>
+        <p *ngIf="userLoginOn" class="alert alert-success">Usuario Autenticado</p>
 
       </main>
     </div>
