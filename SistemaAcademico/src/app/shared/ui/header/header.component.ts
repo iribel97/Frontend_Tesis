@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { Usuario } from '../../../services/login/usuario';
+import { Usuario } from '../../interfaces/usuario';
 import { UsuarioService } from '../../../services/usurio/usuario.service';
 import { enviroment } from '../../../../enviroment/enviroment';
 

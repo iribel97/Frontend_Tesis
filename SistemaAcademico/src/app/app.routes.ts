@@ -8,5 +8,9 @@ export const routes: Routes = [
     {
         path: 'dashboard',
         loadComponent: () => import('./Pages/DashBoard/dash-admin/dash-admin.component').then(m => m.DashAdminComponent),
+    },
+    {
+        path: 'registrar',
+        loadComponent: () => import('./Formularios/register/register.component').then(m => m.RegisterComponent),
     }
 ];

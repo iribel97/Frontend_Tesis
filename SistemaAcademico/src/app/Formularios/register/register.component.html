@@ -1,0 +1,143 @@
+<section class="bg-gray-50">
+    <div class="flex flex-col items-center mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-48 md:h-screen pt-8 sm:pt-12 md:pt-16">
+        <div class="w-full bg-white rounded-lg shadow md:mt-0">
+            <div class="p-4 sm:p-6 md:p-8 space-y-4 md:space-y-6">
+                <h1 class="text-2xl text-center font-bold leading-tight tracking-tight text-gray-900">
+                    Registrate
+                </h1>
+
+                <ol
+                    class="flex flex-col sm:flex-row items-center w-full text-sm sm:text-base font-medium text-center text-gray-500">
+                    <li [ngClass]="{'text-blue-600': step === 1}"
+                        class="flex sm:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-700 sm:after:inline-block after:mx-2 sm:after:mx-6 xl:after:mx-10">
+                        <span class="flex items-center">
+                            <svg *ngIf="step === 1" class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                            </svg>
+                            <span *ngIf="step != 1" class="mr-2">1</span>
+                            Información <span class="hidden sm:inline sm:ml-2">Personal</span>
+                        </span>
+                    </li>
+                    <li [ngClass]="{'text-blue-600': step === 2}"
+                        class="flex sm:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-700 sm:after:inline-block after:mx-2 sm:after:mx-6 xl:after:mx-10">
+                        <span class="flex items-center">
+                            <svg *ngIf="step === 2" class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                            </svg>
+                            <span *ngIf="step != 2" class="mr-2">2</span>
+                            Datos <span class="hidden sm:inline sm:ml-2">Laborales</span>
+                        </span>
+                    </li>
+                    <li [ngClass]="{'text-blue-600': step === 3}" class="flex items-center">
+                        <svg *ngIf="step === 3" class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                        </svg>
+                        <span *ngIf="step != 3" class="mr-2">3</span>
+                        Confirmación
+                    </li>
+                </ol>
+
+                <!-- PASO 1: INFORMACIÓN PERSONAL -->
+                <div *ngIf="step === 1">
+                    <form [formGroup]="personalForm" (ngSubmit)="nextStep()"
+                        class="space-y-4 md:space-y-6 border border-gray-200 rounded-md p-4 sm:p-6 md:p-7 mx-2 sm:mx-4 md:mx-16">
+                        <div class="grid grid-cols-5 grid-rows-4 gap-4">
+                            <div class="">
+                                <label for="cedula" class="block mb-2 text-sm font-medium text-gray-900">Cédula</label>
+                                <input formControlName="cedula" type="text" name="cedula" id="cedula"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                    placeholder="0000000000" required="">
+                            </div>
+                            <div class="col-span-2">
+                                <label for="nombres"
+                                    class="block mb-2 text-sm font-medium text-gray-900">Nombres</label>
+                                <input formControlName="nombres" type="text" name="nombres" id="nombres"
+                                    (input)="onInputChange()"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                    placeholder="Jose Marcos" required="">
+                            </div>
+                            <div class="col-span-2 row-span-2 col-start-4 items-center flex flex-col">
+                                <label for="profileImage" class="block mb-2 text-sm font-medium text-gray-900">Imagen de
+                                    perfil</label>
+                                <!-- Círculo para la imagen de perfil -->
+                                <div class="profile-circle" (click)="uploadImage()">
+                                    <img [src]="imagePreview" *ngIf="imagePreview" alt="Vista previa"
+                                        class="profile-image">
+                                    <span *ngIf="!imagePreview" class="initials">{{ initials }}</span>
+                                </div>
+
+                                <!-- Campo de archivo oculto -->
+                                <input formControlName="fotoPerfil" type="file" id="profileImage" name="profileImage" (change)="previewImage($event)"
+                                    class="hidden">
+                            </div>
+                            <div class="col-span-3 row-start-2">
+                                <label for="apellidos"
+                                    class="block mb-2 text-sm font-medium text-gray-900">Apellidos</label>
+                                <input formControlName="apellidos" type="text" name="apellidos" id="apellidos"
+                                    (input)="onInputChange()"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                    placeholder="Bustamante Espinoza" required="">
+                            </div>
+                            <div class="col-span-2 row-start-3">
+                                <label for="correo" class="block mb-2 text-sm font-medium text-gray-900">Correo
+                                    Electrónico</label>
+                                <input formControlName="correo" type="email" name="correo" id="email"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                    placeholder="jose.marcos@gmail.com" required="">
+                            </div>
+                            <div class="col-span-3 col-start-3 row-start-3">
+                                <label for="direccion"
+                                    class="block mb-2 text-sm font-medium text-gray-900">Dirección</label>
+                                <input formControlName="direccion" type="text" name="direccion" id="direccion"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                    placeholder="10ma avenida y rocafuerte" required="">
+                            </div>
+                            <div class="row-start-4">
+                                <label for="telefono"
+                                    class="block mb-2 text-sm font-medium text-gray-900">Teléfono</label>
+                                <input formControlName="telefono" type="text" name="telefono" id="telefono"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                    placeholder="0956231475" required="">
+                            </div>
+                            <div class="col-span-2 row-start-4 ">
+                                <label for="genero" class="block mb-2 text-sm font-medium text-gray-900">Genero</label>
+                                <select formControlName="genero" id="genero" name="genero"
+                                    class="bg-gray-50 border border-gray-300  text-sm rounded-lg  block w-full p-2.5">
+                                    <option value="" class="text-gray-400">Seleccione</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+
+                            <div class="col-span-2 col-start-4 row-start-4">
+                                <label for="fechaNacimiento" class="block mb-2 text-sm font-medium text-gray-900">Fecha
+                                    de Nacimiento</label>
+                                <input formControlName="fechaNacimiento" type="date" name="fechaNacimiento"
+                                    id="fechaNacimiento"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                    required="">
+                            </div>
+                        </div>
+                        <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Siguiente</button>
+                    </form>
+                </div>
+
+                <!-- PASO 2: DATOS ESTUDIANTE -->
+                <div>
+                    <form [formGroup]="personalForm" (ngSubmit)="nextStep()"
+                        class="space-y-4 md:space-y-6 border border-gray-200 rounded-md p-4 sm:p-6 md:p-7 mx-2 sm:mx-4 md:mx-16">
+                        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-5 gap-4">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

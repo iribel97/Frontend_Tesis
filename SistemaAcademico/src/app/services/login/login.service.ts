@@ -4,7 +4,7 @@ import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'r
 import { enviroment } from '../../../enviroment/enviroment';
 import { LoginRequest } from '../login/LoginRequest';
 import { UsuarioService } from '../usurio/usuario.service';
-import { Usuario } from './usuario';
+import { Usuario } from '../../shared/interfaces/usuario';
 
 @Injectable({
   providedIn: 'root'
