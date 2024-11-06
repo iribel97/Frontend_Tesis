@@ -12,6 +12,8 @@ export interface UsuarioRegistro {
     genero: string;
     estado: string;
 
+    foto?: string | File; // Campo para la imagen del usuario
+
     titulo?: string;
     especialidad?: string;
     experiencia?: number;
@@ -20,12 +22,9 @@ export interface UsuarioRegistro {
     sangre?: string;
     cedulaRepresentante?: string;
     
-
     autorizado?: boolean;
     ocupacion?: string;
     empresa?: string;
     telefonoEmpresa?: string;
     direccionEmpresa?: string;
-
-
 }
