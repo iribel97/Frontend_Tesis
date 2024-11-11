@@ -1,0 +1,4 @@
+.blur-bg {
+  backdrop-filter: blur(50px); /* El valor puede ajustarse */
+  background-color: rgba(255, 255, 255, 0.75); /* Ajustar el color y la opacidad según tus necesidades */
+}
