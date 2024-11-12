@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import {AuthComponent} from "./pages/auth/auth.component";
+import {PageRegisterComponent} from "./pages/page-register/page-register.component";
 
 export const routes: Routes = [
-    {path: '', component: AuthComponent},
+    {path: '', component: PageRegisterComponent},
 ];
