@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit, forwardRef, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, forwardRef, HostListener, ChangeDetectorRef } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
-import {NgIf} from "@angular/common";
+import { NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-input',
@@ -29,14 +29,17 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   @Input() max?: number | string;
   @Input() enablePasswordValidation: boolean = false;
   @Output() valueChange = new EventEmitter<string>();
+  @Output() errorsChange = new EventEmitter<{ id: string, errorMessage: string }>();
 
-  inputControl!: FormControl;
+  inputControl: FormControl = new FormControl();
   inputClass: string = 'block w-full py-2 text-textMuted bg-white border rounded-lg px-4 focus:border-primary focus:ring-primary focus:outline-none focus:ring focus:ring-opacity-40';
   showError: boolean = false;
   errorMessage: string = '';
 
-  private onChange = (value: any) => {};
-  private onTouched = () => {};
+  private onChange = (value: any) => { };
+  private onTouched = () => { };
+
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     const validators = this.buildValidators();
@@ -46,10 +49,19 @@ export class InputComponent implements OnInit, ControlValueAccessor {
       this.onChange(value);
       this.valueChange.emit(value);
       this.checkValidation();
+      this.cdr.detectChanges();
+    });
+
+    this.inputControl.statusChanges.subscribe(() => {
+      this.checkValidation();
+      this.errorsChange.emit({ id: this.id, errorMessage: this.errorMessage });
+      this.cdr.detectChanges();
     });
   }
 
   buildValidators() {
+    console.log('inputControl', this.inputControl);
+    console.log('pattern', this.pattern);
     const validators = [];
     if (this.required) {
       validators.push(Validators.required);
@@ -93,7 +105,7 @@ export class InputComponent implements OnInit, ControlValueAccessor {
         this.errorMessage = 'Entrada inválida';
       }
     } else {
-      this.errorMessage = '';
+      this.errorMessage = 'aaaa';
     }
   }
 
@@ -116,4 +128,25 @@ export class InputComponent implements OnInit, ControlValueAccessor {
     isDisabled ? this.inputControl.disable() : this.inputControl.enable();
   }
 
+  // Agregar el @HostListener para escuchar el evento keypress
+  @HostListener('keypress', ['$event'])
+  onKeyPress(event: KeyboardEvent): boolean {
+
+    // Si no hay patrón definido, permitimos todas las teclas
+    if (!this.pattern) {
+      return true;
+    }
+
+    // Creamos una expresión regular basada en el patrón proporcionado
+    const regex = new RegExp(this.pattern);
+
+    // Si la tecla presionada no coincide con el patrón, evitamos que se ingrese
+    if (!regex.test(event.key)) {
+      event.preventDefault();  // Evita que se ingrese el carácter no permitido
+      return false;
+    }
+
+    // Si la tecla coincide con el patrón, permitimos el ingreso
+    return true;
+  }
 }
