@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, forwardRef, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, forwardRef, HostListener, NgZone } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from "@angular/common";
 
@@ -39,29 +39,31 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   private onChange = (value: any) => { };
   private onTouched = () => { };
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private ngZone: NgZone) { }
 
   ngOnInit(): void {
     const validators = this.buildValidators();
     this.inputControl = new FormControl(this.value, validators);
 
     this.inputControl.valueChanges.subscribe(value => {
-      this.onChange(value);
-      this.valueChange.emit(value);
-      this.checkValidation();
-      this.cdr.detectChanges();
+      this.ngZone.run(() => {
+        this.onChange(value);
+        this.valueChange.emit(value);
+        this.checkValidation();
+        // No need to call detectChanges here
+      });
     });
 
     this.inputControl.statusChanges.subscribe(() => {
-      this.checkValidation();
-      this.errorsChange.emit({ id: this.id, errorMessage: this.errorMessage });
-      this.cdr.detectChanges();
+      this.ngZone.run(() => {
+        this.checkValidation();
+        this.errorsChange.emit({ id: this.id, errorMessage: this.errorMessage });
+        // No need to call detectChanges here
+      });
     });
   }
 
   buildValidators() {
-    console.log('inputControl', this.inputControl);
-    console.log('pattern', this.pattern);
     const validators = [];
     if (this.required) {
       validators.push(Validators.required);
