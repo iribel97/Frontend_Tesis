@@ -27,6 +27,7 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   @Input() pattern?: string;
   @Input() min?: number | string;
   @Input() max?: number | string;
+  @Input() permissivePattern?: string;
   @Input() enablePasswordValidation: boolean = false;
   @Output() valueChange = new EventEmitter<string>();
   @Output() errorsChange = new EventEmitter<{ id: string, errorMessage: string }>();
@@ -135,12 +136,12 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   onKeyPress(event: KeyboardEvent): boolean {
 
     // Si no hay patrón definido, permitimos todas las teclas
-    if (!this.pattern) {
+    if (!this.permissivePattern) {
       return true;
     }
 
     // Creamos una expresión regular basada en el patrón proporcionado
-    const regex = new RegExp(this.pattern);
+    const regex = new RegExp(this.permissivePattern);
 
     // Si la tecla presionada no coincide con el patrón, evitamos que se ingrese
     if (!regex.test(event.key)) {
