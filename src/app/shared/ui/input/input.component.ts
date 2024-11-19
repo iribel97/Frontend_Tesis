@@ -105,7 +105,7 @@ export class InputComponent implements OnInit, ControlValueAccessor {
         this.errorMessage = 'Entrada inválida';
       }
     } else {
-      this.errorMessage = 'aaaa';
+      this.errorMessage = '';
     }
   }
 

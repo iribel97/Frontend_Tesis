@@ -17,7 +17,7 @@
     [required]="true"
     [minlength]="3"
     [maxlength]="50"
-    pattern="[a-zA-Z ]"
+    pattern="^[a-zA-Z ]+$"
     (errorsChange)="onErrorsChange($event)"
   ></app-input>
 
