@@ -1,8 +1,8 @@
 <form [formGroup]="formRegister" (ngSubmit)="onSubmit()">
-    <div *ngIf="getFormErrorsKeys().length > 0" class="error-messages">
+    <div *ngIf="getFormErrorsKeys().length > 0 && sendform" class="error-messages">
         <ul>
             <li *ngFor="let key of getFormErrorsKeys()">
-                {{ formErrors[key] }}
+              {{ key }}:{{ formErrors[key] }}
             </li>
         </ul>
     </div>
