@@ -1,0 +1,15 @@
+<div class="mb-4">
+  <label *ngIf="placeholder" [for]="id" class="block text-sm font-medium text-darkGray">
+    {{ placeholder }}
+  </label>
+  <input
+    type="date"
+    [id]="id"
+    [formControl]="dateControl"
+    [placeholder]="placeholder"
+    class="block w-full py-2 text-textMuted bg-white border rounded-lg px-4 focus:border-primary focus:ring-primary focus:outline-none focus:ring focus:ring-opacity-40"
+  />
+  <div *ngIf="sendform && errorMessage" class="text-red-500 text-sm mt-1">
+    {{ errorMessage }}
+  </div>
+</div>
