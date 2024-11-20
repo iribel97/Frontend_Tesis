@@ -1,12 +1,4 @@
 <form [formGroup]="formRegister" (ngSubmit)="onSubmit()">
-    <div *ngIf="getFormErrorsKeys().length > 0 && sendform" class="error-messages">
-        <ul>
-            <li *ngFor="let key of getFormErrorsKeys()">
-              {{ key }}:{{ formErrors[key] }}
-            </li>
-        </ul>
-    </div>
-
     <div class="grid grid-cols-2 gap-x-4">
         <div class="relative flex items-center mt-1 col-span-1">
             <app-input
@@ -16,6 +8,7 @@
                     placeholder="Ingrese su numero de cedula"
                     formControlName="ci"
                     [required]="true"
+                    [sendform]="sendform"
                     [minlength]="10"
                     [maxlength]="10"
                     pattern="^[0-9 ]+$"
@@ -31,6 +24,7 @@
                     placeholder="Ingrese su nombre"
                     formControlName="name"
                     [required]="true"
+                    [sendform]="sendform"
                     [minlength]="3"
                     [maxlength]="50"
                     pattern="^[a-zA-Z ]+$"
@@ -47,6 +41,7 @@
                     placeholder="Ingrese su apellido"
                     formControlName="last_name"
                     [required]="true"
+                    [sendform]="sendform"
                     [minlength]="3"
                     [maxlength]="50"
                     pattern="^[a-zA-Z ]+$"
@@ -63,6 +58,7 @@
                     placeholder="Ingrese su correo electrónico"
                     formControlName="email"
                     [required]="true"
+                    [sendform]="sendform"
                     [minlength]="5"
                     [maxlength]="50"
                     pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -79,27 +75,27 @@
                     placeholder="Ingrese su contraseña"
                     formControlName="password"
                     [required]="true"
+                    [sendform]="sendform"
                     [minlength]="8"
                     [maxlength]="20"
                     pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                     (errorsChange)="onErrorsChange($event)"
             ></app-input>
         </div>
-    <div class="relative flex items-center mt-1 col-span-1">
-<app-select
-  [options]="['Masculino', 'Femenino']"
-  placeholder="Genero"
-  [required]="true"
-  defaultValue=""
-  (selectionChange)="onSelectionChange()"
-  (errorMessage)="onErrorMessage($event)">
-</app-select>
-<div *ngIf="formErrors['select']" class="text-red-500">
-  {{ formErrors['select'] }}
-</div>
+        <div class="relative flex items-center mt-1 col-span-1">
+            <app-select
+                    id="gender"
+                    placeholder="Seleccione su género"
+                    [options]="['Masculino', 'Femenino']"
+                    [sendform]="sendform"
+                    formControlName="gender"
+                    [required]="true"
+
+                    (errorsChange)="onErrorsChange($event)"
+            ></app-select>
 
 
-    </div>
+        </div>
     </div>
     <div class="mt-6">
         <button type="submit"

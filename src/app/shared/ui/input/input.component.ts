@@ -29,6 +29,7 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   @Input() max?: number | string;
   @Input() permissivePattern?: string;
   @Input() enablePasswordValidation: boolean = false;
+  @Input() sendform: boolean = false;
   @Output() valueChange = new EventEmitter<string>();
   @Output() errorsChange = new EventEmitter<{ id: string, errorMessage: string }>();
 
