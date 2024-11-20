@@ -2,11 +2,12 @@ import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgForOf, NgIf } from "@angular/common";
 import { InputComponent } from "../../shared/ui/input/input.component";
+import { SelectComponent } from "../../shared/ui/select/select.component";
 
 @Component({
   selector: 'form-register',
   standalone: true,
-  imports: [ReactiveFormsModule, InputComponent, NgIf, NgForOf],
+  imports: [ReactiveFormsModule, InputComponent, SelectComponent, NgIf, NgForOf],
   templateUrl: './form-register.component.html',
 })
 export class FormRegisterComponent implements OnInit {

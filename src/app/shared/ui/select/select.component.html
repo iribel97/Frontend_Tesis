@@ -1,0 +1,7 @@
+<label for="select">{{ placeholder }}</label>
+<select [formControl]="selectControl" (change)="onSelectionChange()"
+  class="block w-full py-2 text-textMuted bg-white border rounded-lg px-4 focus:border-primary focus:ring-primary focus:outline-none focus:ring focus:ring-opacity-40">
+  <option value="" disabled>{{ placeholder }}</option>
+  <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+</select>
+

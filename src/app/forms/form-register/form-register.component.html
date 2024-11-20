@@ -85,6 +85,21 @@
                     (errorsChange)="onErrorsChange($event)"
             ></app-input>
         </div>
+    <div class="relative flex items-center mt-1 col-span-1">
+<app-select
+  [options]="['Masculino', 'Femenino']"
+  placeholder="Genero"
+  [required]="true"
+  defaultValue=""
+  (selectionChange)="onSelectionChange()"
+  (errorMessage)="onErrorMessage($event)">
+</app-select>
+<div *ngIf="formErrors['select']" class="text-red-500">
+  {{ formErrors['select'] }}
+</div>
+
+
+    </div>
     </div>
     <div class="mt-6">
         <button type="submit"
