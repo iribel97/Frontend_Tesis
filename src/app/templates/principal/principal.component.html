@@ -12,14 +12,14 @@
 
             <div class="flex flex-row items-center justify-end gap-1">
                 <!-- Dropdown -->
-                <div class="relative inline-flex">
-                    <button id="dropdown-account" type="button" class="w-9 h-9 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+                <div class="relative inline-flex" (document:click)="closeDropdown($event)">
+                    <button id="dropdown-account" type="button" class="w-9 h-9 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown" (click)="toggleDropdown()">
                         <span class="inline-flex items-center justify-center w-8 h-8 text-xs font-semibold rounded-full leading-none border border-gray-200 bg-primary text-gray-800 shadow-sm">
                             AA
                         </span>
                     </button>
 
-                    <div class="transition-opacity duration-300 opacity-0 hidden min-w-60 bg-primary shadow-md rounded-lg mt-2" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-account">
+                    <div class="transition-opacity duration-300" [ngClass]="{'opacity-100': isDropdownOpen, 'opacity-0 hidden': !isDropdownOpen}" (clickOutside)="closeDropdown($event)" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-account">
                         <div class="py-3 px-5 bg-blue-50 rounded-t-lg">
                             <p class="text-sm text-gray-500">Registrado como</p>
                             <p class="text-sm font-light text-gray-800">USUARIO PRUEBA</p>
