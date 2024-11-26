@@ -3,17 +3,16 @@ import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, Reac
 import { NgIf, NgFor } from "@angular/common";
 
 @Component({
-  selector: 'app-select',
-  standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, NgIf, NgFor],
-  templateUrl: './select.component.html',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SelectComponent),
-      multi: true
-    }
-  ]
+    selector: 'app-select',
+    imports: [FormsModule, ReactiveFormsModule, NgIf, NgFor],
+    templateUrl: './select.component.html',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => SelectComponent),
+            multi: true
+        }
+    ]
 })
 export class SelectComponent implements OnInit, ControlValueAccessor {
   @Input() id: string = '';

@@ -10,11 +10,10 @@ import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
-  selector: 'app-dash-admin',
-  standalone: true,
-  imports: [HeaderComponent, SlidebarComponent, FooterComponent, CommonModule, ReactiveFormsModule],
-  templateUrl: './dash-admin.component.html',
-  styles: ``
+    selector: 'app-dash-admin',
+    imports: [HeaderComponent, SlidebarComponent, FooterComponent, CommonModule, ReactiveFormsModule],
+    templateUrl: './dash-admin.component.html',
+    styles: ``
 })
 export class DashAdminComponent implements OnInit, OnDestroy {
 

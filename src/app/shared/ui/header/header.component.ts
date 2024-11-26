@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Usuario } from '../../../services/login/usuario';
 import { UsuarioService } from '../../../services/usurio/usuario.service';
 import { enviroment } from '../../../../enviroment/enviroment';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [RouterLink, RouterLinkActive],
-  templateUrl: './header.component.html',
-  styles: ``
+    selector: 'app-header',
+    imports: [],
+    templateUrl: './header.component.html',
+    styles: ``
 })
 export class HeaderComponent {
 

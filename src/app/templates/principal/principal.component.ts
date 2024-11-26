@@ -6,7 +6,6 @@ import {ClickOutsideDirective} from "../../shared/directivas/click-outside.direc
 
 @Component({
     selector: 'app-principal',
-    standalone: true,
     imports: [RouterOutlet, NgClass, ClickOutsideDirective],
     templateUrl: './principal.component.html',
     styleUrl: './principal.component.css'
@@ -18,6 +17,7 @@ export class PrincipalComponent implements OnInit {
 
     breadcrumb: string[] = [];
     isDropdownOpen = false;
+    isSidebarOpen = false;
 
     ngOnInit() {
         this.breadcrumbService.breadcrumb$.subscribe(breadcrumb => {
@@ -26,12 +26,21 @@ export class PrincipalComponent implements OnInit {
     }
 
     toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
-
-  closeDropdown(event: Event) {
-    if (!(event.target as HTMLElement).closest('#dropdown-account')) {
-      this.isDropdownOpen = false;
+        this.isDropdownOpen = !this.isDropdownOpen;
     }
-  }
+
+    openSidebar(event: Event) {
+        event.stopPropagation();
+        this.isSidebarOpen = true;
+    }
+
+    closeSidebar() {
+        this.isSidebarOpen = false;
+    }
+
+    closeDropdown(event: Event) {
+        if (!(event.target as HTMLElement).closest('#dropdown-account')) {
+            this.isDropdownOpen = false;
+        }
+    }
 }

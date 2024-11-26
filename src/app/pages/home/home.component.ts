@@ -8,7 +8,6 @@ Chart.register(...registerables);
 
 @Component({
     selector: 'app-home',
-    standalone: true,
     imports: [
         BaseChartDirective
     ],

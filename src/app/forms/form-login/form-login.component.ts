@@ -1,20 +1,15 @@
 import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {DateInputComponent} from "../../shared/ui/date/date.component";
 import {InputComponent} from "../../shared/ui/input/input.component";
-import {SelectComponent} from "../../shared/ui/select/select.component";
 
 @Component({
-  selector: 'app-form-login',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    DateInputComponent,
-    InputComponent,
-    SelectComponent
-  ],
-  templateUrl: './form-login.component.html',
-  styleUrl: './form-login.component.css'
+    selector: 'app-form-login',
+    imports: [
+        ReactiveFormsModule,
+        InputComponent,
+    ],
+    templateUrl: './form-login.component.html',
+    styleUrl: './form-login.component.css'
 })
 export class FormLoginComponent implements OnInit {
   formErrors: { [key: string]: string } = {};

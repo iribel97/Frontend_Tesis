@@ -3,17 +3,16 @@ import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, Reac
 import { NgIf } from "@angular/common";
 
 @Component({
-  selector: 'app-input',
-  standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, NgIf],
-  templateUrl: './input.component.html',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => InputComponent),
-      multi: true
-    }
-  ]
+    selector: 'app-input',
+    imports: [FormsModule, ReactiveFormsModule, NgIf],
+    templateUrl: './input.component.html',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => InputComponent),
+            multi: true
+        }
+    ]
 })
 export class InputComponent implements OnInit, ControlValueAccessor {
   @Input() id: string = '';

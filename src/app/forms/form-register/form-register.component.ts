@@ -1,15 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { NgForOf, NgIf } from "@angular/common";
 import { InputComponent } from "../../shared/ui/input/input.component";
 import { SelectComponent } from "../../shared/ui/select/select.component";
 import {DateInputComponent} from "../../shared/ui/date/date.component";
 
 @Component({
-  selector: 'form-register',
-  standalone: true,
-  imports: [ReactiveFormsModule, InputComponent, SelectComponent, NgIf, NgForOf, DateInputComponent],
-  templateUrl: './form-register.component.html',
+    selector: 'form-register',
+    imports: [ReactiveFormsModule, InputComponent, SelectComponent, DateInputComponent],
+    templateUrl: './form-register.component.html'
 })
 export class FormRegisterComponent implements OnInit {
   formErrors: { [key: string]: string } = {};
