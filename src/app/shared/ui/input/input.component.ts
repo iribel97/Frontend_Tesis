@@ -1,10 +1,10 @@
 import { Component, Input, Output, EventEmitter, OnInit, forwardRef, HostListener, NgZone } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgIf } from "@angular/common";
+
 
 @Component({
     selector: 'app-input',
-    imports: [FormsModule, ReactiveFormsModule, NgIf],
+    imports: [FormsModule, ReactiveFormsModule],
     templateUrl: './input.component.html',
     providers: [
         {
@@ -30,7 +30,6 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   @Input() enablePasswordValidation: boolean = false;
   @Input() sendform: boolean = false;
   @Output() valueChange = new EventEmitter<string>();
-  @Output() errorsChange = new EventEmitter<{ id: string, errorMessage: string }>();
 
   inputControl: FormControl = new FormControl();
   inputClass: string = 'block w-full py-2 text-textMuted bg-white border rounded-lg px-4 focus:border-primary focus:ring-primary focus:outline-none focus:ring focus:ring-opacity-40';
@@ -51,15 +50,12 @@ export class InputComponent implements OnInit, ControlValueAccessor {
         this.onChange(value);
         this.valueChange.emit(value);
         this.checkValidation();
-        // No need to call detectChanges here
       });
     });
 
     this.inputControl.statusChanges.subscribe(() => {
       this.ngZone.run(() => {
         this.checkValidation();
-        this.errorsChange.emit({ id: this.id, errorMessage: this.errorMessage });
-        // No need to call detectChanges here
       });
     });
   }

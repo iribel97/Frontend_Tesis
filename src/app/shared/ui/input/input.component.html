@@ -1,7 +1,9 @@
 <div class="mb-4">
-  <label *ngIf="label" [for]="id" class="block text-sm font-medium text-darkGray">
-    {{ label }}
-  </label>
+    @if (label){
+        <label [for]="id" class="block text-sm font-medium text-darkGray">
+            {{ label }}
+        </label>
+    }
   <input
     [id]="id"
     [type]="type"
@@ -14,7 +16,9 @@
     [pattern]="pattern ?? ''"
     (keypress)="onKeyPress($event)"
   />
-    <div *ngIf="sendform && errorMessage" class="text-red-500 text-sm mt-1">
-    {{ errorMessage }}
-  </div>
+    @if (sendform && errorMessage){
+        <div class="text-red-500 text-sm mt-1">
+            {{ errorMessage }}
+        </div>
+    }
 </div>

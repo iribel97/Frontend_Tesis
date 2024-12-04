@@ -1,0 +1,9 @@
+<section class="bg-white mx-5 px-3 py-5 rounded-xl shadow-sm">
+    <div>
+        <h1 class="font-semibold text-xl">Usuarios</h1>
+        <p class="text-darkGray-500">Administracion de usuarios en el sistema</p>
+    </div>
+    <div>
+        <app-table [headers]="['Nombre', 'Email', 'Rol']" [data]="users" [pageSize]="5"></app-table>
+    </div>
+</section>
