@@ -1,0 +1,28 @@
+<div class="mb-4 tab-container">
+    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
+        <li *ngFor="let tab of tabs; let i = index" class="me-2" role="presentation">
+            <button
+                    [ngClass]="{
+                  'active': selectedTab === i,
+                  'inactive': selectedTab !== i
+                }"
+                    (click)="selectTab(i)"
+                    class="tab-button inline-block p-4 border-b-4 rounded-t-lg cursor-pointer text-lg"
+                    id="{{ tab.id }}-tab"
+                    role="tab"
+                    [attr.aria-controls]="tab.id">
+                {{ tab.title }}
+            </button>
+        </li>
+    </ul>
+</div>
+<div>
+    <ng-container *ngFor="let tab of tabs; let i = index">
+        <div
+                [hidden]="selectedTab !== i"
+                role="tabpanel"
+                id="{{ tab.id }}">
+            <ng-container *ngTemplateOutlet="tab.content"></ng-container>
+        </div>
+    </ng-container>
+</div>

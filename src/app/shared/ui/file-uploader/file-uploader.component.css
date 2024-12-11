@@ -1,0 +1,10 @@
+/* Opcional: clases adicionales para el diseño */
+.file-uploader input[type="file"] {
+    display: none;
+}
+
+.file-uploader ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}

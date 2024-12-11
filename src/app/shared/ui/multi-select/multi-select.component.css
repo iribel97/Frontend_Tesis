@@ -7,15 +7,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 10px;
+    padding: 10px 12px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 8px;
     cursor: pointer;
     transition: border-color 0.3s;
-    min-height: 30px; /* Cambia este valor para ajustar la altura */
-    line-height: 30px; /* Asegúrate que el texto se alinee verticalmente */
-
 }
 
 .select-box:hover {
@@ -112,7 +109,6 @@
     display: flex;
     justify-content: space-between;
     transition: background-color 0.2s;
-    font-size: 13px;
 }
 
 .dropdown li:hover {
