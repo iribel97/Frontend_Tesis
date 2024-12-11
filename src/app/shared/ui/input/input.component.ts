@@ -4,7 +4,7 @@ import { NgIf } from "@angular/common";
 
 @Component({
     selector: 'ui-input',
-    imports: [FormsModule, ReactiveFormsModule, NgIf],
+    imports: [FormsModule, ReactiveFormsModule],
     templateUrl: './input.component.html',
     providers: [
         {

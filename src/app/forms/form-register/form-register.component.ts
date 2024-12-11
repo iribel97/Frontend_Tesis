@@ -2,11 +2,11 @@ import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { InputComponent } from "../../shared/ui/input/input.component";
 import { SelectComponent } from "../../shared/ui/select/select.component";
-import {DateInputComponent} from "../../shared/ui/date/date.component";
+import {DatapikerComponent} from "../../shared/ui/datapiker/datapiker.component";
 
 @Component({
     selector: 'form-register',
-    imports: [ReactiveFormsModule, InputComponent, SelectComponent, DateInputComponent],
+  imports: [ReactiveFormsModule, InputComponent, SelectComponent, DatapikerComponent],
     templateUrl: './form-register.component.html'
 })
 export class FormRegisterComponent implements OnInit {

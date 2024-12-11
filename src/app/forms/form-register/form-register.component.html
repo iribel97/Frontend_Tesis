@@ -1,7 +1,7 @@
 <form [formGroup]="formRegister" (ngSubmit)="onSubmit()">
     <div class="grid grid-cols-2 gap-x-4">
         <div class="relative flex items-center mt-1 col-span-1">
-            <app-input
+            <ui-input
                     id="ci"
                     label="Cedula"
                     type="text"
@@ -14,10 +14,10 @@
                     pattern="^[0-9 ]+$"
                     permissivePattern="^[0-9 ]*$"
 
-            ></app-input>
+            ></ui-input>
         </div>
         <div class="relative flex items-center mt-1 col-span-1">
-            <app-input
+            <ui-input
                     id="name"
                     label="Nombre"
                     type="text"
@@ -30,11 +30,11 @@
                     pattern="^[a-zA-Z ]+$"
                     permissivePattern="^[a-zA-Z ]*$"
 
-            ></app-input>
+            ></ui-input>
         </div>
 
         <div class="relative flex items-center mt-1 col-span-1">
-            <app-input
+            <ui-input
                     id="last_name"
                     label="Apellido"
                     type="text"
@@ -47,11 +47,11 @@
                     pattern="^[a-zA-Z ]+$"
                     permissivePattern="^[a-zA-Z ]+$"
 
-            ></app-input>
+            ></ui-input>
         </div>
 
         <div class="relative flex items-center mt-1 col-span-1">
-            <app-input
+            <ui-input
                     id="email"
                     label="Correo Electrónico"
                     type="email"
@@ -64,11 +64,11 @@
                     pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                     permissivePattern="^[a-zA-Z0-9._%+-@]*$"
 
-            ></app-input>
+            ></ui-input>
         </div>
 
         <div class="relative flex items-center mt-1 col-span-1">
-            <app-input
+            <ui-input
                     id="password"
                     label="Contraseña"
                     type="password"
@@ -80,10 +80,10 @@
                     [minlength]="8"
                     [maxlength]="20"
 
-            ></app-input>
+            ></ui-input>
         </div>
         <div class="relative flex items-center mt-1 col-span-1">
-            <app-input
+            <ui-input
                     id="phone"
                     label="Telefono"
                     type="text"
@@ -96,10 +96,10 @@
                     pattern="^[0-9 ]+$"
                     permissivePattern="^[0-9 ]*$"
 
-            ></app-input>
+            ></ui-input>
         </div>
         <div class="relative flex items-center mt-1 col-span-2">
-            <app-input
+            <ui-input
                     class="w-full"
                     id="address"
                     label="Direccion"
@@ -111,31 +111,28 @@
                     [minlength]="5"
                     [maxlength]="50"
 
-            ></app-input>
+            ></ui-input>
         </div>
         <div class="relative flex items-center mt-1 col-span-1">
-            <app-select
+            <ui-select
                     class="w-full"
                     id="gender"
                     placeholder="Seleccione su género"
-                    [options]="['Masculino', 'Femenino']"
+                    [options]="genderOptions"
                     [sendform]="sendform"
                     formControlName="gender"
                     [required]="true"
 
 
-            ></app-select>
+            ></ui-select>
         </div>
         <div class="relative flex items-center mt-1 col-span-1">
-            <app-date-input
-                    class="w-full"
+            <ui-datapiker
                     id="birth_date"
-                    placeholder="Fecha de Nacimiento"
                     formControlName="birth_date"
-                    [required]="true"
-                    [sendform]="sendform"
+                    [required]="true"/>
 
-            ></app-date-input>
+
         </div>
 
         <div class="relative flex flex-col mt-1 col-span-2 mb-5">
@@ -144,7 +141,7 @@
         </div>
 
         <div class="relative flex items-center mt-1 col-span-1">
-             <app-input
+             <ui-input
                     id="company"
                     label="Nombre de la Empresa"
                     type="text"
@@ -154,11 +151,11 @@
                     [minlength]="3"
                     [maxlength]="50"
 
-            ></app-input>
+            ></ui-input>
         </div>
 
         <div class="relative flex items-center mt-1 col-span-1">
-             <app-input
+             <ui-input
                     id="company_phone"
                     label="Nombre de la Empresa"
                     type="text"
@@ -170,11 +167,11 @@
                     pattern="^[0-9 ]+$"
                     permissivePattern="^[0-9 ]*$"
 
-            ></app-input>
+            ></ui-input>
         </div>
 
         <div class="relative flex items-center mt-1 col-span-2">
-            <app-input
+            <ui-input
                     class="w-full"
                     id="company_address"
                     label="Dirección de la Empresa"
@@ -185,7 +182,7 @@
                     [minlength]="3"
                     [maxlength]="50"
 
-            ></app-input>
+            ></ui-input>
         </div>
 
     </div>
