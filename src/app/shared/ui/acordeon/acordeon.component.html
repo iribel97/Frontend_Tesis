@@ -1,0 +1,16 @@
+<div class="accordion">
+    <div *ngFor="let item of items; let i = index" class="accordion-item">
+        <button class="accordion-header" (click)="toggle(i)">
+            {{ item.title }}
+            <span>{{ isOpen(i) ? '-' : '+' }}</span>
+        </button>
+        <div [class.open]="isOpen(i)" *ngIf="isOpen(i)" class="accordion-body">
+        <ng-container *ngIf="item.content">
+                {{ item.content }}
+            </ng-container>
+            <ng-container *ngIf="!item.content">
+                <ng-content select="[accordion-body]"></ng-content>
+            </ng-container>
+        </div>
+    </div>
+</div>

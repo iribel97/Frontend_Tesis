@@ -4,6 +4,7 @@ import {PageLoginComponent} from "./pages/page-login/page-login.component";
 import {PrincipalComponent} from "./templates/principal/principal.component";
 import {HomeComponent} from "./pages/home/home.component";
 import {UsersComponent} from "./pages/admin/users/users.component";
+import {HomeCourseComponent} from "./pages/course/home-course/home-course.component";
 
 export const routes: Routes = [
     {
@@ -17,6 +18,7 @@ export const routes: Routes = [
         children: [
             {path: 'home', component: HomeComponent},
             {path: 'admin/users', component: UsersComponent},
+            {path: 'course', component: HomeCourseComponent}
         ]
     },
     {path: 'register', component: PageRegisterComponent},

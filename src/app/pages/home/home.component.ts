@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
 
-// Registrar todos los componentes necesarios de Chart.js
 Chart.register(...registerables);
 
 @Component({
     selector: 'app-home',
     imports: [
-        BaseChartDirective
     ],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css'
