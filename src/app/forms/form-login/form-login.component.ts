@@ -1,6 +1,8 @@
 import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {InputComponent} from "../../shared/ui/input/input.component";
+import {AuthService} from "../../services/auth/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-form-login',
@@ -18,12 +20,13 @@ export class FormLoginComponent implements OnInit {
     sendform = false;
     formLogin!: FormGroup;
 
-    constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private ngZone: NgZone) {
+    constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private ngZone: NgZone,
+                private authService: AuthService, private router: Router) {
     }
 
     ngOnInit(): void {
         this.formLogin = this.fb.group({
-            user: [''],
+            cedula: [''],
             password: [''],
         });
         this.formLogin.valueChanges.subscribe(() => {
@@ -38,7 +41,11 @@ export class FormLoginComponent implements OnInit {
         if (Object.keys(this.formErrors).length > 0) {
             console.log('Form has errors:', this.formErrors);
         } else {
-            console.log('Form submitted successfully');
+            this.authService.login(this.formLogin.value).subscribe(response => {
+                this.router.navigate(['/home']);
+            }, error => {
+                console.error('Login error:', error);
+            });
         }
     }
 }

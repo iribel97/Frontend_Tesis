@@ -11,8 +11,8 @@ import {AcordeonComponent} from "../../../shared/ui/acordeon/acordeon.component"
 })
 export class HomeCourseComponent {
   accordionItems = [
-    { title: 'Sección 1', content: 'Contenido de la sección 1' },
-    { title: 'Sección 2', content: 'Contenido de la sección 2' },
-    { title: 'Sección 3', content: 'Contenido de la sección 3' }
+    { title: 'Titulo 1', content: 'Contenido de la sección 1' },
+    { title: 'Titulo 2', content: 'Contenido de la sección 2' },
+    { title: 'Titulo 3', content: 'Contenido de la sección 3' }
   ];
 }
