@@ -28,7 +28,7 @@
 
 
     <ul *ngIf="dropdownOpen" class="dropdown">
-        <input class="search-input" [(ngModel)]="searchTerm" (input)="filteredOptions" placeholder="Buscar...">
+        <input class="search-input" [(ngModel)]="searchTerm" (input)="handleSearchTermChange(searchTerm)" placeholder="Buscar...">
         <li *ngFor="let option of filteredOptions" (click)="selectOption(option)">
             {{ option.name }}
         </li>

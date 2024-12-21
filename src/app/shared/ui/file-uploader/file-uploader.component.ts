@@ -1,9 +1,10 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
+import {DocumentIn} from "../../../model/Document.model";
 
 @Component({
-  selector: 'app-file-uploader',
+  selector: 'ui-file-uploader',
   templateUrl: './file-uploader.component.html',
   styleUrls: ['./file-uploader.component.css'],
   providers: [
@@ -23,34 +24,66 @@ export class FileUploaderComponent implements ControlValueAccessor {
   @Input() required = false; // Define si el campo es requerido
   @Input() multiple = false; // Define si permite múltiples archivos
   @Input() view: 'single' | 'multiple' = 'single'; // Define la vista (por defecto: single)
+  @Input() label: string = ''; // Texto del label
 
   files: File[] = []; // Lista de archivos seleccionados
   progress: { [key: string]: number } = {}; // Mapa para el progreso de cada archivo
   uploadInProgress = false; // Estado de subida
 
   // Implementación de ControlValueAccessor
-  onChange = (files: File[]) => {};
+  onChange = (documents: DocumentIn[]) => {};
   onTouched = () => {};
 
-  /** Manejar input de archivo */
+  /** Manejar entrada de archivos desde el input */
   handleFileInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     const fileList = input.files;
 
-    // Convertir lista de archivos a un array
-    const fileArray = fileList ? Array.from(fileList) : [];
-    this.files = this.multiple ? fileArray : fileArray.slice(0, 1); // Un archivo si no acepta múltiples
-    this.progress = {}; // Restablecer el progreso para los nuevos archivos
-    this.startUploadSimulation(); // Iniciar la simulación de subida
-    this.onChange(this.files);
+    if (fileList) {
+      const filesArray = Array.from(fileList);
+
+      // Si `multiple` es true, combinamos los archivos nuevos con los ya existentes.
+      this.files = this.multiple ? [...this.files, ...filesArray] : filesArray;
+
+      // Convertir los archivos a DocumentIn[]
+      Promise.all(
+          this.files.map(file => this.convertToDocument(file))
+      ).then(documents => {
+        this.onChange(documents); // Notificar los objetos DocumentIn al formulario reactivo
+      });
+    }
+  }
+
+  /** Convertir un archivo a un objeto DocumentIn */
+  private convertToDocument(file: File): Promise<DocumentIn> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Content = (reader.result as string).split(',')[1]; // Eliminamos el encabezado del base64
+        const document: DocumentIn = {
+          name: file.name,
+          base64: base64Content,
+          type: file.type || 'application/octet-stream', // Tipo del archivo
+        };
+        resolve(document);
+      };
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file); // Leer archivo como base64
+    });
   }
 
   /** Eliminar archivo */
   removeFile(index: number): void {
     const file = this.files[index];
-    delete this.progress[file.name]; // Eliminar progreso del archivo
-    this.files.splice(index, 1);
-    this.onChange(this.files);
+    delete this.progress[file.name]; // Elimina el progreso del archivo
+    this.files.splice(index, 1); // Remueve el archivo de la lista
+
+    // Convertir los archivos restantes a DocumentIn[]
+    Promise.all(
+        this.files.map(file => this.convertToDocument(file))
+    ).then(documentArray => {
+      this.onChange(documentArray); // Notificar los cambios al formulario
+    });
   }
 
   /** Simular subida de archivos */
@@ -75,12 +108,17 @@ export class FileUploaderComponent implements ControlValueAccessor {
     });
   }
 
-  writeValue(files: File[]): void {
-    this.files = files || [];
+  writeValue(documents: DocumentIn[]): void {
+    if (documents) {
+      this.files = []; // Resetear la lista de archivos
+      // Simular archivos a partir del modelo DocumentIn si es necesario
+    } else {
+      this.files = [];
+    }
   }
 
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
+  registerOnChange(fn: (documents: DocumentIn[]) => void): void {
+    this.onChange = fn; // Notificar cambios hacia el formulario
   }
 
   registerOnTouched(fn: any): void {
@@ -100,5 +138,45 @@ export class FileUploaderComponent implements ControlValueAccessor {
       return this.progress[this.files[0].name] !== undefined;
     }
     return false;
+  }
+
+  /** Disparar el dialogo de selección de archivos */
+  triggerFileInput(inputId: string): void {
+    const inputElement = document.getElementById(inputId) as HTMLInputElement;
+    console.log('el input es:', inputElement);
+    if (inputElement) {
+      inputElement.click(); // Simula el clic para abrir el diálogo de selección de archivos
+    }
+  }
+
+  /** Manejar cuando el archivo se arrastra sobre la caja de carga */
+  onDragOver(event: DragEvent): void {
+    event.preventDefault(); // Prevenir el comportamiento por defecto
+    event.stopPropagation();
+  }
+
+  /** Manejar cuando el archivo se sale del área de carga */
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault(); // Prevenir el comportamiento por defecto
+    event.stopPropagation();
+  }
+
+  /** Manejar cuando los archivos se sueltan en la caja de carga */
+  onDrop(event: DragEvent): void {
+    event.preventDefault(); // Prevenir el comportamiento por defecto
+    event.stopPropagation();
+
+    if (event.dataTransfer?.files) {
+      const fileList = event.dataTransfer.files;
+      const filesArray = Array.from(fileList);
+
+      // Convertir los archivos a DocumentIn[]
+      Promise.all(
+          filesArray.map(file => this.convertToDocument(file))
+      ).then(documents => {
+        this.files = this.multiple ? [...this.files, ...filesArray] : filesArray.slice(0, 1); // Agregar o reemplazar los archivos
+        this.onChange(documents); // Notificar objetos DocumentIn al formulario reactivo
+      });
+    }
   }
 }

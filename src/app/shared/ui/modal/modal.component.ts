@@ -3,7 +3,7 @@ import {NgIf, NgStyle} from "@angular/common";
 import {ModalService} from "../../service/modal/modal.service"; // Servicio que gestiona los modales
 
 @Component({
-  selector: 'app-modal',
+  selector: 'ui-modal',
   templateUrl: './modal.component.html',
   imports: [
     NgIf,
