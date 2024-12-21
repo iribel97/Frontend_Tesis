@@ -239,7 +239,7 @@
 
                         <li>
                             <a class="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover dark:text-neutral-200 dark:hover:text-neutral-300"
-                               href="communication">
+                               href="course/schedule">
                                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                      viewBox="0 0 512 512" fill="currentColor" stroke="currentColor" stroke-width="2"
                                      stroke-linecap="round" stroke-linejoin="round">
@@ -255,7 +255,7 @@
                                     type="button"
                                     (click)="toggleMenu()"
                                     [attr.aria-expanded]="isOpen"
-                                    class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-primary-dark dark:hover:bg-primary-dark-hover dark:text-neutral-200"
+                                    class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:focus:bg-primary-dark-hover dark:bg-primary-dark dark:hover:bg-primary-dark-hover dark:text-neutral-200"
                                     aria-controls="materias-accordion-child">
                                 <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
                                      height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -295,13 +295,13 @@
 
                             <!-- Contenido del acordeón -->
                             <div id="materias-accordion-child"
-                                 class="hs-accordion-content w-full overflow-hidden transition-all duration-300 ease-in-out"
+                                 class="hs-accordion-content w-full overflow-hidden transition-all duration-300 ease-in-out "
                                  [style.maxHeight]="isOpen ? '500px' : '0'"
                                  role="region" aria-labelledby="materias-accordion">
                                 <ul class="ps-8 pt-1 space-y-1">
                                     <!-- Recorremos las materias dinámicamente -->
                                     <li *ngFor="let materia of materias">
-                                        <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-primary-dark dark:text-neutral-200"
+                                        <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  dark:focus:bg-primary-dark-hover dark:bg-primary-dark dark:text-neutral-200 dark:hover:bg-primary-dark-hover"
                                            [attr.title]="'Docente: ' + materia.docente"
                                            [href]="'#' + materia.id">
                                             {{ materia.materia }}
@@ -363,7 +363,7 @@
 
     <!-- Content -->
     <div class="flex-grow lg:pl-[260px]">
-        <div class="bg-white mx-5 my-5 rounded-xl shadow p-4 sm:p-6 space-y-4 sm:space-y-6">
+        <div class="bg-white dark:bg-primary-dark mx-5 my-5 rounded-xl shadow p-4 sm:p-6 space-y-4 sm:space-y-6 ">
             <!-- your content goes here ... -->
             <router-outlet></router-outlet>
         </div>

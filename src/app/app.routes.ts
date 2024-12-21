@@ -7,6 +7,7 @@ import {UsersComponent} from "./pages/admin/users/users.component";
 import {HomeCourseComponent} from "./pages/course/home-course/home-course.component";
 import {loginGuard} from "./guard/login.guard";
 import {authGuard} from "./guard/auth.guard";
+import {ScheduleComponent} from "./pages/course/schedule/schedule.component";
 
 export const routes: Routes = [
     {
@@ -21,7 +22,8 @@ export const routes: Routes = [
         children: [
             {path: 'home', component: HomeComponent},
             {path: 'admin/users', component: UsersComponent},
-            {path: 'course', component: HomeCourseComponent}
+            {path: 'course', component: HomeCourseComponent},
+            {path: 'course/schedule', component: ScheduleComponent}
         ]
     },
     {path: 'register', component: PageRegisterComponent, canActivate: [loginGuard]},

@@ -2,7 +2,7 @@ import { Component, ContentChild, ContentChildren, Input, QueryList, TemplateRef
 import { NgForOf, NgIf, NgTemplateOutlet } from "@angular/common";
 
 @Component({
-  selector: 'app-table',
+  selector: 'ui-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
   imports: [
