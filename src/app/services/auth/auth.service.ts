@@ -18,7 +18,7 @@ interface LoginResponse {
 })
 export class AuthService {
     private loginUrl = `${environment.urlApi}/auth/login`;
-    //private refreshTokenUrl = `${process.env['urlBackend']}/auth/refresh-token`; // Endpoint para renovar el token
+    private refreshTokenUrl = `${environment.urlApi}/auth/refresh-token`; // Endpoint para renovar el token
 
     constructor(private http: HttpClient) {
     }
@@ -75,7 +75,7 @@ export class AuthService {
     }
 
     // Renovar el token mediante el endpoint /refresh-token
-    /*refreshToken(): Observable<string> {
+    refreshToken(): Observable<string> {
         const token = this.getToken();
         if (!token) {
             throw new Error('No token found');
@@ -95,5 +95,6 @@ export class AuthService {
                     throw error;
                 })
             );
-    }*/
+    }
 }
+

@@ -1,30 +1,42 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{html,js}"
-  ],
+  darkMode: 'selector',
+  content: [ './src/**/*.{html,ts}',],
   theme: {
     extend: {
       fontFamily: {
-        handwriting: ['Pacifico', 'cursive'],
+        sans: [
+          'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji',
+        ],
       },
       colors: {
-        primary: '#4D869C',
-        'primary-hover': '#3A6B7E',
-        secondary: '#F0B7A9',
-        'secondary-hover': '#D89882',
-        terciary: '#7AB2B2',
-        'terciary-hover': '#639999',
-        quaternary: '#cde8e5',
-        'quaternary-hover': '#AACFCB',
-        quinary: '#EEF7FF',
-        'quinary-hover': '#D4E7FF',
-        darkGray: '#333333',
-        'darkGray-700': '#555555',
-        'darkGray-500': '#777777',
-        textMuted: '#4B5563', // Equivalente a gray-700
-        mainBackground: '#F9FAFB', // Similar a gray-50
+        primary: {
+          light: '#0076B3',
+          DEFAULT: '#004376',
+          dark: '#002d4e',
+          'dark-mode': '#1E1E1E', // Color de fondo en modo oscuro
+          'dark-text': '#E0E0E0', // Color de texto en modo oscuro
+          'dark-hover': '#003b65', // Color de hover en modo oscuro
+        },
+        secondary: {
+          light: '#FFE66D',
+          DEFAULT: '#9AA2AD',
+          dark: '#C44D58',
+        },
+        gradient: {
+          lightStart: '#d7f0fd',
+          lightEnd: '#b3cbf4',
+          darkStart: '#003b65',
+          darkEnd: '#0076B3',
+        },
       },
+      backgroundImage: {
+        'gradient-to-r-light': 'linear-gradient(to right, var(--tw-gradient-stops))',
+        'gradient-to-r-dark': 'linear-gradient(to right, var(--tw-gradient-stops))',
+      },
+      boxShadow: {
+        'neomorphism': '1px 1px 0px #d9d9d9, 1px 1px 10px #ffffff',
+      }
     },
   },
   plugins: [],
