@@ -1,10 +1,16 @@
-<app-backgraund></app-backgraund>
-<div class="flex justify-center items-center">
-    <div class="bg-gray-50 p-5 rounded-2xl blur-bg h-fit">
-        <div class="mb-5 text-center">
-            <ng-content select="[data-title]"></ng-content>
-            <ng-content select="[data-description]"></ng-content>
+<div class="flex flex-col">
+    <div class="flex flex-row">
+        <!-- Área del fondo -->
+        <div class="w-4/6 h-screen hidden lg:block">
+            <ui-background>
+                <!-- Contenido para el fondo -->
+                <ng-content select="[background-content]"></ng-content>
+            </ui-background>
         </div>
-        <ng-content select="[data-component]"></ng-content>
+
+        <!-- Área de contenido principal -->
+        <div class=" w-full lg:w-1/2">
+            <ng-content select="[main-content]"></ng-content>
+        </div>
     </div>
 </div>
