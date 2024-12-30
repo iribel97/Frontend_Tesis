@@ -1,20 +1,22 @@
-<div class="bg-white p-5 mx-5 rounded-lg shadow">
-    <h1 class="text-xl font-bold text-gray-900 mb-3">Matematicas</h1>
-    <div>
-        <!--<div class="grid grid-cols-4 gap-x-4 gap-y-4">
+<div>
+    <section>
+        <h1 class="text-xl font-bold text-gray-900 mb-3">{{ materia.materia }}</h1>
+    </section>
 
-            <p class="col-span-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <a class="font-semibold col-span-4 " href="http://localhost">
-                Material
-            </a>
-        </div>
-        <div class="bg-gray-100 border rounded-lg p-5 my-3">
-            <p class="mb-3 font-bold">Actividad</p>
-            <div class=" grid grid-cols-4 gap-4 ">
-                <p>Description activity</p>
-                <p class="font-bold col-span-3">Activo</p>
+    <!-- Componente de tabs dinámicas -->
+    <ui-tabs [tabs]="tabs" (tabChange)="onTabChange($event?.data)">
+        <ng-template #tabContentTemplate let-data="data">
+            <div>
+                <!-- Acordeón generado dinámicamente según la unidad seleccionada -->
+                <app-acordeon [items]="accordionItems" [singleOpen]="false">
+                    <!-- Iteración explícita de las plantillas -->
+                    <ng-container *ngFor="let item of accordionItems; let i = index">
+                        <ng-template>
+                            <a>Holaaaa - Sección {{ i + 1 }}</a>
+                        </ng-template>
+                    </ng-container>
+                </app-acordeon>
             </div>
-        </div>-->
-        <app-acordeon [items]="accordionItems" [singleOpen]="false"></app-acordeon>
-    </div>
+        </ng-template>
+    </ui-tabs>
 </div>

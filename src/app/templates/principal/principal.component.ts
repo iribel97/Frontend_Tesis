@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {RouterOutlet} from "@angular/router";
+import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {BreadcrumbService} from "../../services/breadcrumb.service";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {ClickOutsideDirective} from "../../shared/directivas/click-outside.directive";
@@ -11,7 +11,7 @@ import {StudentsService} from "../../services/students/students.service";
 
 @Component({
     selector: 'app-principal',
-    imports: [RouterOutlet, NgClass, ClickOutsideDirective, midudevComponent, SpinnerComponent, NgIf, NgForOf],
+    imports: [RouterOutlet, NgClass, ClickOutsideDirective, midudevComponent, SpinnerComponent, NgIf, NgForOf, RouterLink, RouterLinkActive],
     templateUrl: './principal.component.html',
     styleUrl: './principal.component.css'
 })

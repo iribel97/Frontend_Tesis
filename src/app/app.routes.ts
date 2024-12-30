@@ -22,8 +22,8 @@ export const routes: Routes = [
         children: [
             {path: 'home', component: HomeComponent},
             {path: 'admin/users', component: UsersComponent},
-            {path: 'course', component: HomeCourseComponent},
-            {path: 'course/schedule', component: ScheduleComponent}
+            {path: 'course/schedule', component: ScheduleComponent},
+            {path: 'course/:id', component: HomeCourseComponent},
         ]
     },
     {path: 'register', component: PageRegisterComponent, canActivate: [loginGuard]},

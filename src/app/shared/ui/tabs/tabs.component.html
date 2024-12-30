@@ -3,9 +3,9 @@
         <li *ngFor="let tab of tabs; let i = index" class="me-2" role="presentation">
             <button
                     [ngClass]="{
-                  'active': selectedTab === i,
-                  'inactive': selectedTab !== i
-                }"
+          'active': selectedTab === i,
+          'inactive': selectedTab !== i
+        }"
                     (click)="selectTab(i)"
                     class="tab-button inline-block p-4 border-b-4 rounded-t-lg cursor-pointer text-lg"
                     id="{{ tab.id }}-tab"
@@ -18,10 +18,7 @@
 </div>
 <div>
     <ng-container *ngFor="let tab of tabs; let i = index">
-        <div
-                [hidden]="selectedTab !== i"
-                role="tabpanel"
-                id="{{ tab.id }}">
+        <div [hidden]="selectedTab !== i" role="tabpanel" id="{{ tab.id }}">
             <ng-container *ngTemplateOutlet="tab.content"></ng-container>
         </div>
     </ng-container>

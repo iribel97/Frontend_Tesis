@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
+import {AfterContentInit, Component, ContentChildren, Input, OnChanges, QueryList, TemplateRef} from '@angular/core';
+import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 
 @Component({
   selector: 'app-acordeon',
@@ -7,30 +7,34 @@ import {NgForOf, NgIf} from "@angular/common";
   styleUrls: ['./acordeon.component.css'],
   imports: [
     NgForOf,
-    NgIf
+    NgIf,
+    NgTemplateOutlet
   ]
 })
-export class AcordeonComponent {
-  @Input() items: { title: string, content?: string }[] = [];
-  @Input() singleOpen: boolean = true; // Permite elegir el comportamiento
-  activeIndexes: Set<number> = new Set<number>();
+export class AcordeonComponent implements AfterContentInit {
+  @Input() items: any[] = []; // Lista de ítems pasados al acordeón
+  @Input() singleOpen: boolean = false; // Define si solo un acordeón puede estar abierto
 
-  toggle(index: number) {
+  @ContentChildren(TemplateRef) templates!: QueryList<TemplateRef<any>>;
+  openIndex: number | null = null; // Índice del acordeón actualmente abierto
+  templatesArray: TemplateRef<any>[] = []; // Array de plantillas proyectadas
+
+  constructor() {}
+
+  ngAfterContentInit(): void {
+    // Guardar las plantillas proyectadas en forma de array
+    this.templatesArray = this.templates.toArray();
+  }
+
+  toggle(index: number): void {
     if (this.singleOpen) {
-      // Solo permite una sección abierta a la vez
-      this.activeIndexes.clear();
-      this.activeIndexes.add(index);
+      this.openIndex = this.openIndex === index ? null : index;
     } else {
-      // Alterna el estado de una sección sin afectar las demás
-      if (this.activeIndexes.has(index)) {
-        this.activeIndexes.delete(index);
-      } else {
-        this.activeIndexes.add(index);
-      }
+      this.openIndex = this.openIndex === index ? null : index;
     }
   }
 
   isOpen(index: number): boolean {
-    return this.activeIndexes.has(index);
+    return this.openIndex === index;
   }
 }

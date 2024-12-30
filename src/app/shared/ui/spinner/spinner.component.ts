@@ -9,6 +9,7 @@ import {AsyncPipe, NgIf} from "@angular/common";
     AsyncPipe
   ],
   templateUrl: './spinner.component.html',
+  standalone: true,
   styleUrl: './spinner.component.css'
 })
 export class SpinnerComponent implements OnInit{
