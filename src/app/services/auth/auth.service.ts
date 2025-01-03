@@ -96,5 +96,9 @@ export class AuthService {
                 })
             );
     }
+
+    getInfoUserAuth(): Observable<any> {
+        return this.http.get<any>(`${environment.urlApi}/`);
+    }
 }
 
