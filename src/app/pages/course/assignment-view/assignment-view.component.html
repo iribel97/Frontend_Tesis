@@ -25,7 +25,7 @@
             <ul class="list-disc list-inside text-gray-700">
                 @for (doc of asignacion.documentos; track doc.id) {
                     <li>
-                        {{ doc }}
+                        {{ doc.nombre }}
                     </li>
                 }
             </ul>
@@ -49,23 +49,36 @@
         {{ asignacion.entregaEst.nota ? 'Calificado' : 'No Calificado' }}
     </span>
     </p>
-    <p class="text-sm text-gray-600">
-        <strong class="text-gray-800">Nota:</strong> {{ asignacion.entregaEst.nota }}
-    </p>
-    <p class="text-sm text-gray-600">
-        <strong class="text-gray-800">Comentario:</strong> {{ asignacion.entregaEst.contenido }}
-    </p>
-    <p class="text-sm text-gray-600">
-        <strong class="text-gray-800">Fecha de
-            Entrega:</strong> {{ asignacion.entregaEst.fechaEntrega }} {{ asignacion.entregaEst.horaEntrega }}
-    </p>
+    @if (asignacion.entregaEst.nota) {
+        <p class="text-sm text-gray-600">
+            <strong class="text-gray-800">Nota:</strong> {{ asignacion.entregaEst.nota }}
+        </p>
+        <p class="text-sm text-gray-600">
+            <strong class="text-gray-800">Comentario:</strong> {{ asignacion.entregaEst.contenido }}
+        </p>
+    }
+
+    @if (asignacion.entregaEst.documentos.length > 0) {
+        <p class="text-sm text-gray-600">
+            <strong class="text-gray-800">Fecha de
+                Entrega:</strong> {{ asignacion.entregaEst.fechaEntrega }} {{ asignacion.entregaEst.horaEntrega }}
+        </p>
+    }
+
 
     <!-- Documentos enviados por el estudiante -->
     <h3 class="text-md font-semibold text-gray-800 mt-4 mb-2">Documentos del Estudiante</h3>
-    <ul *ngIf="asignacion.entregaEst.documentos.length > 0" class="list-disc list-inside text-gray-700">
-        <li *ngFor="let doc of asignacion.entregaEst.documentos">
-            {{ doc }}
-        </li>
-    </ul>
-    <p *ngIf="asignacion.entregaEst.documentos.length == 0" class="text-gray-600">No hay documentos entregados.</p>
+    @if (asignacion.entregaEst.documentos.length > 0) {
+        <ul class="list-disc list-inside text-gray-700">
+            @for (doc of asignacion.entregaEst.documentos; track doc.id) {
+                <li>
+                    {{ doc }}
+                </li>
+            }
+        </ul>
+    } @else {
+        <p class="text-gray-600">No hay documentos entregados.</p>
+    }
+
+
 </div>
