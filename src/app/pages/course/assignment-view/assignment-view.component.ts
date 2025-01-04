@@ -6,8 +6,6 @@ import {StudentsService} from "../../../services/students/students.service";
     selector: 'app-assignment-view',
     templateUrl: './assignment-view.component.html',
     imports: [
-        NgForOf,
-        NgIf,
         NgClass
     ],
     styleUrls: ['./assignment-view.component.css']

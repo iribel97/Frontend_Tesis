@@ -43,10 +43,14 @@
     <p class="text-sm text-gray-600">
         <strong class="text-gray-800">Estado:</strong>
         <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-lg text-xs font-medium"
-              [ngClass]="{' bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500':
-              asignacion.entregaEst.nota, ' bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500':
-              !asignacion.entregaEst.nota}">
-        {{ asignacion.entregaEst.nota ? 'Calificado' : 'No Calificado' }}
+              [ngClass]="{
+                'bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500': asignacion.entregaEst.estado === 'Entregado',
+                'bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-500': asignacion.entregaEst.estado === 'Retrasado',
+                'bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500': asignacion.entregaEst.estado === 'Calificado',
+                'bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500': asignacion.entregaEst.estado === 'NoEntregado',
+                'bg-gray-100 text-gray-800 dark:bg-gray-800/30 dark:text-gray-500': asignacion.entregaEst.estado === 'Pendiente'
+              }">
+        {{ asignacion.entregaEst.estado }}
     </span>
     </p>
     @if (asignacion.entregaEst.nota) {
