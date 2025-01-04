@@ -18,7 +18,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                        @for (horario of materia?.horarios; track horario.dia){
+                        @for (horario of materia?.horarios; track horario.dia) {
                             <tr class="hover:bg-gray-50">
                                 <td class="border border-gray-300 px-4 py-2">{{ horario.dia }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ horario.horaInicio }}</td>
@@ -47,7 +47,7 @@
                 </button>
 
                 <!-- Contenido oculto/visible (Unidad) -->
-                <div [hidden]="!unidad.open"  class="px-4 pt-2 pb-4 bg-gray-50">
+                <div [hidden]="!unidad.open" class="px-4 pt-2 pb-4 bg-gray-50">
                     <!-- Acordeón secundario: Temas -->
                     @for (tema of unidad.contenido; track tema.idTema) {
                         <div class="border border-gray-200 rounded-md mb-2">
@@ -101,7 +101,7 @@
                                                             <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/>
                                                         </svg>
                                                         <!-- Botón con el nombre del archivo -->
-                                                        <a (click)="descargarDocumento(material.documento.base64, material.documento.nombre, material.documento.mime)"
+                                                        <a (click)="utilityService.descargarDocumento(material.documento.base64, material.documento.nombre, material.documento.mime)"
                                                            class="cursor-pointer">
                                                             {{ material.documento.nombre }}
                                                         </a>
@@ -119,7 +119,8 @@
                                     <ul class="list-disc list-inside">
                                         @for (asignacion of tema.asignaciones; track asignacion.idAsignacion) {
                                             <li>
-                                                {{ asignacion.nombre }} : {{ asignacion.fechaFin }} {{ asignacion.horaFin }}
+                                                {{ asignacion.nombre }}
+                                                : {{ asignacion.fechaFin }} {{ asignacion.horaFin }}
                                                 <button
                                                         (click)="irADetalleAsignacion(asignacion.idAsignacion)"
                                                         class="text-blue-600 hover:underline cursor-pointer"
