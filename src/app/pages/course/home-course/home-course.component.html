@@ -119,8 +119,13 @@
                                     <ul class="list-disc list-inside">
                                         @for (asignacion of tema.asignaciones; track asignacion.idAsignacion) {
                                             <li>
-                                                {{ asignacion.nombre }}
-                                                : {{ asignacion.fechaFin }} {{ asignacion.horaFin }}
+                                                {{ asignacion.nombre }} : {{ asignacion.fechaFin }} {{ asignacion.horaFin }}
+                                                <button
+                                                        (click)="irADetalleAsignacion(asignacion.idAsignacion)"
+                                                        class="text-blue-600 hover:underline cursor-pointer"
+                                                >
+                                                    Ir a la Asignación
+                                                </button>
                                             </li>
                                         }
                                     </ul>

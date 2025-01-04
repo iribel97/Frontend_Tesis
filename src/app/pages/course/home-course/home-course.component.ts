@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {StudentsService} from "../../../services/students/students.service";
-import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-home-course',
@@ -14,7 +13,8 @@ export class HomeCourseComponent implements OnInit {
 
   constructor(
       private route: ActivatedRoute, // Escucha cambios en la ruta
-      private studentsService: StudentsService // Servicio para obtener datos
+      private studentsService: StudentsService, // Servicio para obtener datos
+      private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -83,5 +83,9 @@ export class HomeCourseComponent implements OnInit {
 
     // Liberar la memoria
     URL.revokeObjectURL(url);
+  }
+
+  irADetalleAsignacion(idAsignacion: number): void {
+    this.router.navigate(['/course/assignment', idAsignacion]);
   }
 }
