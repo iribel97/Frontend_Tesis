@@ -7,9 +7,9 @@
                 <span *ngIf="required" class="text-red-500">*</span>
             </label>
         }
-        <div class="relative flex w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm dark:border-neutral-700 dark:bg-neutral-900">
+        <div class="relative flex w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm dark:border-primary-dark-mode dark:bg-primary-dark">
             <!-- Botón de carga -->
-            <button type="button" class="h-full px-4 py-3 bg-gray-100 text-gray-700 dark:bg-neutral-800 dark:text-gray-300"
+            <button type="button" class="h-full px-4 py-3 bg-gray-100 text-gray-700 dark:bg-primary-dark-mode dark:text-gray-300"
                     (click)="triggerFileInput('file-input-single')">
         Escoge un archivo
       </button>
@@ -19,7 +19,7 @@
         {{ files[0]?.name }}
       </span>
             <ng-template #noFileChosen>
-        <span class="flex-1 px-4 py-3 text-gray-400 dark:text-neutral-600">
+        <span class="flex-1 px-4 py-3 text-gray-400 dark:text-primarytx-dark-2">
           Ningún archivo seleccionado
         </span>
             </ng-template>

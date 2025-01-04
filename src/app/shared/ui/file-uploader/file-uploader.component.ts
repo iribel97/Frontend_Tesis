@@ -1,7 +1,7 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
-import {DocumentIn} from "../../../model/Document.model";
+import {DocumentIn} from "../../../DocumentIn";
 
 @Component({
   selector: 'ui-file-uploader',
@@ -40,16 +40,20 @@ export class FileUploaderComponent implements ControlValueAccessor {
     const fileList = input.files;
 
     if (fileList) {
-      const filesArray = Array.from(fileList);
+      const filesArray = this.removeDuplicateFiles([...this.files, ...Array.from(fileList)]);
 
-      // Si `multiple` es true, combinamos los archivos nuevos con los ya existentes.
-      this.files = this.multiple ? [...this.files, ...filesArray] : filesArray;
+      // Si `multiple` es true, concatena los nuevos archivos con los existentes, evitando duplicados.
+      const uniqueFiles = this.multiple
+          ? [...this.files, ...filesArray].filter((file, index, array) => array.findIndex(f => f.name === file.name) === index)
+          : filesArray; // De lo contrario, usa únicamente el archivo nuevo.
 
-      // Convertir los archivos a DocumentIn[]
+      this.files = uniqueFiles;
+
+      // Convertir los archivos a objetos DocumentIn[]
       Promise.all(
           this.files.map(file => this.convertToDocument(file))
       ).then(documents => {
-        this.onChange(documents); // Notificar los objetos DocumentIn al formulario reactivo
+        this.onChange(documents); // Notificar al formulario reactivo.
       });
     }
   }
@@ -61,9 +65,9 @@ export class FileUploaderComponent implements ControlValueAccessor {
       reader.onload = () => {
         const base64Content = (reader.result as string).split(',')[1]; // Eliminamos el encabezado del base64
         const document: DocumentIn = {
-          name: file.name,
+          nombre: file.name,
           base64: base64Content,
-          type: file.type || 'application/octet-stream', // Tipo del archivo
+          mime: file.type || 'application/octet-stream', // Tipo del archivo
         };
         resolve(document);
       };
@@ -168,15 +172,26 @@ export class FileUploaderComponent implements ControlValueAccessor {
 
     if (event.dataTransfer?.files) {
       const fileList = event.dataTransfer.files;
-      const filesArray = Array.from(fileList);
+      const filesArray = this.removeDuplicateFiles([...this.files, ...Array.from(fileList)]);
 
-      // Convertir los archivos a DocumentIn[]
+      // Si `multiple` es true, combinar y evitar duplicados
+      const uniqueFiles = this.multiple
+          ? [...this.files, ...filesArray].filter((file, index, array) => array.findIndex(f => f.name === file.name) === index)
+          : filesArray.slice(0, 1); // De lo contrario, solo el archivo actual.
+
+      this.files = uniqueFiles;
+
+      // Convertir los archivos a objetos DocumentIn[]
       Promise.all(
-          filesArray.map(file => this.convertToDocument(file))
+          this.files.map(file => this.convertToDocument(file))
       ).then(documents => {
-        this.files = this.multiple ? [...this.files, ...filesArray] : filesArray.slice(0, 1); // Agregar o reemplazar los archivos
-        this.onChange(documents); // Notificar objetos DocumentIn al formulario reactivo
+        this.onChange(documents); // Notificar al formulario reactivo
       });
     }
   }
+
+  private removeDuplicateFiles(files: File[]): File[] {
+    return files.filter((file, index, array) => array.findIndex(f => f.name === file.name) === index);
+  }
+
 }
