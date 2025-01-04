@@ -74,7 +74,7 @@ export class SutmitAssignmentComponent implements OnInit {
           },
           error => {
             console.error('Error creating memo:', error);
-            this.toast.showToast('error', error.error.message || 'Error al conectar con el servidor','ERROR',10000); // Show toast message
+            this.toast.showToast('error', error.error.detalles,error.error.mensaje,10000); // Show toast message
           }
       );
     }
