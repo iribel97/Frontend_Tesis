@@ -63,7 +63,8 @@ export class HomeCourseComponent implements OnInit {
     }
 
 
-    irADetalleAsignacion(idAsignacion: number): void {
-        this.router.navigate(['/course/assignment', idAsignacion]);
+    irADetalleAsignacion(idAsignacion: number, idDistributivo: number): void {
+        console.log("idAsignacion:", idAsignacion, "idDistributivo:", idDistributivo);
+        this.router.navigate(['/course/assignment', idAsignacion], { state: { data: { idDistributivo } } });
     }
 }
