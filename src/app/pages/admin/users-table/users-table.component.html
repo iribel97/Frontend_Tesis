@@ -1,0 +1,110 @@
+<ui-toast #toast/>
+<div>
+    <p class="text-xl font-semibold text-gray-800 dark:text-neutral-200">Administrador de usuarios</p>
+</div>
+<div>
+    <p class="text-lg text-gray-600 dark:text-neutral-100">Administra usuarios existentes en el sistema</p>
+</div>
+<div class="container mx-auto mt-5">
+
+    <div class="flex justify-between items-center">
+        <!-- Botón para añadir usuario -->
+        <button class="bg-blue-500 text-white px-4 py-2 mb-4 rounded flex items-center gap-2" (click)="addUser()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="icon icon-tabler icons-tabler-outline icon-tabler-user-plus">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                <path d="M16 19h6"></path>
+                <path d="M19 16v6"></path>
+                <path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
+            </svg>
+            Crear
+        </button>
+
+        <!-- Input para buscar -->
+        <div class="mb-4 w-full lg:w-4/5">
+            <input
+                    type="text"
+                    [(ngModel)]="searchTerm"
+                    (input)="onSearchTermChange()"
+                    class="border-gray-300 border p-2 w-full rounded-lg"
+                    placeholder="Buscar por cédula, nombres, apellidos o correo..."
+            >
+        </div>
+    </div>
+
+
+    <!-- Tabla de usuarios -->
+    <table class="table-auto w-full border-collapse border border-gray-300">
+        <thead>
+        <tr class="bg-gray-200">
+            <th class="border border-gray-300 px-4 py-2">Cédula</th>
+            <th class="border border-gray-300 px-4 py-2">Nombres</th>
+            <th class="border border-gray-300 px-4 py-2">Apellidos</th>
+            <th class="border border-gray-300 px-4 py-2">Correo</th>
+            <th class="border border-gray-300 px-4 py-2">Teléfono</th>
+            <th class="border border-gray-300 px-4 py-2">Estado</th>
+            <th class="border border-gray-300 px-4 py-2">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of paginatedUsers">
+            <td class="border border-gray-300 px-4 py-2">{{ user.cedula }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ user.nombres }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ user.apellidos }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ user.correo }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ user.telefono }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ user.estado }}</td>
+            <td class="border border-gray-300 px-4 py-2">
+                <button class="bg-yellow-400 px-2 py-1 rounded text-white mr-2" (click)="editUser(user.cedula)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="icon icon-tabler icons-tabler-outline icon-tabler-user-edit">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/>
+                        <path d="M6 21v-2a4 4 0 0 1 4 -4h3.5"/>
+                        <path d="M18.42 15.61a2.1 2.1 0 0 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39z"/>
+                    </svg>
+                </button>
+                <button class="bg-red-500 px-2 py-1 rounded text-white" (click)="deleteUser(user.cedula)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="icon icon-tabler icons-tabler-outline icon-tabler-user-minus">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/>
+                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4c.348 0 .686 .045 1.009 .128"/>
+                        <path d="M16 19h6"/>
+                    </svg>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Controles de paginación (sólo si hay más de 10 elementos filtrados) -->
+    <div *ngIf="filteredUsers.length > itemsPerPage" class="flex justify-center mt-4">
+        <button
+                *ngFor="let page of [].constructor(totalPages); let i = index"
+                (click)="changePage(i + 1)"
+                [class.bg-gray-400]="currentPage === i + 1"
+                class="px-3 py-1 mx-1 border rounded"
+        >
+            {{ i + 1 }}
+        </button>
+    </div>
+</div>
+
+<ui-modal modalId="DeleteUser" [isOpen]="false">
+    <h2 class="text-lg font-semibold text-gray-900 mb-2">
+        Confirmación de eliminación de usuario
+    </h2>
+    <p class="text-gray-800 mb-4">
+        ¿Está seguro que desea eliminar al usuario? Esta acción no se puede deshacer.
+    </p>
+    <div class="flex justify-end gap-2">
+        <button class="bg-gray-500 text-white px-4 py-2 rounded" (click)="closeModal('DeleteUser')">Cancelar</button>
+        <button class="bg-red-500 text-white px-4 py-2 rounded" (click)="confirmDeleteUser()">Eliminar</button>
+    </div>
+</ui-modal>
+

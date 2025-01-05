@@ -1,21 +1,22 @@
-import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, NgZone, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {InputComponent} from "../../shared/ui/input/input.component";
 import {AuthService} from "../../services/auth/auth.service";
 import {Router} from "@angular/router";
+import {ToastComponent} from "../../shared/ui/toast/toast.component";
 
 @Component({
     selector: 'app-form-login',
     imports: [
         ReactiveFormsModule,
         InputComponent,
+        ToastComponent,
     ],
     templateUrl: './form-login.component.html',
     styleUrl: './form-login.component.css'
 })
 export class FormLoginComponent implements OnInit {
-
-
+    @ViewChild('toast', { static: true }) toast!: ToastComponent;
     formErrors: { [key: string]: string } = {};
     sendform = false;
     formLogin!: FormGroup;
@@ -44,6 +45,7 @@ export class FormLoginComponent implements OnInit {
             this.authService.login(this.formLogin.value).subscribe(response => {
                 this.router.navigate(['/home']);
             }, error => {
+                this.toast.showToast('error', error.error.detalles,error.error.mensaje,10000); // Show toast message
                 console.error('Login error:', error);
             });
         }
