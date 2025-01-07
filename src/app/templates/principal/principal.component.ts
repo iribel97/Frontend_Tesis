@@ -8,6 +8,7 @@ import {SpinnerComponent} from "../../shared/ui/spinner/spinner.component";
 import {AuthService} from "../../services/auth/auth.service";
 import {Observable} from "rxjs";
 import {StudentsService} from "../../services/students/students.service";
+import { UsuarioDTO, Genero, EstadoUsu } from '../../interface/response/UsuarioDTO';
 
 @Component({
     selector: 'app-principal',
@@ -25,6 +26,21 @@ export class PrincipalComponent implements OnInit {
     isOpen = false;
     protected initialUserLS: string = '';
     protected usernameLS : string = '';
+    infoUser: UsuarioDTO = {
+        cedula: '',
+        nombres: '',
+        apellidos: '',
+        correo: '',
+        telefono: '',
+        direccion: '',
+        nacimiento: '',
+        genero: Genero.OTRO,
+        rol: '',
+        estado: EstadoUsu.ACTIVO,
+        docente: undefined,
+        estudiante: undefined,
+        representante: undefined
+    };
 
     materias: any[] = [];
 
@@ -52,9 +68,11 @@ export class PrincipalComponent implements OnInit {
      * Obtiene el estado del modo oscuro desde el almacenamiento local.
      * Escucha los cambios en el Breadcrumb.
      */
-    async ngOnInit() {
-        this.cargarMaterias(); // Llamar al método para inicializar las materias
+    ngOnInit() {
         this.getInfoUser();
+        if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional'){
+            this.cargarMaterias();
+        } // Llamar al método para inicializar las materias
         const storedDarkMode = localStorage.getItem('isDarkMode');
         if (storedDarkMode) {
             this.isDarkMode = JSON.parse(storedDarkMode);
@@ -103,8 +121,27 @@ export class PrincipalComponent implements OnInit {
 
     getInfoUser() {
         //Tomar el usuario del local storage
-        this.usernameLS = localStorage.getItem('username') ?? '??';
-        this.initialUserLS = this.usernameLS.slice(0, 2).toUpperCase();
+        //this.usernameLS = localStorage.getItem('username') ?? '??';
+    
+        this.studentsService.getUser().subscribe({
+            next: (data: UsuarioDTO) => {
+                console.log('Información del usuario:', data); // Útil para depuración
+                this.initialUserLS = 
+                    (data.nombres ? data.nombres.slice(0, 1).toUpperCase() : '') + 
+                    (data.apellidos ? data.apellidos.slice(0, 1).toUpperCase() : '');
+                
+                // Verifica que data tenga todas las propiedades necesarias
+                if (data && data.cedula && data.nombres && data.apellidos) {
+                    this.infoUser = data; // Asigna la información del usuario al objeto local
+                    console.log('Información del usuario asignada a infoUser:', this.infoUser);
+                } else {
+                    console.error('Datos incompletos recibidos:', data);
+                }
+            },
+            error: (err) => {
+                console.error('Error al cargar información del usuario:', err);
+            }
+        });
     }
 
     toggleMenu() {

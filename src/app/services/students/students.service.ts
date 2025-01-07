@@ -29,5 +29,8 @@ export class StudentsService {
         return this.http.put<any>(`${this.apiUrl}/api/estudiante/asignacion/entrega`, data);
     }
 
+    getUser(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/general/controller/usuario");
+    }
 
 }
