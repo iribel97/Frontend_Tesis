@@ -14,6 +14,9 @@ import {AttendanceComponent} from "./pages/students/attendance/attendance.compon
 import { ConductComponent } from './pages/students/conduct/conduct.component';
 import { GradesComponent } from './pages/students/grades/grades.component';
 import {ViewtimelineComponent} from "./pages/viewtimeline/viewtimeline.component";
+import { DistributiveComponent } from './pages/admin/distributive/distributive.component';
+import { RatingSystemComponent } from './pages/admin/rating-system/rating-system.component';
+import { AcademicCalendarComponent } from './pages/admin/academic-calendar/academic-calendar.component';
 
 export const routes: Routes = [
     {
@@ -32,6 +35,9 @@ export const routes: Routes = [
             {path: 'course/:id', component: HomeCourseComponent},
             {path: 'course/assignment/:id', component: AssignmentViewComponent},
             {path: 'admin/all-user', component: UsersTableComponent},
+            {path: 'admin/distributive', component: DistributiveComponent},
+            {path: 'admin/ratingSystem', component: RatingSystemComponent},
+            {path: 'admin/academic/calendar', component: AcademicCalendarComponent},
             {path: 'students/attendance', component: AttendanceComponent},
             {path: 'students/conduct', component: ConductComponent},
             {path: 'students/grades', component: GradesComponent},

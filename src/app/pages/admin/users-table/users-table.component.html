@@ -44,6 +44,7 @@
             <th class="border border-gray-300 px-4 py-2">Apellidos</th>
             <th class="border border-gray-300 px-4 py-2">Correo</th>
             <th class="border border-gray-300 px-4 py-2">Teléfono</th>
+            <th class="border border-gray-300 px-4 py-2">Rol</th>
             <th class="border border-gray-300 px-4 py-2">Estado</th>
             <th class="border border-gray-300 px-4 py-2">Acciones</th>
         </tr>
@@ -55,6 +56,7 @@
             <td class="border border-gray-300 px-4 py-2">{{ user.apellidos }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ user.correo }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ user.telefono }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ user.rol }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ user.estado }}</td>
             <td class="border border-gray-300 px-4 py-2">
                 <button class="bg-yellow-400 px-2 py-1 rounded text-white mr-2" (click)="editUser(user.cedula)">
