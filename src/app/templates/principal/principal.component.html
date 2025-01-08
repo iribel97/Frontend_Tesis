@@ -134,7 +134,7 @@
                                 aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown"
                                 (click)="toggleDropdown()">
                         <span class="inline-flex items-center justify-center w-8 h-8 text-xs font-semibold rounded-full leading-none border border-gray-200 bg-quinary text-gray-800 shadow-sm">
-                            {{initialUserLS}}
+                            {{ initialUserLS }}
                         </span>
                         </button>
 
@@ -144,7 +144,7 @@
                              aria-labelledby="dropdown-account">
                             <div class="py-3 px-5 bg-gray-100 rounded-t-lg">
                                 <p class="text-sm text-darkGray-700">Registrado como</p>
-                                <p class="text-sm font-medium text-darkGray">{{infoUser.apellidos}}</p>
+                                <p class="text-sm font-medium text-darkGray">{{ infoUser.apellidos }}</p>
                             </div>
                             <div class="p-1.5 space-y-0.5">
                                 <a (click)="logout()"
@@ -252,7 +252,7 @@
                             </a>
                         </li>
 
-                        @if (this.infoUser.rol === 'Estudiante' || this.infoUser.rol === 'Docente'){ 
+                        @if (this.infoUser.rol === 'Estudiante' || this.infoUser.rol === 'Docente') {
                             <li class="hs-accordion" id="materias-accordion">
                                 <button
                                         type="button"
@@ -261,8 +261,9 @@
                                         class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:focus:bg-primary-dark-hover dark:bg-primary-dark dark:hover:bg-primary-dark-hover dark:text-neutral-200"
                                         aria-controls="materias-accordion-child">
                                     <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
+                                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                         stroke-width="2"
+                                         stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="18" cy="15" r="3"/>
                                         <circle cx="9" cy="7" r="4"/>
                                         <path d="M10 15H6a4 4 0 0 0-4 4v2"/>
@@ -278,35 +279,35 @@
                                     Materias
 
                                     <svg *ngIf="isOpen"
-                                        class="hs-accordion-active:block ms-auto size-4 transition-transform duration-300 transform rotate-180"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
+                                         class="hs-accordion-active:block ms-auto size-4 transition-transform duration-300 transform rotate-180"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round">
                                         <path d="m18 15-6-6-6 6"/>
                                     </svg>
 
                                     <svg *ngIf="!isOpen"
-                                        class="hs-accordion-active:block ms-auto size-4 transition-transform duration-300 transform rotate-0"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
+                                         class="hs-accordion-active:block ms-auto size-4 transition-transform duration-300 transform rotate-0"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round">
                                         <path d="m6 9 6 6 6-6"/>
                                     </svg>
                                 </button>
 
                                 <!-- Contenido del acordeón -->
                                 <div id="materias-accordion-child"
-                                    class="hs-accordion-content w-full overflow-hidden transition-all duration-300 ease-in-out "
-                                    [style.maxHeight]="isOpen ? '500px' : '0'"
-                                    role="region" aria-labelledby="materias-accordion">
+                                     class="hs-accordion-content w-full overflow-hidden transition-all duration-300 ease-in-out "
+                                     [style.maxHeight]="isOpen ? '500px' : '0'"
+                                     role="region" aria-labelledby="materias-accordion">
                                     <ul class="ps-8 pt-1 space-y-1">
                                         <!-- Recorremos las materias dinámicamente -->
                                         <li *ngFor="let materia of materias">
                                             <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  dark:focus:bg-primary-dark-hover dark:bg-primary-dark dark:text-neutral-200 dark:hover:bg-primary-dark-hover"
-                                            [attr.title]="'Docente: ' + materia.docente"
-                                            [routerLink]="['/course', materia.id]">
+                                               [attr.title]="'Docente: ' + materia.docente"
+                                               [routerLink]="['/course', materia.id]">
                                                 {{ materia.materia }}
                                             </a>
                                         </li>
@@ -315,13 +316,14 @@
                             </li>
                         }
 
-                        @if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional'){
+                        @if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional') {
                             <li>
                                 <a class="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover dark:text-neutral-200 dark:hover:text-neutral-300"
-                                routerLink="create">
-                                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
+                                   routerLink="create">
+                                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
+                                         height="24"
+                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                         stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
                                         <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
                                     </svg>
@@ -330,13 +332,14 @@
                             </li>
                         }
 
-                        @if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional'){
+                        @if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional') {
                             <li>
                                 <a class="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover dark:text-neutral-200 dark:hover:text-neutral-300"
-                                routerLink="administration/users">
-                                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
+                                   routerLink="administration/users">
+                                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
+                                         height="24"
+                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                         stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
                                         <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
                                     </svg>
@@ -345,19 +348,20 @@
                             </li>
                         }
 
-                        @if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional'){
+                        @if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional') {
                             <li>
                                 <a class="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover dark:text-neutral-200 dark:hover:text-neutral-300"
-                                routerLink="administration/my-communications">
-                                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
+                                   routerLink="students/attendance">
+                                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
+                                         height="24"
+                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                         stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
                                         <circle cx="9" cy="7" r="4"/>
                                         <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
                                         <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                                     </svg>
-                                    Asistencia 
+                                    Asistencia
                                 </a>
                             </li>
                         }
@@ -374,10 +378,6 @@
     <div class="flex-grow lg:pl-[260px]">
         <div class="bg-white dark:bg-primary-dark mx-5 my-5 rounded-xl shadow p-4 sm:p-6 space-y-4 sm:space-y-6 ">
             <!-- your content goes here ... -->
-             @defer (when this.infoUser) {
-                <p>{{this.infoUser.rol}}</p>
-             }
-             
             <router-outlet></router-outlet>
         </div>
     </div>

@@ -33,4 +33,13 @@ export class StudentsService {
         return this.http.get<any>(this.apiUrl + "/api/general/controller/usuario");
     }
 
+    getHorarios(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/estudiante/horario");
+    }
+
+    getAttendance(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/estudiante/asistencias");
+    }
+
+
 }

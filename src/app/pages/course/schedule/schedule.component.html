@@ -5,37 +5,5 @@
     <p class="text-lg text-gray-600 dark:text-neutral-100">Horario de clase del periodo actual</p>
 </div>
 <div class="card mt-3">
-    <ui-table [data]="objectsinbox">
-        <!-- Header template -->
-        <ng-template #headerTemplate>
-            <tr>
-                <th scope="col">Lunes</th>
-                <th scope="col">Martes</th>
-                <th scope="col">Miercoles</th>
-                <th scope="col">Jueves</th>
-                <th scope="col">Viernes</th>
-                <th scope="col">Sabado</th>
-            </tr>
-        </ng-template>
 
-        <!-- Column templates -->
-        <ng-template #columnTemplate let-row>
-            <td>{{ row.lunes.materia }} - {{ row.lunes.hora }}</td>
-        </ng-template>
-        <ng-template #columnTemplate let-row>
-            <td>{{ row.martes.materia }} - {{ row.martes.hora }}</td>
-        </ng-template>
-        <ng-template #columnTemplate let-row>
-            <td>{{ row.miercoles.materia }} - {{ row.miercoles.hora }}</td>
-        </ng-template>
-        <ng-template #columnTemplate let-row>
-            <td>{{ row.jueves.materia }} - {{ row.jueves.hora }}</td>
-        </ng-template>
-        <ng-template #columnTemplate let-row>
-            <td>{{ row.viernes.materia }} - {{ row.viernes.hora }}</td>
-        </ng-template>
-        <ng-template #columnTemplate let-row>
-            <td>{{ row.sabado.materia }} - {{ row.sabado.hora }}</td>
-        </ng-template>
-    </ui-table>
 </div>
