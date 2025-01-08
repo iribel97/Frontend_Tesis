@@ -1,15 +1,15 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
-import { BreadcrumbService } from "../../services/breadcrumb.service";
-import { NgClass, NgForOf, NgIf } from "@angular/common";
-import { ClickOutsideDirective } from "../../shared/directivas/click-outside.directive";
-import { midudevComponent } from "../../media/midudev.component";
-import { SpinnerComponent } from "../../shared/ui/spinner/spinner.component";
-import { AuthService } from "../../services/auth/auth.service";
-import { Observable } from "rxjs";
-import { StudentsService } from "../../services/students/students.service";
-import { UsuarioDTO, Genero, EstadoUsu } from '../../interface/response/UsuarioDTO';
-import { TeachersService } from '../../services/teacher/teachers.service';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
+import {BreadcrumbService} from "../../services/breadcrumb.service";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {ClickOutsideDirective} from "../../shared/directivas/click-outside.directive";
+import {midudevComponent} from "../../media/midudev.component";
+import {SpinnerComponent} from "../../shared/ui/spinner/spinner.component";
+import {AuthService} from "../../services/auth/auth.service";
+import {Observable} from "rxjs";
+import {StudentsService} from "../../services/students/students.service";
+import {UsuarioDTO, Genero, EstadoUsu} from '../../interface/response/UsuarioDTO';
+import {TeachersService} from '../../services/teacher/teachers.service';
 
 @Component({
     selector: 'app-principal',
@@ -72,7 +72,7 @@ export class PrincipalComponent implements OnInit {
     ngOnInit() {
         this.getInfoUser();
         if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional') {
-            
+
         } // Llamar al método para inicializar las materias
         const storedDarkMode = localStorage.getItem('isDarkMode');
         if (storedDarkMode) {
@@ -121,29 +121,23 @@ export class PrincipalComponent implements OnInit {
     }
 
     getInfoUser() {
-        //Tomar el usuario del local storage
-        //this.usernameLS = localStorage.getItem('username') ?? '??';
+        this.studentsService.getUser().subscribe(data => {
+            console.log('Información del usuario:', data); // Útil para depuración
+            this.initialUserLS =
+                (data.nombres ? data.nombres.slice(0, 1).toUpperCase() : '') +
+                (data.apellidos ? data.apellidos.slice(0, 1).toUpperCase() : '');
 
-        this.studentsService.getUser().subscribe({
-            next: (data: UsuarioDTO) => {
-                console.log('Información del usuario:', data); // Útil para depuración
-                this.initialUserLS =
-                    (data.nombres ? data.nombres.slice(0, 1).toUpperCase() : '') +
-                    (data.apellidos ? data.apellidos.slice(0, 1).toUpperCase() : '');
+            // Verifica que data tenga todas las propiedades necesarias
+            if (data && data.cedula && data.nombres && data.apellidos) {
+                this.infoUser = data; // Asigna la información del usuario al objeto local
+                console.log('Información del usuario asignada a infoUser:', this.infoUser);
 
-                // Verifica que data tenga todas las propiedades necesarias
-                if (data && data.cedula && data.nombres && data.apellidos) {
-                    this.infoUser = data; // Asigna la información del usuario al objeto local
-                    console.log('Información del usuario asignada a infoUser:', this.infoUser);
-                } else {
-                    console.error('Datos incompletos recibidos:', data);
-                }
-            },
-            error: (err) => {
-                console.error('Error al cargar información del usuario:', err);
+                // Ahora que infoUser está correctamente asignado, podemos cargar las materias
+                this.cargarMaterias();
+            } else {
+                console.error('Datos incompletos recibidos:', data);
             }
         });
-        this.cargarMaterias();  
     }
 
     toggleMenu() {
@@ -151,7 +145,7 @@ export class PrincipalComponent implements OnInit {
     }
 
     cargarMaterias(): void {
-        console.log( "Rol usuario 2: " + this.infoUser.rol);
+        console.log("Rol usuario 2: " + this.infoUser.rol);
         if (this.infoUser.rol == 'Docente') {
             this.teachersService.getMaterias().subscribe({
                 next: (data) => {
@@ -174,4 +168,23 @@ export class PrincipalComponent implements OnInit {
             });
         }
     }
+
+    transformarGrado(grado: string): string {
+        switch (grado.toLowerCase()) {
+            case 'noveno':
+                return '9º';
+            case 'octavo':
+                return '8º';
+            case 'décimo': // "décimo" con tilde, caso correcto
+            case 'decimo': // Para casos sin tilde
+                return '10º';
+            case 'séptimo': // Adicional caso para séptimo, si es necesario
+            case 'septimo':
+                return '7º';
+            // Agrega los demás casos necesarios
+            default:
+                return grado; // Por si no coincide ningún caso
+        }
+    }
+
 }
