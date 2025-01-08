@@ -11,9 +11,10 @@ import {ScheduleComponent} from "./pages/course/schedule/schedule.component";
 import {AssignmentViewComponent} from "./pages/course/assignment-view/assignment-view.component";
 import {UsersTableComponent} from "./pages/admin/users-table/users-table.component";
 import {AttendanceComponent} from "./pages/students/attendance/attendance.component";
-import { ConductComponent } from './pages/students/conduct/conduct.component';
-import { GradesComponent } from './pages/students/grades/grades.component';
+import {ConductComponent} from './pages/students/conduct/conduct.component';
+import {GradesComponent} from './pages/students/grades/grades.component';
 import {ViewtimelineComponent} from "./pages/viewtimeline/viewtimeline.component";
+import {RepreInscriptionComponent} from "./pages/representative/repre-inscription/repre-inscription.component";
 import { DistributiveComponent } from './pages/admin/distributive/distributive.component';
 import { RatingSystemComponent } from './pages/admin/rating-system/rating-system.component';
 import { AcademicCalendarComponent } from './pages/admin/academic-calendar/academic-calendar.component';
@@ -42,6 +43,7 @@ export const routes: Routes = [
             {path: 'students/conduct', component: ConductComponent},
             {path: 'students/grades', component: GradesComponent},
             {path: 'example', component: ViewtimelineComponent},
+            {path: 'representative/inscription', component: RepreInscriptionComponent},
         ]
     },
     {path: 'register', component: PageRegisterComponent, canActivate: [loginGuard]},
