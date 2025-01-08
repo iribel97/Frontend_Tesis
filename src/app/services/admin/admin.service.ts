@@ -30,5 +30,40 @@ export class AdminService {
     return this.http.get<any>(`${this.apiUrl}/api/admin/distributivo/ciclo/${id}`);
   }
 
+  // obtener las materias
+  getMaterias(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/admin/materias`);
+  }
+
+  // obtener los grados
+  getGrados(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/admin/grados`);
+  }
+
+  // Crear materia
+  createMateria(materia: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/api/admin/materia`, materia);
+  }
+
+  // obtener horarios por curso
+  getHorariosByCurso(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/general/controller/horarios/${id}`);
+  }
+
+  // obtener cursos
+  getCursos(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/admin/cursos`);
+  }
+
+  // obtener sistema de calificaciones por ciclo
+  getCalificacionesByCiclo(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/admin/calificacion/ciclo/${id}`);
+  }
+
+  // obtener calendario academico por ciclo
+  getCalendarioByCiclo(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/admin/calendario/ciclo/${id}`);
+  }
+
 }
 

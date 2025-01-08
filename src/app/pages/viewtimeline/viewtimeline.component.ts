@@ -11,23 +11,26 @@ import {ModalComponent} from "../../shared/ui/modal/modal.component";
 import {ClipboardComponent} from "../../shared/ui/clipboard/clipboard.component";
 import {ToastComponent} from "../../shared/ui/toast/toast.component";
 import {SelectItem} from "../../models/selectItem.model";
+import { SutmitAssignmentComponent } from "../../forms/student/sutmit-assignment/sutmit-assignment.component";
+import { FormSubjectComponent } from "../../forms/admin/form-subject/form-subject.component";
 
 
 @Component({
     selector: 'app-viewtimeline',
     imports: [
-        TabsComponent,
-        DatapikerComponent,
-        MultiSelectComponent,
-        ReactiveFormsModule,
-        SelectComponent,
-        FileUploaderComponent,
-        JsonPipe,
-        ModalComponent,
-        ClipboardComponent,
-        ToastComponent
-
-    ],
+    TabsComponent,
+    DatapikerComponent,
+    MultiSelectComponent,
+    ReactiveFormsModule,
+    SelectComponent,
+    FileUploaderComponent,
+    JsonPipe,
+    ModalComponent,
+    ClipboardComponent,
+    ToastComponent,
+    SutmitAssignmentComponent,
+    FormSubjectComponent
+],
     templateUrl: './viewtimeline.component.html',
     styleUrl: './viewtimeline.component.css'
 })

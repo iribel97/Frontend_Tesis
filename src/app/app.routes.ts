@@ -17,6 +17,7 @@ import {ViewtimelineComponent} from "./pages/viewtimeline/viewtimeline.component
 import { DistributiveComponent } from './pages/admin/distributive/distributive.component';
 import { RatingSystemComponent } from './pages/admin/rating-system/rating-system.component';
 import { AcademicCalendarComponent } from './pages/admin/academic-calendar/academic-calendar.component';
+import { ScheduleAdminComponent } from './pages/admin/schedule-admin/schedule-admin.component';
 
 export const routes: Routes = [
     {
@@ -38,6 +39,7 @@ export const routes: Routes = [
             {path: 'admin/distributive', component: DistributiveComponent},
             {path: 'admin/ratingSystem', component: RatingSystemComponent},
             {path: 'admin/academic/calendar', component: AcademicCalendarComponent},
+            {path: 'admin/schedule', component: ScheduleAdminComponent},
             {path: 'students/attendance', component: AttendanceComponent},
             {path: 'students/conduct', component: ConductComponent},
             {path: 'students/grades', component: GradesComponent},
