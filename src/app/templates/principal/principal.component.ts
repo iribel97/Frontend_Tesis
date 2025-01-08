@@ -1,14 +1,15 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
-import {BreadcrumbService} from "../../services/breadcrumb.service";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {ClickOutsideDirective} from "../../shared/directivas/click-outside.directive";
-import {midudevComponent} from "../../media/midudev.component";
-import {SpinnerComponent} from "../../shared/ui/spinner/spinner.component";
-import {AuthService} from "../../services/auth/auth.service";
-import {Observable} from "rxjs";
-import {StudentsService} from "../../services/students/students.service";
+import { Component, HostListener, OnInit } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
+import { BreadcrumbService } from "../../services/breadcrumb.service";
+import { NgClass, NgForOf, NgIf } from "@angular/common";
+import { ClickOutsideDirective } from "../../shared/directivas/click-outside.directive";
+import { midudevComponent } from "../../media/midudev.component";
+import { SpinnerComponent } from "../../shared/ui/spinner/spinner.component";
+import { AuthService } from "../../services/auth/auth.service";
+import { Observable } from "rxjs";
+import { StudentsService } from "../../services/students/students.service";
 import { UsuarioDTO, Genero, EstadoUsu } from '../../interface/response/UsuarioDTO';
+import { TeachersService } from '../../services/teacher/teachers.service';
 
 @Component({
     selector: 'app-principal',
@@ -25,7 +26,7 @@ export class PrincipalComponent implements OnInit {
     isSidebarVisible: boolean = false; // Controla la visibilidad del sidebar
     isOpen = false;
     protected initialUserLS: string = '';
-    protected usernameLS : string = '';
+    protected usernameLS: string = '';
     infoUser: UsuarioDTO = {
         cedula: '',
         nombres: '',
@@ -45,7 +46,7 @@ export class PrincipalComponent implements OnInit {
     materias: any[] = [];
 
     isLargeScreen: boolean = false;   // Controla si estamos en tamaño "lg" o más
-    constructor(private authService: AuthService, private studentsService: StudentsService) {
+    constructor(private authService: AuthService, private studentsService: StudentsService, private teachersService: TeachersService) {
         this.checkScreenSize(); // Evaluar el tamaño de pantalla al cargar el componente
     }
 
@@ -70,8 +71,8 @@ export class PrincipalComponent implements OnInit {
      */
     ngOnInit() {
         this.getInfoUser();
-        if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional'){
-            this.cargarMaterias();
+        if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional') {
+            
         } // Llamar al método para inicializar las materias
         const storedDarkMode = localStorage.getItem('isDarkMode');
         if (storedDarkMode) {
@@ -94,7 +95,7 @@ export class PrincipalComponent implements OnInit {
         }
     }
 
-// Alternar visibilidad del Sidebar
+    // Alternar visibilidad del Sidebar
     toggleSidebar(): void {
         if (!this.isLargeScreen) {  // Solo permite alternar si estamos en pantallas pequeñas
             this.isSidebarVisible = !this.isSidebarVisible;
@@ -122,14 +123,14 @@ export class PrincipalComponent implements OnInit {
     getInfoUser() {
         //Tomar el usuario del local storage
         //this.usernameLS = localStorage.getItem('username') ?? '??';
-    
+
         this.studentsService.getUser().subscribe({
             next: (data: UsuarioDTO) => {
                 console.log('Información del usuario:', data); // Útil para depuración
-                this.initialUserLS = 
-                    (data.nombres ? data.nombres.slice(0, 1).toUpperCase() : '') + 
+                this.initialUserLS =
+                    (data.nombres ? data.nombres.slice(0, 1).toUpperCase() : '') +
                     (data.apellidos ? data.apellidos.slice(0, 1).toUpperCase() : '');
-                
+
                 // Verifica que data tenga todas las propiedades necesarias
                 if (data && data.cedula && data.nombres && data.apellidos) {
                     this.infoUser = data; // Asigna la información del usuario al objeto local
@@ -142,6 +143,7 @@ export class PrincipalComponent implements OnInit {
                 console.error('Error al cargar información del usuario:', err);
             }
         });
+        this.cargarMaterias();  
     }
 
     toggleMenu() {
@@ -149,14 +151,27 @@ export class PrincipalComponent implements OnInit {
     }
 
     cargarMaterias(): void {
-        this.studentsService.getMaterias().subscribe({
-            next: (data) => {
-                console.log('Materias cargadas:', data); // Útil para depuración
-                this.materias = data; // Asigna las materias al arreglo local
-            },
-            error: (err) => {
-                console.error('Error al cargar materias:', err);
-            }
-        });
+        console.log( "Rol usuario 2: " + this.infoUser.rol);
+        if (this.infoUser.rol == 'Docente') {
+            this.teachersService.getMaterias().subscribe({
+                next: (data) => {
+                    console.log('Materias cargadas docente:', data); // Útil para depuración
+                    this.materias = data; // Asigna las materias al arreglo local
+                },
+                error: (err) => {
+                    console.error('Error al cargar materias:', err);
+                }
+            });
+        } else if (this.infoUser.rol == 'Estudiante') {
+            this.studentsService.getMaterias().subscribe({
+                next: (data) => {
+                    console.log('Materias cargadas estudiante:', data); // Útil para depuración
+                    this.materias = data; // Asigna las materias al arreglo local
+                },
+                error: (err) => {
+                    console.error('Error al cargar materias:', err);
+                }
+            });
+        }
     }
 }
