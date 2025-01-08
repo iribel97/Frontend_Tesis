@@ -1,9 +1,9 @@
 import {Component, forwardRef, Input, OnInit, Output, EventEmitter, NgZone} from '@angular/core';
 import {ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, Validators} from '@angular/forms';
-import {SelectItem} from "../../../model/selectItem.model";
 import {MultiSelectSyncService} from "../../service/multiSelect/multi-select-sync.service";
 import {ClickOutsideDirective} from "../../directivas/click-outside.directive";
 import {NgForOf, NgIf} from "@angular/common";
+import {SelectItem} from "../../../models/selectItem.model";
 
 @Component({
     selector: 'ui-multi-select',
@@ -134,7 +134,7 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor {
         }
 
         // Actualizar el control de formulario con los nuevos valores
-        this.multiSelectControl.setValue([...this.selectedItems], { emitEvent: false });
+        this.multiSelectControl.setValue([...this.selectedItems], {emitEvent: false});
 
         // Llamar al servicio para actualizar las exclusiones globales
         if (this.groupId && this.id) {
@@ -190,7 +190,7 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor {
             this.selectedItems = []; // Si no es un array, inicializamos una selección vacía
         }
 
-        this.multiSelectControl.setValue(this.selectedItems, { emitEvent: false }); // Aseguramos que el Control Value esté sincronizado
+        this.multiSelectControl.setValue(this.selectedItems, {emitEvent: false}); // Aseguramos que el Control Value esté sincronizado
     }
 
     registerOnChange(fn: any): void {

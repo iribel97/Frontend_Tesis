@@ -13,6 +13,7 @@ import {UsersTableComponent} from "./pages/admin/users-table/users-table.compone
 import {AttendanceComponent} from "./pages/students/attendance/attendance.component";
 import { ConductComponent } from './pages/students/conduct/conduct.component';
 import { GradesComponent } from './pages/students/grades/grades.component';
+import {ViewtimelineComponent} from "./pages/viewtimeline/viewtimeline.component";
 
 export const routes: Routes = [
     {
@@ -33,7 +34,8 @@ export const routes: Routes = [
             {path: 'admin/all-user', component: UsersTableComponent},
             {path: 'students/attendance', component: AttendanceComponent},
             {path: 'students/conduct', component: ConductComponent},
-            {path: 'students/grades', component: GradesComponent}
+            {path: 'students/grades', component: GradesComponent},
+            {path: 'example', component: ViewtimelineComponent},
         ]
     },
     {path: 'register', component: PageRegisterComponent, canActivate: [loginGuard]},

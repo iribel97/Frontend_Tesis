@@ -1,0 +1,90 @@
+<ui-tabs [tabs]="tabs"></ui-tabs>
+
+<ng-template #tab1Content>
+    <p>Contenido de la pestaña 1</p>
+
+    <ui-datapiker></ui-datapiker>
+
+    <form [formGroup]="form" (ngSubmit)="submitForm()">
+        <ui-multi-select
+                id="multiSelect"
+                formControlName="multiselect"
+                [data_select]="options"
+                placeholderText="Seleccione varias opciones"
+                [sendform]="sendform"
+                [required]="true"
+                groupId="2"
+                (errorsChange)="onErrorsChange($event)"
+        ></ui-multi-select>
+
+        <ui-select
+                id="singleSelect"
+                formControlName="singleselect"
+                [options]="selectOptions"
+                placeholderText="Seleccione una opción"
+                groupId="2"
+                [required]="true"
+                [sendform]="sendform"
+                (errorsChange)="onErrorsChange($event)"
+        ></ui-select>
+
+        <ui-file-uploader
+                formControlName="file"
+                [multiple]="true"
+                [view]="'multiple'"
+                [required]="true">
+        </ui-file-uploader>
+
+        <button type="submit" class="mt-4 btn btn-primary">Enviar</button>
+
+        <!-- Muestra el estado del formulario-->
+        <pre>{{ form.value | json }}</pre>
+    </form>
+
+    <!-- Botón para abrir el primer modal -->
+    <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4" (click)="openModal('firstModal')">Abrir Primer Modal
+    </button>
+
+    <!-- Modal 1 -->
+    <ui-modal modalId="firstModal" [isOpen]="false">
+        <p class="text-lg font-semibold">Este es el primer modal</p>
+        <button class="bg-green-500 text-white px-4 py-2 rounded mt-4" (click)="openModal('secondModal')">Abrir Segundo
+            Modal
+        </button>
+    </ui-modal>
+
+    <!-- Modal 2 -->
+    <ui-modal modalId="secondModal" [isOpen]="false">
+        <p class="text-lg font-semibold">Este es el segundo modal</p>
+    </ui-modal>
+
+
+    <div class="p-5">
+        <app-clipboard textToCopy="npm install preline"></app-clipboard>
+    </div>
+
+</ng-template>
+
+<ng-template #tab2Content>
+    <ui-toast #toast></ui-toast>
+
+    <div class="card flex justify-center gap-2">
+        <button type="button" (click)="toast.showToast('success', '¡Operación exitosa!', 'Éxito')">Success</button>
+        <button type="button" (click)="toast.showToast('info', 'Este es un mensaje informativo :)', 'Información')">
+            Info
+        </button>
+        <button type="button" (click)="toast.showToast('warn', 'Este es un mensaje de advertencia', 'Advertencia')">
+            Warn
+        </button>
+        <button type="button" (click)="toast.showToast('error', 'Se produjo un error inesperado', 'Error')">Error
+        </button>
+        <button type="button" (click)="toast.showToast('secondary', 'Este es un mensaje secundario', 'Secundario')">
+            Secondary
+        </button>
+        <button type="button" (click)="toast.showToast('contrast', 'Este es un mensaje contrastado', 'Contraste')">
+            Contrast
+        </button>
+    </div>
+
+</ng-template>
+
