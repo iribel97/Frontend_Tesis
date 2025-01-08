@@ -1,23 +1,48 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {StudentsService} from "../../../services/students/students.service";
 import {UtilityService} from "../../../shared/service/utility/utility.service";
+import { TabsComponent } from '../../../shared/ui/tabs/tabs.component';
+import { NgForOf } from '@angular/common';
 
 @Component({
     selector: 'app-home-course',
     templateUrl: './home-course.component.html',
-    imports: [],
+    imports: [
+        TabsComponent,
+        NgForOf,
+    ],
     styleUrl: './home-course.component.css'
 })
-export class HomeCourseComponent implements OnInit {
+export class HomeCourseComponent implements AfterViewInit, OnInit {
+
+    @ViewChild('tab1Content', {static: true}) tab1Content!: TemplateRef<any>;
+    @ViewChild('tab2Content', {static: true}) tab2Content!: TemplateRef<any>;
+    @ViewChild('tab3Content', {static: true}) tab3Content!: TemplateRef<any>;
+    @ViewChild('tab4Content', {static: true}) tab4Content!: TemplateRef<any>;
+
+    tabs: { id: string; title: string; content: TemplateRef<any> }[] = [];
     materia: any = null; // Datos completos de la materia desde el backend
+    asistencia: any = null; // Datos de asistencia del estudiante
 
     constructor(
+        private cdr: ChangeDetectorRef,
         private route: ActivatedRoute, // Escucha cambios en la ruta
         private studentsService: StudentsService, // Servicio para obtener datos
         private router: Router,
         protected utilityService: UtilityService
     ) {
+    }
+
+    ngAfterViewInit(): void {
+        this.tabs = [
+            {id: 'tab1', title: 'Contenido', content: this.tab1Content},
+            {id: 'tab2', title: 'Notas', content: this.tab2Content},
+            {id: 'tab3', title: 'Asistencias', content: this.tab3Content},
+            {id: 'tab4', title: 'Conducta', content: this.tab4Content},
+        ];
+        // Forzar la detección de cambios
+        this.cdr.detectChanges();
     }
 
     ngOnInit(): void {
@@ -27,6 +52,9 @@ export class HomeCourseComponent implements OnInit {
 
             // Llamar al servicio para obtener la materia correspondiente
             this.getMateria(idMateria);
+
+            // Llamar al servicio para obtener la asistencia correspondiente
+            this.getAsistencia(idMateria);
         });
     }
 
@@ -51,6 +79,21 @@ export class HomeCourseComponent implements OnInit {
             }
         );
     }
+
+    // Obtener asistencia desde el servicio
+    getAsistencia(idDistributivo: number): void {
+        this.studentsService.getAttendanceByDistributivo(idDistributivo).subscribe(
+            (data) => {
+                this.asistencia = data;
+
+                console.log('Asistencia:', this.asistencia);
+            },
+            (error) => {
+                console.error('Error al obtener la asistencia:', error);
+            }
+        );
+    }
+    
 
     // Alternar el estado de una unidad
     toggleUnidad(unidad: any): void {

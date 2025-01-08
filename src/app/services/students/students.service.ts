@@ -41,5 +41,8 @@ export class StudentsService {
         return this.http.get<any>(this.apiUrl + "/api/estudiante/asistencias");
     }
 
+    getAttendanceByDistributivo(id: number): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/api/estudiante/asistencia/${id}`);
+    }
 
 }
