@@ -11,6 +11,8 @@ import {ScheduleComponent} from "./pages/course/schedule/schedule.component";
 import {AssignmentViewComponent} from "./pages/course/assignment-view/assignment-view.component";
 import {UsersTableComponent} from "./pages/admin/users-table/users-table.component";
 import {AttendanceComponent} from "./pages/students/attendance/attendance.component";
+import { ConductComponent } from './pages/students/conduct/conduct.component';
+import { GradesComponent } from './pages/students/grades/grades.component';
 
 export const routes: Routes = [
     {
@@ -30,6 +32,8 @@ export const routes: Routes = [
             {path: 'course/assignment/:id', component: AssignmentViewComponent},
             {path: 'admin/all-user', component: UsersTableComponent},
             {path: 'students/attendance', component: AttendanceComponent},
+            {path: 'students/conduct', component: ConductComponent},
+            {path: 'students/grades', component: GradesComponent}
         ]
     },
     {path: 'register', component: PageRegisterComponent, canActivate: [loginGuard]},

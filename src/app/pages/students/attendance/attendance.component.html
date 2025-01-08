@@ -9,25 +9,25 @@
         <thead>
         <tr class="bg-gray-200 border-b-2 rounded border-gray-300">
             <th class="border border-gray-400 p-2">Materia</th>
-            <th class="border border-gray-400 p-2">Porcentaje Asistencia</th>
-            <th class="border border-gray-400 p-2">Total Asistencias</th>
-            <th class="border border-gray-400 p-2">Total Faltas</th>
-            <th class="border border-gray-400 p-2">Total Justificadas</th>
             <th class="border border-gray-400 p-2">Total Asistido</th>
-            <th class="border border-gray-400 p-2">Porcentaje Faltas</th>
-            <th class="border border-gray-400 p-2">Porcentaje Justificadas</th>
+            <th class="border border-gray-400 p-2">Total Justificadas</th>
+            <th class="border border-gray-400 p-2">Total Faltas</th>
+            <th class="border border-gray-400 p-2">Total</th>
+            <th class="border border-gray-400 p-2">% Asistencia</th>
+            <th class="border border-gray-400 p-2">% Faltas</th>
+            <th class="border border-gray-400 p-2">% Justificadas</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let materia of data">
             <td class="border border-gray-400 p-2">{{ materia.nombreMateria }}</td>
-            <td class="border border-gray-400 p-2">{{ materia.data.porcentajeAsistencia }}%</td>
-            <td class="border border-gray-400 p-2">{{ materia.data.totalAsistencias }}</td>
-            <td class="border border-gray-400 p-2">{{ materia.data.totalFaltas }}</td>
-            <td class="border border-gray-400 p-2">{{ materia.data.totalJustificadas }}</td>
             <td class="border border-gray-400 p-2">{{ materia.data.totalAsist }}</td>
-            <td class="border border-gray-400 p-2">{{ materia.data.porcentajeFaltas }}%</td>
-            <td class="border border-gray-400 p-2">{{ materia.data.porcentajeJustificadas }}%</td>
+            <td class="border border-gray-400 p-2">{{ materia.data.totalJustificadas }}</td>
+            <td class="border border-gray-400 p-2">{{ materia.data.totalFaltas }}</td>
+            <td class="border border-gray-400 p-2">{{ materia.data.totalAsistencias }}</td>
+            <td class="border border-gray-400 p-2">{{ materia.data.porcentajeAsistencias }} %</td>
+            <td class="border border-gray-400 p-2">{{ materia.data.porcentajeFaltas }} %</td>
+            <td class="border border-gray-400 p-2">{{ materia.data.porcentajeJustificadas }} %</td>
         </tr>
         </tbody>
     </table>
