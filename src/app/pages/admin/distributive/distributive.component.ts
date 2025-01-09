@@ -44,7 +44,6 @@ export class DistributiveComponent implements OnInit {
     this.adminService.getAllCiclos().subscribe({
       next: (data) => {
         this.ciclos = data;
-        console.log('Ciclos académicos:', this.ciclos);
       },
       error: (err) => {
         console.error('Error al cargar ciclos académicos:', err);
