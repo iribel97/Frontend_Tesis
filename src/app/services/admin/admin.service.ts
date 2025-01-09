@@ -22,7 +22,7 @@ export class AdminService {
 
   // traer todos los ciclos academicos
   getAllCiclos(): Observable<any> {
-    return this.http.get<any>(this.apiUrl + "/api/admin/ciclos");
+    return this.http.get<any>(this.apiUrl + "/api/general/controller/ciclos");
   }
 
   // obtener los distributivos por id de ciclo academico
@@ -52,7 +52,7 @@ export class AdminService {
 
   // obtener cursos
   getCursos(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/admin/cursos`);
+    return this.http.get<any>(`${this.apiUrl}/api/general/controller/cursos`);
   }
 
   // obtener sistema de calificaciones por ciclo

@@ -19,6 +19,9 @@ import { DistributiveComponent } from './pages/admin/distributive/distributive.c
 import { RatingSystemComponent } from './pages/admin/rating-system/rating-system.component';
 import { AcademicCalendarComponent } from './pages/admin/academic-calendar/academic-calendar.component';
 import { ScheduleAdminComponent } from './pages/admin/schedule-admin/schedule-admin.component';
+import { MatriculateComponent } from './pages/opAdmin/matriculate/matriculate.component';
+import { CoursesAdComponent } from './pages/opAdmin/courses-ad/courses-ad.component';
+import { EstudentsTableComponent } from './pages/opAdmin/estudents-table/estudents-table.component';
 
 export const routes: Routes = [
     {
@@ -41,6 +44,9 @@ export const routes: Routes = [
             {path: 'admin/ratingSystem', component: RatingSystemComponent},
             {path: 'admin/academic/calendar', component: AcademicCalendarComponent},
             {path: 'admin/schedule', component: ScheduleAdminComponent},
+            {path: 'institutional/matriculate', component: MatriculateComponent},
+            {path: 'institutional/courses', component: CoursesAdComponent},
+            {path: 'institutional/students', component: EstudentsTableComponent},
             {path: 'students/attendance', component: AttendanceComponent},
             {path: 'students/conduct', component: ConductComponent},
             {path: 'students/grades', component: GradesComponent},
