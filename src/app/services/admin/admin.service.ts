@@ -46,6 +46,11 @@ export class AdminService {
         return this.http.get<any>(`${this.apiUrl}/api/admin/materias`);
     }
 
+    // obtener materias por grado
+    getMateriasByGrado(nombreGrado: String): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/api/admin/materias/${nombreGrado}`);
+    }
+
     // obtener los grados
     getGrados(): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/api/admin/grados`);

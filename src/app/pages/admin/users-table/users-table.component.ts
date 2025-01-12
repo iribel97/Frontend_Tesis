@@ -3,7 +3,6 @@ import { AdminService } from "../../../services/admin/admin.service";
 import { FormsModule } from "@angular/forms";
 import { NgForOf, NgIf } from "@angular/common";
 import { ModalComponent } from "../../../shared/ui/modal/modal.component";
-import { SutmitAssignmentComponent } from "../../../forms/student/sutmit-assignment/sutmit-assignment.component";
 import { ModalService } from "../../../shared/service/modal/modal.service";
 import { ToastComponent } from "../../../shared/ui/toast/toast.component";
 import { FormRegisterUserComponent } from '../../../forms/admin/form-register-user/form-register-user.component';
@@ -16,7 +15,6 @@ import { FormRegisterUserComponent } from '../../../forms/admin/form-register-us
     NgForOf,
     NgIf,
     ModalComponent,
-    SutmitAssignmentComponent,
     ToastComponent,
     FormRegisterUserComponent,
   ],

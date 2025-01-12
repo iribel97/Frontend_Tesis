@@ -43,10 +43,14 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
     distributivos: any[] = []; // Lista completa de distributivos
     paginatedDistributivos: any[] = []; // Subconjunto de distributivos paginados
     materias: any[] = [];
+
+    filteredMaterias: any[] = []; // Lista de materias filtradas
     paginatedMaterias: any[] = [];
     materiasCurrentPage = 1;
     materiasItemsPerPage = 7;
     materiasTotalPages = 0;
+    searchMateriaTerm: string = ''; // Término de búsqueda para materias
+
     grados: any[] = [];   // Lista de grados
 
     currentPage: number = 1; // Página actual
@@ -85,9 +89,6 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
             }
         });
     }
-
-    // Navegar a la página siguiente
-
 
     onCicloChange(event: Event): void {
         const selectedCicloId = (event.target as HTMLSelectElement).value;
@@ -135,6 +136,7 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
         this.adminService.getMaterias().subscribe(
             (data) => {
                 this.materias = data;
+                this.filteredMaterias = data; // Inicialmente, todas las materias están filtradas
                 this.updateMateriasPagination();
             },
             (error) => {
@@ -143,9 +145,18 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
         );
     }
 
+    onSearchMateria(event: Event): void {
+        const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
+        this.searchMateriaTerm = searchTerm;
+        this.filteredMaterias = this.materias.filter(materia =>
+            materia.nombre.toLowerCase().includes(searchTerm)
+        );
+        this.updateMateriasPagination();
+    }
+
     updateMateriasPagination(): void {
-        this.materiasTotalPages = Math.ceil(this.materias.length / this.materiasItemsPerPage);
-        this.paginatedMaterias = this.materias.slice(
+        this.materiasTotalPages = Math.ceil(this.filteredMaterias.length / this.materiasItemsPerPage);
+        this.paginatedMaterias = this.filteredMaterias.slice(
             (this.materiasCurrentPage - 1) * this.materiasItemsPerPage,
             this.materiasCurrentPage * this.materiasItemsPerPage
         );
