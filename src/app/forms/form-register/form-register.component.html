@@ -48,8 +48,8 @@
                     [sendform]="sendform"
                     [minlength]="3"
                     [maxlength]="50"
-                    pattern="^[a-zA-Z ]+$"
-                    permissivePattern="^[a-zA-Z ]+$"
+                    pattern="^[a-zA-ZÀ-ÿñÑ ]+$"
+                    permissivePattern="^[a-zA-ZÀ-ÿñÑ ]*$"
 
             ></ui-input>
         </div>
@@ -159,8 +159,6 @@
                     placeholder="Nombre de la Empresa"
                     formControlName="company"
                     [sendform]="sendform"
-                    [minlength]="3"
-                    [maxlength]="50"
 
             ></ui-input>
         </div>
