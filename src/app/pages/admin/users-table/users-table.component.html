@@ -36,51 +36,44 @@
 
 
     <!-- Tabla de usuarios -->
-    <table class="table-auto w-full border-collapse border border-gray-300">
-        <thead>
-        <tr class="bg-gray-200">
-            <th class="border border-gray-300 px-4 py-2">Cédula</th>
-            <th class="border border-gray-300 px-4 py-2">Nombres</th>
-            <th class="border border-gray-300 px-4 py-2">Apellidos</th>
-            <th class="border border-gray-300 px-4 py-2">Correo</th>
-            <th class="border border-gray-300 px-4 py-2">Teléfono</th>
-            <th class="border border-gray-300 px-4 py-2">Rol</th>
-            <th class="border border-gray-300 px-4 py-2">Estado</th>
-            <th class="border border-gray-300 px-4 py-2">Acciones</th>
-        </tr>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cédula</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombres</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Apellidos</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+            </tr>
         </thead>
-        <tbody>
-        <tr *ngFor="let user of paginatedUsers">
-            <td class="border border-gray-300 px-4 py-2">{{ user.cedula }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ user.nombres }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ user.apellidos }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ user.correo }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ user.telefono }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ user.rol }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ user.estado }}</td>
-            <td class="border border-gray-300 px-4 py-2">
-                <button class="bg-yellow-400 px-2 py-1 rounded text-white mr-2" (click)="editUser(user.cedula)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         class="icon icon-tabler icons-tabler-outline icon-tabler-user-edit">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/>
-                        <path d="M6 21v-2a4 4 0 0 1 4 -4h3.5"/>
-                        <path d="M18.42 15.61a2.1 2.1 0 0 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39z"/>
-                    </svg>
-                </button>
-                <button class="bg-red-500 px-2 py-1 rounded text-white" (click)="deleteUser(user.cedula)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         class="icon icon-tabler icons-tabler-outline icon-tabler-user-minus">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/>
-                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4c.348 0 .686 .045 1.009 .128"/>
-                        <path d="M16 19h6"/>
-                    </svg>
-                </button>
-            </td>
-        </tr>
+        <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let user of paginatedUsers">
+                <td class="px-6 py-4 text-sm text-gray-900">{{ user.cedula }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ user.nombres }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ user.apellidos }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ user.correo }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ user.telefono }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ user.rol }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ user.estado }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">
+                    <button class="bg-yellow-400 px-2 py-1 rounded text-white mr-2" (click)="editUser(user.cedula)">
+                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h3.5" /><path d="M18.42 15.61a2.1 2.1 0 0 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39z" /></svg>
+                    </button>
+                    <button class="bg-red-500 px-2 py-1 rounded text-white" (click)="deleteUser(user.cedula)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="icon icon-tabler icons-tabler-outline icon-tabler-user-minus">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/>
+                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4c.348 0 .686 .045 1.009 .128"/>
+                            <path d="M16 19h6"/>
+                        </svg>
+                    </button>
+                </td>
+            </tr>
         </tbody>
     </table>
 
