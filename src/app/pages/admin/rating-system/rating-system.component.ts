@@ -4,10 +4,7 @@ import { AdminService } from '../../../services/admin/admin.service';
 
 @Component({
   selector: 'app-rating-system',
-  imports: [
-    NgForOf,
-    NgIf,
-  ],
+  imports: [  ],
   templateUrl: './rating-system.component.html',
   styleUrl: './rating-system.component.css'
 })
