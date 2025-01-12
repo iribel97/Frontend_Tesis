@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, map, Observable} from 'rxjs';
-import { environment } from '../../../enviroment/environment';
+import {environment} from '../../../enviroment/environment';
 
 interface LoginRequest {
     cedula: string;
@@ -40,7 +40,7 @@ export class AuthService {
     }
 
     logout(): void {
-      console.log('Logging out');
+        console.log('Logging out');
         localStorage.removeItem('authToken');
         localStorage.removeItem('estadoUsuario');
     }
@@ -99,6 +99,10 @@ export class AuthService {
 
     getInfoUserAuth(): Observable<any> {
         return this.http.get<any>(`${environment.urlApi}/`);
+    }
+
+    registerRepresentative(data: any): Observable<any> {
+        return this.http.post<any>(`${environment.urlApi}/auth/registro`, data);
     }
 }
 

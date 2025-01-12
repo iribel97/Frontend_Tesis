@@ -1,3 +1,4 @@
+<ui-toast #toast/>
 <form [formGroup]="formRegister" (ngSubmit)="onSubmit()">
     <div class="grid grid-cols-2 gap-x-4">
         <div class="flex items-center mt-1 col-span-1 ">
@@ -168,7 +169,7 @@
             <ui-input
                     class="w-full"
                     id="company_phone"
-                    label="Nombre de la Empresa"
+                    label="Telefono de la Empresa"
                     type="text"
                     placeholder="Telefono de la Empresa"
                     formControlName="company_phone"
