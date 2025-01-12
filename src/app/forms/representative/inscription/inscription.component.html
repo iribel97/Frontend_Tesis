@@ -348,23 +348,72 @@
         </div>
         <div class="flex items-center mt-1 col-span-1">
             <ui-file-uploader
+                    [inputId]="'certificadoNotas'"
                     formControlName="certificadoNotas"
                     [label]="'Certificado de notas'"
                     [multiple]="false"
                     [view]="'single'"
+                    (change)="handleFileInput('certificadoNotas', $event)"
                     [required]="false"
             />
         </div>
 
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-file-uploader
-                    formControlName="serviciosBasicos"
-                    [label]="'Servicios basicos'"
-                    [multiple]="false"
-                    [view]="'single'"
-                    [required]="false"
+        <div
+                data-hs-file-upload='{
+    "url": "/upload",
+    "maxFiles": 1,
+    "singleton": true
+  }'
+                class="w-full"
+                [formGroup]="form"
+        >
+            <!-- Plantilla para vista previa del archivo -->
+            <template data-hs-file-upload-preview="">
+                <div class="flex items-center w-full">
+      <span class="grow-0 overflow-hidden truncate" data-hs-file-upload-file-name="">
+        {{ selectedFile?.name || 'No Chosen File' }}
+      </span>
+                    <span class="grow-0">.</span>
+                    <span class="grow-0" data-hs-file-upload-file-ext="">
+                        @if (selectedFile) {
+                            <span class="grow-0">
+          {{ selectedFile?.name ? selectedFile.name.split('.').pop() : '' }}
+        </span>
+                        }
+
+      </span>
+                </div>
+            </template>
+
+            <!-- Botón de carga del archivo -->
+            <button
+                    type="button"
+                    (click)="triggerFileInput('file-input')"
+                    class="relative flex w-full border overflow-hidden border-gray-200 shadow-sm rounded-lg text-sm focus:outline-none focus:z-10 focus:border-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:border-neutral-600"
+            >
+                <span class="h-full py-3 px-4 bg-gray-100 text-nowrap dark:bg-neutral-800">Seleccione un archivo</span>
+                <span
+                        class="group grow flex overflow-hidden h-full py-3 px-4"
+                        data-hs-file-upload-previews=""
+                >
+      <div class="flex overflow-hidden max-w-full">
+  <span class="truncate">
+    {{ selectedFile?.name || 'Ningun archivo seleccionado' }}
+  </span>
+</div>
+    </span>
+                <span class="absolute top-0 left-0 w-full h-full" data-hs-file-upload-trigger=""></span>
+            </button>
+
+            <!-- Input oculto para la subida de archivos -->
+            <input
+                    type="file"
+                    id="file-input"
+                    class="hidden"
+                    (change)="handleFileInput('serviciosBasicos', $event)"
             />
         </div>
+
 
     </div>
 
@@ -375,6 +424,4 @@
             Enviar
         </button>
     </div>
-
-
 </form>

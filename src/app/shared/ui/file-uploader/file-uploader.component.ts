@@ -25,6 +25,7 @@ export class FileUploaderComponent implements ControlValueAccessor {
     @Input() multiple = false; // Define si permite múltiples archivos
     @Input() view: 'single' | 'multiple' = 'single'; // Define la vista (por defecto: single)
     @Input() label: string = ''; // Texto del label
+    @Input() inputId: string = `file-uploader-${Math.random().toString(36).substring(2)}`;
 
     files: File[] = []; // Lista de archivos seleccionados
     progress: { [key: string]: number } = {}; // Mapa para el progreso de cada archivo
@@ -51,7 +52,9 @@ export class FileUploaderComponent implements ControlValueAccessor {
 
             // Convertir los archivos agregados a objetos DocumentIn y notificar cambios
             this.convertFilesToDocuments(this.files).then(documents => {
-                this.onChange(documents); // Notifica al formulario reactivo el cambio.
+                if (JSON.stringify(documents) !== JSON.stringify(this.files)) {
+                    this.onChange(documents);
+                }
             });
         }
     }
@@ -89,7 +92,9 @@ export class FileUploaderComponent implements ControlValueAccessor {
         Promise.all(
             this.files.map(file => this.convertToDocument(file))
         ).then(documentArray => {
-            this.onChange(documentArray); // Notificar los cambios al formulario
+            if (documentArray.length !== this.files.length) {
+                this.onChange(documentArray);
+            }
         });
     }
 
@@ -182,14 +187,20 @@ export class FileUploaderComponent implements ControlValueAccessor {
                 ? [...this.files, ...filesArray].filter((file, index, array) => array.findIndex(f => f.name === file.name) === index)
                 : filesArray.slice(0, 1); // De lo contrario, solo el archivo actual.
 
-            this.files = uniqueFiles;
+            // Validar si hay cambios antes de actualizar la lista de archivos
+            const previousFiles = JSON.stringify(this.files);
+            const updatedFiles = JSON.stringify(uniqueFiles);
 
-            // Convertir los archivos a objetos DocumentIn[]
-            Promise.all(
-                this.files.map(file => this.convertToDocument(file))
-            ).then(documents => {
-                this.onChange(documents); // Notificar al formulario reactivo
-            });
+            if (previousFiles !== updatedFiles) {
+                this.files = uniqueFiles;
+
+                // Convertir los archivos a objetos DocumentIn[]
+                Promise.all(
+                    this.files.map(file => this.convertToDocument(file))
+                ).then(documents => {
+                    this.onChange(documents); // Notificar al formulario reactivo
+                });
+            }
         }
     }
 
@@ -198,7 +209,9 @@ export class FileUploaderComponent implements ControlValueAccessor {
     }
 
     private updateValue(documents: DocumentIn[] | null): void {
-        this.onChange(documents ?? null); // Notifica al formulario
+        if (documents !== null && JSON.stringify(documents) !== JSON.stringify(this.files)) {
+            this.onChange(documents ?? null);
+        }
     }
 
 }

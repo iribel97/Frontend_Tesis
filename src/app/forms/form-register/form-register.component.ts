@@ -17,6 +17,7 @@ export class FormRegisterComponent implements OnInit {
     formErrors: { [key: string]: string } = {};
     formRegister!: FormGroup;
     sendform = false;
+
     genderOptions: { id: number; name: string }[] = [
         {id: 1, name: 'Masculino'},
         {id: 2, name: 'Femenino'}
