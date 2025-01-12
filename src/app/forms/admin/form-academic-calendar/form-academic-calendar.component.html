@@ -1,0 +1,62 @@
+<ui-toast #toast/>
+<form [formGroup]="formRegister" (ngSubmit)="onSubmit()">
+
+    @defer (when ciclos.length > 0) {
+        <ui-select
+                class="w-full col-span-2"
+                id="cicloId"
+                labelText="Ciclo Academico"
+                placeholderText="Seleccione el ciclo academico"
+                [options]="ciclos"
+                [sendform]="sendform"
+                formControlName="cicloId"
+                [required]="true"
+        ></ui-select>
+    }
+
+    <div class="flex items-center mt-1 col-span-1">
+        <ui-input
+                class="w-full"
+                id="descripcion"
+                label="Descripción"
+                type="text"
+                placeholder="Ingrese la descripción"
+                formControlName="descripcion"
+                [required]="true"
+                [sendform]="sendform"
+                pattern="^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$"
+                permissivePattern="^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*$"
+        ></ui-input>
+    </div>
+
+    <div class="flex flex-row gap-4 col-span-2">
+
+        <div class="flex flex-col mt-1 col-span-1">
+            <label for=""> Fecha Inicio</label>
+            <ui-datapiker class="w-full" 
+                formControlName="fechaInicio"
+                [disableFutureDates]="false"
+                [required]="true">
+            </ui-datapiker>
+        </div>
+    
+        <div class="flex flex-col mt-1 col-span-1">
+            <label for=""> Fecha Fin</label>
+            <ui-datapiker class="w-full" 
+                formControlName="fechaFin"
+                [disableFutureDates]="false"
+                [required]="true">
+            </ui-datapiker>
+        </div>
+
+    </div>
+
+    
+    <div class="mt-6">
+        <button type="submit"
+            class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+            Guardar
+        </button>
+    </div>
+
+</form>

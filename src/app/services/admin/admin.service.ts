@@ -89,5 +89,10 @@ export class AdminService {
         return this.http.post<any>(`${this.apiUrl}/api/admin/distributivo`, requestBody);
     }
 
+    // registrar evento en calendario academico
+    addEvent(requestBody: any): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/api/admin/calendario`, requestBody);
+    }
+
 }
 

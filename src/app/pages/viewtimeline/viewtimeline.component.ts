@@ -13,6 +13,7 @@ import {ToastComponent} from "../../shared/ui/toast/toast.component";
 import {SelectItem} from "../../models/selectItem.model";
 import { SutmitAssignmentComponent } from "../../forms/student/sutmit-assignment/sutmit-assignment.component";
 import { FormSubjectComponent } from "../../forms/admin/form-subject/form-subject.component";
+import { FormAcademicCalendarComponent } from '../../forms/admin/form-academic-calendar/form-academic-calendar.component';
 
 
 @Component({
@@ -29,7 +30,8 @@ import { FormSubjectComponent } from "../../forms/admin/form-subject/form-subjec
     ClipboardComponent,
     ToastComponent,
     SutmitAssignmentComponent,
-    FormSubjectComponent
+    FormSubjectComponent,
+    FormAcademicCalendarComponent
 ],
     templateUrl: './viewtimeline.component.html',
     styleUrl: './viewtimeline.component.css'
