@@ -121,14 +121,14 @@
     <!-- Botones de Paginación -->
     <div class="mt-4 flex justify-center items-center">
         <button class="px-3 py-1 mx-1 text-sm font-medium text-white bg-gray-700 rounded-md disabled:opacity-50"
-                [disabled]="currentPage === 1" (click)="previousPage()">
+                [disabled]="materiasCurrentPage === 1" (click)="previousPageMaterias()">
             Anterior
         </button>
         <span class="mx-2 text-sm text-gray-700 dark:text-neutral-200">
-            Página {{ currentPage }} de {{ totalPages }}
+            Página {{ materiasCurrentPage }} de {{ materiasTotalPages }}
         </span>
         <button class="px-3 py-1 mx-1 text-sm font-medium text-white bg-gray-700 rounded-md disabled:opacity-50"
-                [disabled]="currentPage === totalPages" (click)="nextPage()">
+                [disabled]="materiasCurrentPage === materiasTotalPages" (click)="nextPageMaterias()">
             Siguiente
         </button>
     </div>

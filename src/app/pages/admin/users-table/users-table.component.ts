@@ -1,12 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {AdminService} from "../../../services/admin/admin.service";
-import {FormsModule} from "@angular/forms";
-import {NgForOf, NgIf} from "@angular/common";
-import {ModalComponent} from "../../../shared/ui/modal/modal.component";
-import {SutmitAssignmentComponent} from "../../../forms/student/sutmit-assignment/sutmit-assignment.component";
-import {ModalService} from "../../../shared/service/modal/modal.service";
-import {ToastComponent} from "../../../shared/ui/toast/toast.component";
-
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AdminService } from "../../../services/admin/admin.service";
+import { FormsModule } from "@angular/forms";
+import { NgForOf, NgIf } from "@angular/common";
+import { ModalComponent } from "../../../shared/ui/modal/modal.component";
+import { SutmitAssignmentComponent } from "../../../forms/student/sutmit-assignment/sutmit-assignment.component";
+import { ModalService } from "../../../shared/service/modal/modal.service";
+import { ToastComponent } from "../../../shared/ui/toast/toast.component";
+import { FormRegisterUserComponent } from '../../../forms/admin/form-register-user/form-register-user.component';
 
 @Component({
   selector: 'app-users-table',
@@ -17,7 +17,8 @@ import {ToastComponent} from "../../../shared/ui/toast/toast.component";
     NgIf,
     ModalComponent,
     SutmitAssignmentComponent,
-    ToastComponent
+    ToastComponent,
+    FormRegisterUserComponent,
   ],
   styleUrls: ['./users-table.component.css']
 })
@@ -35,9 +36,10 @@ export class UsersTableComponent implements OnInit {
   itemsPerPage: number = 10; // Número de elementos por página
 
   userDelete: string = '';
+  showAddUserModal: boolean = false; // Estado del modal de agregar usuario
 
   constructor(private adminService: AdminService,
-              private modalService: ModalService,) {}
+              private modalService: ModalService) {}
 
   ngOnInit(): void {
     this.fetchUsers(); // Llamar al servicio para cargar los usuarios
@@ -52,7 +54,7 @@ export class UsersTableComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar usuarios:', err);
-        this.toast.showToast('error', err.error.detalles,err.error.mensaje,10000); // Show toast message
+        this.toast.showToast('error', err.error.detalles, err.error.mensaje, 10000); // Show toast message
       }
     });
   }
@@ -66,10 +68,10 @@ export class UsersTableComponent implements OnInit {
     } else {
       // Filtramos los usuarios según el término
       this.filteredUsers = this.users.filter(user =>
-          user.cedula.includes(term) ||
-          user.nombres.toLowerCase().includes(term) ||
-          user.apellidos.toLowerCase().includes(term) ||
-          user.correo.toLowerCase().includes(term)
+        user.cedula.includes(term) ||
+        user.nombres.toLowerCase().includes(term) ||
+        user.apellidos.toLowerCase().includes(term) ||
+        user.correo.toLowerCase().includes(term)
       );
     }
     this.currentPage = 1; // Reiniciar a la primera página
@@ -100,21 +102,24 @@ export class UsersTableComponent implements OnInit {
     return Math.ceil(this.filteredUsers.length / this.itemsPerPage);
   }
 
-
   deleteUser(cedula: any) {
     this.modalService.openModal("DeleteUser");
     this.userDelete = cedula;
   }
 
   editUser(cedula: any) {
-
+    // Lógica para editar usuario
   }
 
-  addUser() {
-
+  // Abrir modal de agregar usuario
+  openAddUserModal(): void {
+    this.showAddUserModal = true;
   }
 
-
+  // Cerrar modal de agregar usuario
+  closeAddUserModal(): void {
+    this.showAddUserModal = false;
+  }
 
   closeModal(modal: string) {
     this.modalService.closeModal(modal);
@@ -123,15 +128,22 @@ export class UsersTableComponent implements OnInit {
   confirmDeleteUser() {
     this.adminService.deleteUserByCedula(this.userDelete).subscribe({
       next: (data) => {
-        this.fetchUsers();
+        this.users = this.users.filter(user => user.cedula !== this.userDelete); // Eliminar usuario de la lista
+        this.applyFilters(); // Aplicar filtros para actualizar la tabla
         this.closeModal("DeleteUser");
-        this.toast.showToast('success', data.detalles,data.mensaje,10000); // Show toast message
+        this.toast.showToast('success', data.detalles, data.mensaje, 10000); // Show toast message
       },
       error: (err) => {
         this.closeModal("DeleteUser");
         console.error('Error al eliminar el usuario:', err);
-        this.toast.showToast('error', err.error.detalles,err.error.mensaje,10000); // Show toast message
+        this.toast.showToast('error', err.error.detalles, err.error.mensaje, 10000); // Show toast message
       }
     });
+  }
+
+  onUserAdded(user: any) {
+    this.users.push(user); // Agregar el nuevo usuario a la lista
+    this.applyFilters(); // Aplicar filtros para actualizar la tabla
+    this.closeAddUserModal(); // Cerrar el modal
   }
 }

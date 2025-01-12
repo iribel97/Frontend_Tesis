@@ -1,4 +1,4 @@
-import { NgForOf, NgIf } from '@angular/common';
+import { NgForOf, NgIf, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../../services/admin/admin.service';
 
@@ -6,10 +6,9 @@ import { AdminService } from '../../../services/admin/admin.service';
   selector: 'app-academic-calendar',
   imports: [
     NgForOf,
-    NgIf,
   ],
   templateUrl: './academic-calendar.component.html',
-  styleUrl: './academic-calendar.component.css'
+  styleUrls: ['./academic-calendar.component.css']
 })
 export class AcademicCalendarComponent implements OnInit {
 

@@ -45,7 +45,7 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
     materias: any[] = [];
     paginatedMaterias: any[] = [];
     materiasCurrentPage = 1;
-    materiasItemsPerPage = 5;
+    materiasItemsPerPage = 7;
     materiasTotalPages = 0;
     grados: any[] = [];   // Lista de grados
 

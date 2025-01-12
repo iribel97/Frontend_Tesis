@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +14,17 @@ export class AdminService {
 
     getAllUser(): Observable<any> {
         return this.http.get<any>(this.apiUrl + "/api/admin/usuarios");
+    }
+
+    // registrar usuarios
+    registerUser(mappedDatta: String, request: any): Observable<any> {
+        if (mappedDatta === 'Administrador') {
+            return this.http.post<any>(`${this.apiUrl}/api/admin/registro/admin`,request);
+        } else if (mappedDatta === 'Institucional') {
+            return this.http.post<any>(`${this.apiUrl}/api/admin/registro/adminOp`, request);
+        } else {
+            return this.http.post<any>(`${this.apiUrl}/api/admin/registro/docente`, request);
+        }
     }
 
     deleteUserByCedula(cedula: string): Observable<any> {
