@@ -22,4 +22,9 @@ export class TeachersService {
     return this.http.get<any>(this.apiUrl + "/api/docente/horario");
   }
 
+  // Obtener el contenido de una materia
+  getContenido(idDistributivo: number): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/docente/materia/" + idDistributivo);
+  }
+
 }

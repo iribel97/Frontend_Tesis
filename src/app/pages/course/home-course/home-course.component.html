@@ -44,6 +44,10 @@
                 <button (click)="toggleUnidad(unidad)"
                     class="w-full text-left px-4 py-3 text-gray-900 font-semibold bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring transition duration-300">
                     {{ unidad.nombre }}
+                    <!-- Botón para mostrar si la unidad es visible para los estudiantes (solo para docentes) -->
+                    <button *ngIf="rolUser === 'Docente'" class="ml-2 text-sm text-blue-500 hover:underline">
+                        {{ unidad.activo ? 'Visible para estudiantes' : 'No visible para estudiantes' }}
+                    </button>
                 </button>
 
                 <!-- Contenido oculto/visible (Unidad) -->
@@ -55,6 +59,10 @@
                         <button (click)="toggleTema(tema)"
                             class="w-full text-left px-4 py-2 text-gray-800 font-medium bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring transition duration-300">
                             {{ tema.nombreTema }} - <small>{{ tema.descripcion }}</small>
+                            <!-- Botón para mostrar si el tema es visible para los estudiantes (solo para docentes) -->
+                            <button *ngIf="rolUser === 'Docente'" class="ml-2 text-sm text-blue-500 hover:underline">
+                                {{ tema.activo ? 'Visible para estudiantes' : 'No visible para estudiantes' }}
+                            </button>
                         </button>
 
                         <!-- Contenido oculto/visible (Tema) -->
@@ -150,9 +158,11 @@
                         <li><strong>Total Justificadas:</strong> {{ asistencia?.datos?.totalJustificadas }}</li>
                         <li><strong>Total Faltas:</strong> {{ asistencia?.datos?.totalFaltas }}</li>
                         <li><strong>Total:</strong> {{ asistencia?.datos?.totalAsistencias }}</li>
-                        <li><strong>Porcentaje de Asistencias:</strong> {{ asistencia?.datos?.porcentajeAsistencias }} %</li>
+                        <li><strong>Porcentaje de Asistencias:</strong> {{ asistencia?.datos?.porcentajeAsistencias }} %
+                        </li>
                         <li><strong>Porcentaje de Faltas:</strong> {{ asistencia?.datos?.porcentajeFaltas }} %</li>
-                        <li><strong>Porcentaje Justificadas:</strong> {{ asistencia?.datos?.porcentajeJustificadas }} %</li>
+                        <li><strong>Porcentaje Justificadas:</strong> {{ asistencia?.datos?.porcentajeJustificadas }} %
+                        </li>
                     </ul>
                 </div>
 
