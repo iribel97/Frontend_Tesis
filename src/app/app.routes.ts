@@ -22,6 +22,8 @@ import { ScheduleAdminComponent } from './pages/admin/schedule-admin/schedule-ad
 import { MatriculateComponent } from './pages/opAdmin/matriculate/matriculate.component';
 import { CoursesAdComponent } from './pages/opAdmin/courses-ad/courses-ad.component';
 import { EstudentsTableComponent } from './pages/opAdmin/estudents-table/estudents-table.component';
+import { InscriptionComponent } from './forms/representative/inscription/inscription.component';
+import { InscriptionTableComponent } from './pages/opAdmin/inscription-table/inscription-table.component';
 
 export const routes: Routes = [
     {
@@ -46,6 +48,7 @@ export const routes: Routes = [
             {path: 'admin/schedule', component: ScheduleAdminComponent},
             {path: 'institutional/matriculate', component: MatriculateComponent},
             {path: 'institutional/courses', component: CoursesAdComponent},
+            {path: 'institutional/inscriptions', component: InscriptionTableComponent},
             {path: 'institutional/students', component: EstudentsTableComponent},
             {path: 'students/attendance', component: AttendanceComponent},
             {path: 'students/conduct', component: ConductComponent},

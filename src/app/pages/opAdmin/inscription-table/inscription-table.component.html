@@ -1,0 +1,243 @@
+<div>
+    <p class="text-xl font-semibold text-gray-800 dark:text-neutral-200">Inscripciones</p>
+</div>
+<div class="mb-10">
+    <p class="text-lg text-gray-600 dark:text-neutral-100">Observe las inscripciones pendientes</p>
+</div>
+<div class="container mx-auto mt-5">
+
+    <!-- Tabla de inscripciones -->
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cédula</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Apellidos
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombres</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo
+                    Electrónico</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grado</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha
+                    registrado</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let student of paginatedStudents">
+                <td class="px-6 py-4 text-sm text-gray-900">{{ student.cedula }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ student.apellidos }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ student.nombres }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ student.email }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ student.grado }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ student.fechaIns }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ student.estado }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">
+                    <button class="bg-blue-500 px-2 py-1 rounded text-white mr-2"
+                        (click)="viewStudentInfo(student.cedula)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <circle cx="12" cy="12" r="2" />
+                            <path d="M22 12c-2 -5.333 -7 -8 -10 -8s-8 2.667 -10 8c2 5.333 7 8 10 8s8 -2.667 10 -8" />
+                        </svg>
+                    </button>
+                    <button class="bg-green-500 px-2 py-1 rounded text-white mr-2"
+                        (click)="acceptStudent(student.cedula)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M5 12l5 5l10 -10" />
+                        </svg>
+                    </button>
+                    <button class="bg-red-500 px-2 py-1 rounded text-white" (click)="rejectStudent(student.cedula)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M18 6l-12 12" />
+                            <path d="M6 6l12 12" />
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Controles de paginación (sólo si hay más de 10 elementos filtrados) -->
+    <div *ngIf="students.length > itemsPerPage" class="flex justify-center mt-4">
+        <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="changePage(i + 1)"
+            [class.bg-gray-400]="currentPage === i + 1" class="px-3 py-1 mx-1 border rounded">
+            {{ i + 1 }}
+        </button>
+    </div>
+</div>
+<!-- Modal para ver información del estudiante -->
+<div *ngIf="showStudentInfoModal" class="fixed inset-0 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/2 z-50">
+        <h2 class="text-lg font-semibold text-gray-900 mb-2">Información del Estudiante</h2>
+        <div class="grid grid-cols-6 gap-y-3">
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Cédula</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.cedula }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Nombres</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.nombres }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Apellidos</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.apellidos }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Correo Electrónico</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.email }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Teléfono</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.telefono }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Fecha de Nacimiento</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.fechaNacimiento }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-4">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Dirección</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.direccion }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Género</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.genero }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Grado</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.grado }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Fecha de Inscripción</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.fechaIns }}</p>
+                </div>
+            </div>
+            <!-- DATOS DEL PADRE -->
+            <div class="w-full col-span-6">
+                <h3 class="text-md font-semibold text-gray-800">Datos del Padre</h3>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Nombres</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.nombresPadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Apellidos</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.apellidosPadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Teléfono</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.telefonoPadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Correo Electrónico</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.correoPadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Ocupación</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.ocupacionPadre }}</p>
+                </div>
+            </div>
+            <!-- DATOS DE LA MADRE -->
+            <div class="w-full col-span-6">
+                <h3 class="text-md font-semibold text-gray-800">Datos de la Madre</h3>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Nombres</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.nombresMadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Apellidos</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.apellidosMadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Teléfono</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.telefonoMadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Correo Electrónico</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.correoMadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Ocupación</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.ocupacionMadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-6">
+                <h3 class="text-md font-semibold text-gray-800">Documentos</h3>
+            </div>
+        </div>
+        <div *ngIf="selectedStudent?.documentos?.length > 0; else noDocuments">
+            <ul class="grid grid-cols-1 lg:grid-cols-8 gap-x-4 gap-y-2 list-disc list-inside text-gray-700 mb-3">
+                <li *ngFor="let doc of selectedStudent.documentos" class="flex items-center mb-3">
+                    <button class="button button--descargar" type="button"
+                            (click)="utilityService.descargarDocumento(doc.base64, doc.nombre, doc.mime)"
+                            title="{{doc.nombre}}">
+                        <span class="button__text">Descargar</span>
+                        <span class="button__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35"
+                                 id="bdd05811-e15d-428c-bb53-8661459f9307"
+                                 data-name="Layer 2" class="svg">
+                                <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+                                <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+                                <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+                            </svg>
+                        </span>
+                    </button>
+                    <p class="text-sm block lg:hidden">{{ doc.nombre }}</p>
+                </li>
+            </ul>
+        </div>
+        <ng-template #noDocuments>
+            <p class="text-gray-600 mb-3">No hay documentos entregados.</p>
+        </ng-template>
+        <div class="flex justify-end gap-2 mt-4">
+            <button class="bg-gray-500 text-white px-4 py-2 rounded" (click)="closeStudentInfoModal()">Cerrar</button>
+        </div>
+    </div>
+    <div class="fixed inset-0 bg-black opacity-50 z-40" (click)="closeStudentInfoModal()"></div>
+</div>

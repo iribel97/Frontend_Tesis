@@ -60,4 +60,14 @@ export class OpAdminService {
     return this.http.post<any>(this.apiUrl + "/api/adminop/horario", requestBody);
   }
 
+  // traer inscripciones pendientes
+  getInscripcionesPendientes(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/adminop/inscripciones/pendientes");
+  }
+
+  // traer una inscripción por cedula
+  getInscripcionByCedula(cedula: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/adminop/inscripcion/${cedula}`);
+  }
+
 }
