@@ -6,6 +6,7 @@ import { StudentsService } from '../../../services/students/students.service';
 import { ModalComponent } from '../../../shared/ui/modal/modal.component';
 import { ModalService } from '../../../shared/service/modal/modal.service';
 import { FormAddScheduleComponent } from '../../../forms/adminOp/form-add-schedule/form-add-schedule.component';
+import { TeachersService } from '../../../services/teacher/teachers.service';
 
 @Component({
   selector: 'app-schedule-admin',
@@ -31,12 +32,12 @@ export class ScheduleAdminComponent implements OnInit {
 
   constructor(private adminService: AdminService,
     private studentsService: StudentsService,
+    private teachersService:TeachersService,
     private modalService: ModalService) {
 
   }
 
   ngOnInit(): void {
-    this.loadCursos();
     this.getInfoUser();
   }
 
@@ -77,10 +78,31 @@ export class ScheduleAdminComponent implements OnInit {
       // Verifica que data tenga todas las propiedades necesarias
       if (data && data.cedula && data.nombres && data.apellidos) {
         this.rolUser = data.rol; // Asigna la información del usuario al objeto local
+        if (this.rolUser === 'Docente') {
+          this.loadHorariosDocente();
+        } else {
+          this.loadCursos();
+        }
       } else {
         console.error('Datos incompletos recibidos:', data);
       }
     });
+  }
+
+  // Cargar horarios de los docentes
+  loadHorariosDocente(): void {
+    this.loadingHorarios = true;
+    this.teachersService.getHorario().subscribe(
+      (data) => {
+        console.log('Horarios del docente:', data); // Útil para depuración
+        this.horarios = data;
+        this.loadingHorarios = false;
+      },
+      (error) => {
+        console.error('Error al cargar los horarios del docente:', error);
+        this.loadingHorarios = false;
+      }
+    );
   }
 
   // Verificar si el usuario tiene el rol institucional

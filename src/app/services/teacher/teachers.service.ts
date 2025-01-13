@@ -17,4 +17,9 @@ export class TeachersService {
     return this.http.get<any>(this.apiUrl + "/api/docente/materias");
   }
 
+  // Obtener el horario por docente
+  getHorario(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/docente/horario");
+  }
+
 }

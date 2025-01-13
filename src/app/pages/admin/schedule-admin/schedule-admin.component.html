@@ -1,26 +1,24 @@
 <div class="container mx-auto">
-    <h1 class="text-xl font-semibold mb-4">Administrar Horarios</h1>
+    <h1 class="text-xl font-semibold mb-4">Visualización de Horarios</h1>
 
-    <!-- Dropdown para seleccionar curso -->
-    <div class="mt-4 mb-4 flex items-center space-x-4 justify-between">
-        <div class="flex flex-row items-center space-x-4">
-
-            <label for="cursoSelect" class="block text-sm font-medium text-gray-700 dark:text-neutral-200">Seleccione un
-                curso:</label>
-
-            <select id="cursoSelect" (change)="loadHorariosByCurso($event)"
-                class="py-2 px-3 border border-gray-300 bg-white dark:bg-neutral-800 text-gray-700 dark:text-neutral-200 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                <option value="" disabled selected>Seleccione un curso</option>
-                <option *ngFor="let curso of cursos" [value]="curso.id">
-                    {{ curso.nombreGrado }} - {{ curso.paralelo }}
-                </option>
-            </select>
+        <!-- Dropdown para seleccionar curso (solo si el usuario no es docente) -->
+        <div *ngIf="rolUser !== 'Docente'" class="mt-4 mb-4 flex items-center space-x-4 justify-between">
+            <div class="flex flex-row items-center space-x-4">
+                <label for="cursoSelect" class="block text-sm font-medium text-gray-700 dark:text-neutral-200">Seleccione un
+                    curso:</label>
+                <select id="cursoSelect" (change)="loadHorariosByCurso($event)"
+                    class="py-2 px-3 border border-gray-300 bg-white dark:bg-neutral-800 text-gray-700 dark:text-neutral-200 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option value="" disabled selected>Seleccione un curso</option>
+                    <option *ngFor="let curso of cursos" [value]="curso.id">
+                        {{ curso.nombreGrado }} - {{ curso.paralelo }}
+                    </option>
+                </select>
+            </div>
+            <button *ngIf="isInstitutionalRole()" (click)="openModal('addSchedule')"
+                class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                Crear horario
+            </button>
         </div>
-        <button *ngIf="isInstitutionalRole()" (click)="openModal('addSchedule')"
-            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-            Crear horario
-        </button>
-    </div>
 
     <!-- Tabla de horarios -->
     <div *ngIf="horarios.length > 0" class="overflow-x-auto">
@@ -51,23 +49,44 @@
 
                     <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
                         {{ horario.lunes?.materia || 'N/A' }}<br />
-                        <span class="text-xs text-gray-500">{{ horario.lunes?.docente || 'N/A' }}</span>
+                        @if (rolUser == 'Docente') {
+                            <span class="text-xs text-gray-500">{{ horario.lunes?.curso || '' }}</span>
+                        } @else {
+                            <span class="text-xs text-gray-500">{{ horario.lunes?.docente || 'N/A' }}</span>
+                        }
+                        
                     </td>
                     <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
                         {{ horario.martes?.materia || 'N/A' }}<br />
-                        <span class="text-xs text-gray-500">{{ horario.martes?.docente || 'N/A' }}</span>
+                        @if (rolUser == 'Docente') {
+                            <span class="text-xs text-gray-500">{{ horario.martes?.curso || '' }}</span>
+                        } @else {
+                            <span class="text-xs text-gray-500">{{ horario.martes?.docente || 'N/A' }}</span>
+                        }
                     </td>
                     <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
                         {{ horario.miercoles?.materia || 'N/A' }}<br />
-                        <span class="text-xs text-gray-500">{{ horario.miercoles?.docente || 'N/A' }}</span>
+                        @if (rolUser == 'Docente') {
+                            <span class="text-xs text-gray-500">{{ horario.miercoles?.curso || '' }}</span>
+                        } @else {
+                            <span class="text-xs text-gray-500">{{ horario.miercoles?.docente || 'N/A' }}</span>
+                        }
                     </td>
                     <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
                         {{ horario.jueves?.materia || 'N/A' }}<br />
-                        <span class="text-xs text-gray-500">{{ horario.jueves?.docente || 'N/A' }}</span>
+                        @if (rolUser == 'Docente') {
+                            <span class="text-xs text-gray-500">{{ horario.jueves?.curso || '' }}</span>
+                        } @else {
+                            <span class="text-xs text-gray-500">{{ horario.jueves?.docente || 'N/A' }}</span>
+                        }
                     </td>
                     <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
                         {{ horario.viernes?.materia || 'N/A' }}<br />
-                        <span class="text-xs text-gray-500">{{ horario.viernes?.docente || 'N/A' }}</span>
+                        @if (rolUser == 'Docente') {
+                            <span class="text-xs text-gray-500">{{ horario.viernes?.curso || '' }}</span>
+                        } @else {
+                            <span class="text-xs text-gray-500">{{ horario.viernes?.docente || 'N/A' }}</span>
+                        }
                     </td>
                 </tr>
             </tbody>
