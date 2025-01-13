@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +40,24 @@ export class OpAdminService {
   // traer estudiantes matriculados
   getEstudiantesMatriculados(): Observable<any> {
     return this.http.get<any>(this.apiUrl + "/api/adminop/estudiantes/matriculados");
+  }
+
+  // traer las configuraciones de horas
+  getConfigHoras(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/adminop/horariosConfig");
+  }
+
+   // traer distributivos por id de ciclo e id del curso
+   getDistributivos(curso: number): Observable<any> {
+    if (!curso) {
+      return of([]); // Devuelve una lista vacía si el curso es nulo o vacío
+    }
+    return this.http.get<any>(`${this.apiUrl}/api/adminop/distributivos/5/curso/${curso}`);
+  }
+
+  // Agregar horario
+  addHorario(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl + "/api/adminop/horario", requestBody);
   }
 
 }

@@ -14,6 +14,7 @@ import {SelectItem} from "../../models/selectItem.model";
 import { SutmitAssignmentComponent } from "../../forms/student/sutmit-assignment/sutmit-assignment.component";
 import { FormSubjectComponent } from "../../forms/admin/form-subject/form-subject.component";
 import { FormAcademicCalendarComponent } from '../../forms/admin/form-academic-calendar/form-academic-calendar.component';
+import { FormAddScheduleComponent } from '../../forms/adminOp/form-add-schedule/form-add-schedule.component';
 
 
 @Component({
@@ -29,9 +30,10 @@ import { FormAcademicCalendarComponent } from '../../forms/admin/form-academic-c
     ModalComponent,
     ClipboardComponent,
     ToastComponent,
-    SutmitAssignmentComponent,
-    FormSubjectComponent,
-    FormAcademicCalendarComponent
+    // SutmitAssignmentComponent,
+    // FormSubjectComponent,
+    // FormAcademicCalendarComponent,
+    FormAddScheduleComponent,
 ],
     templateUrl: './viewtimeline.component.html',
     styleUrl: './viewtimeline.component.css'

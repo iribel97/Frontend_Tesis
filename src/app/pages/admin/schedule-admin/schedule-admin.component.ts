@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../../services/admin/admin.service';
 import { NgForOf, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StudentsService } from '../../../services/students/students.service';
+import { ModalComponent } from '../../../shared/ui/modal/modal.component';
+import { ModalService } from '../../../shared/service/modal/modal.service';
+import { FormAddScheduleComponent } from '../../../forms/adminOp/form-add-schedule/form-add-schedule.component';
 
 @Component({
   selector: 'app-schedule-admin',
@@ -9,6 +13,8 @@ import { FormsModule } from '@angular/forms';
     NgForOf,
     NgIf,
     FormsModule, // Agregar FormsModule a los imports
+    ModalComponent,
+    FormAddScheduleComponent,
   ],
   templateUrl: './schedule-admin.component.html',
   styleUrl: './schedule-admin.component.css'
@@ -19,11 +25,19 @@ export class ScheduleAdminComponent implements OnInit {
   selectedCursoId: number | null = null;
   horarios: any[] = [];
   loadingHorarios = false;
+  
 
-  constructor(private adminService: AdminService) { }
+  rolUser = '';
+
+  constructor(private adminService: AdminService,
+    private studentsService: StudentsService,
+    private modalService: ModalService) {
+
+  }
 
   ngOnInit(): void {
     this.loadCursos();
+    this.getInfoUser();
   }
 
   // Cargar cursos al iniciar el componente
@@ -54,6 +68,34 @@ export class ScheduleAdminComponent implements OnInit {
           this.loadingHorarios = false;
         }
       );
+    }
+  }
+
+  getInfoUser() {
+    this.studentsService.getUser().subscribe(data => {
+      console.log('Información del usuario:', data); // Útil para depuración
+      // Verifica que data tenga todas las propiedades necesarias
+      if (data && data.cedula && data.nombres && data.apellidos) {
+        this.rolUser = data.rol; // Asigna la información del usuario al objeto local
+      } else {
+        console.error('Datos incompletos recibidos:', data);
+      }
+    });
+  }
+
+  // Verificar si el usuario tiene el rol institucional
+  isInstitutionalRole(): boolean {
+    return this.rolUser === 'Institucional';
+  }
+
+  openModal(modalId: string): void {
+    this.modalService.openModal(modalId);
+  }
+
+  // Manejar el evento formSubmitted
+  onFormSubmitted(): void {
+    if (this.selectedCursoId) {
+      this.loadHorariosByCurso({ target: { value: this.selectedCursoId } } as unknown as Event);
     }
   }
 }
