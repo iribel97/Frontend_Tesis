@@ -5,15 +5,19 @@ import { UtilityService } from "../../../shared/service/utility/utility.service"
 import { TabsComponent } from '../../../shared/ui/tabs/tabs.component';
 import { NgForOf, NgIf } from '@angular/common';
 import { TeachersService } from '../../../services/teacher/teachers.service';
+import { AttendanceComponent } from '../../students/attendance/attendance.component';
+import { AttendancePersonalComponent } from "../../students/attendance-personal/attendance-personal.component";
+import { AttendancePerSubjectComponent } from '../../teacher/attendance-per-subject/attendance-per-subject.component';
 
 @Component({
     selector: 'app-home-course',
     templateUrl: './home-course.component.html',
     imports: [
-        TabsComponent,
-        NgForOf,
-        NgIf,
-    ],
+    TabsComponent,
+    NgIf,
+    AttendancePersonalComponent,
+    AttendancePerSubjectComponent,
+],
     styleUrl: './home-course.component.css'
 })
 export class HomeCourseComponent implements AfterViewInit, OnInit {
@@ -25,7 +29,6 @@ export class HomeCourseComponent implements AfterViewInit, OnInit {
 
     tabs: { id: string; title: string; content: TemplateRef<any> }[] = [];
     materia: any = null; // Datos completos de la materia desde el backend
-    asistencia: any = null; // Datos de asistencia del estudiante
     rolUser: string = ''; // Rol del usuario
 
     constructor(
@@ -71,9 +74,6 @@ export class HomeCourseComponent implements AfterViewInit, OnInit {
 
                     // Llamar al servicio para obtener la materia correspondiente
                     this.getMateria(idMateria);
-
-                    // Llamar al servicio para obtener la asistencia correspondiente
-                    this.getAsistencia(idMateria);
 
                 }
             } else {
@@ -126,19 +126,6 @@ export class HomeCourseComponent implements AfterViewInit, OnInit {
         );
     }
 
-    // Obtener asistencia desde el servicio
-    getAsistencia(idDistributivo: number): void {
-        this.studentsService.getAttendanceByDistributivo(idDistributivo).subscribe(
-            (data) => {
-                this.asistencia = data;
-
-                console.log('Asistencia:', this.asistencia);
-            },
-            (error) => {
-                console.error('Error al obtener la asistencia:', error);
-            }
-        );
-    }
 
 
     // Alternar el estado de una unidad
@@ -155,5 +142,16 @@ export class HomeCourseComponent implements AfterViewInit, OnInit {
     irADetalleAsignacion(idAsignacion: number, idDistributivo: number): void {
         console.log("idAsignacion:", idAsignacion, "idDistributivo:", idDistributivo);
         this.router.navigate(['/course/assignment', idAsignacion], { state: { data: { idDistributivo } } });
+    }
+
+    
+    // Función trackBy para unidades
+    trackByUnidad(index: number, unidad: any): number {
+        return unidad.idUnidad;
+    }
+
+    // Función trackBy para temas
+    trackByTema(index: number, tema: any): number {
+        return tema.idTema;
     }
 }
