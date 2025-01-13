@@ -15,6 +15,7 @@ import { SutmitAssignmentComponent } from "../../forms/student/sutmit-assignment
 import { FormSubjectComponent } from "../../forms/admin/form-subject/form-subject.component";
 import { FormAcademicCalendarComponent } from '../../forms/admin/form-academic-calendar/form-academic-calendar.component';
 import { FormAddScheduleComponent } from '../../forms/adminOp/form-add-schedule/form-add-schedule.component';
+import { FormCoursesAddComponent } from '../../forms/adminOp/form-courses-add/form-courses-add.component';
 
 
 @Component({
@@ -33,7 +34,8 @@ import { FormAddScheduleComponent } from '../../forms/adminOp/form-add-schedule/
     // SutmitAssignmentComponent,
     // FormSubjectComponent,
     // FormAcademicCalendarComponent,
-    FormAddScheduleComponent,
+    //FormAddScheduleComponent,
+    FormCoursesAddComponent,
 ],
     templateUrl: './viewtimeline.component.html',
     styleUrl: './viewtimeline.component.css'

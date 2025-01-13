@@ -70,4 +70,9 @@ export class OpAdminService {
     return this.http.get<any>(`${this.apiUrl}/api/adminop/inscripcion/${cedula}`);
   }
 
+  // obtener docentes
+  getDocentes(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/adminop/docentes");
+  }
+
 }

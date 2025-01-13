@@ -53,7 +53,7 @@ export class AdminService {
 
     // obtener los grados
     getGrados(): Observable<any> {
-        return this.http.get<any>(`${this.apiUrl}/api/admin/grados`);
+        return this.http.get<any>(`${this.apiUrl}/api/general/controller/grados`);
     }
 
     // Crear materia
