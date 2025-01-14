@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {TeachersService} from '../../../services/teacher/teachers.service';
 import {ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
 import {DatapikerComponent} from "../../../shared/ui/datapiker/datapiker.component";
+import {ToastComponent} from "../../../shared/ui/toast/toast.component";
 
 @Component({
     selector: 'app-attendance-per-subject',
-    imports: [ReactiveFormsModule, NgIf, NgForOf, DatapikerComponent, DatapikerComponent, FormsModule],
+    imports: [ReactiveFormsModule, NgIf, NgForOf, DatapikerComponent, DatapikerComponent, FormsModule, ToastComponent],
     templateUrl: './attendance-per-subject.component.html',
     styleUrls: ['./attendance-per-subject.component.css']
 })
@@ -17,6 +18,8 @@ export class AttendancePerSubjectComponent implements OnInit {
     idDistributivo: number = 0;
     attendanceForm: FormGroup;
     studentsList: any[] = [];
+
+    @ViewChild('toast', {static: true}) toast!: ToastComponent;
 
     constructor(
         private teachersService: TeachersService,
@@ -135,11 +138,11 @@ export class AttendancePerSubjectComponent implements OnInit {
         this.teachersService.updateAsistencias(asistenciasPayload).subscribe(
             (response) => {
                 console.log('Asistencias actualizadas correctamente:', response);
-                alert('Asistencias actualizadas exitosamente');
+                this.toast.showToast('success', response.detalles, response.mensaje, 5000);
             },
             (error) => {
                 console.error('Error al actualizar asistencias:', error);
-                alert('Ocurrió un error al actualizar las asistencias.');
+                this.toast.showToast('error', error.error.detalles, error.error.mensaje, 10000);
             }
         );
     }
@@ -166,12 +169,12 @@ export class AttendancePerSubjectComponent implements OnInit {
         this.teachersService.saveAsistencia(asistenciasPayload).subscribe(
             (response) => {
                 console.log('Asistencias registradas correctamente:', response);
-                alert('Asistencias registradas exitosamente');
+                this.toast.showToast('success', response.detalles, response.mensaje, 5000);
                 this.loadAsistencias(); // Refresca la lista de asistencias
             },
             (error) => {
                 console.error('Error al registrar asistencias:', error);
-                alert('Ocurrió un error al registrar las asistencias.');
+                this.toast.showToast('error', error.error.detalles, error.error.mensaje, 10000);
             }
         );
     }

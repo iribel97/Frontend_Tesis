@@ -38,7 +38,7 @@ export class TeachersService {
     }
 
     updateAsistencias(asistencias: any[]): Observable<any> {
-        return this.http.put(this.apiUrl + '/api/asistencias', asistencias); // Ajusta la URL según el endpoint del backend
+        return this.http.put(this.apiUrl + '/api/docente/asistencia', asistencias); // Ajusta la URL según el endpoint del backend
     }
 
 
