@@ -7,6 +7,7 @@ import { ModalComponent } from '../../../shared/ui/modal/modal.component';
 import { ModalService } from '../../../shared/service/modal/modal.service';
 import { FormAddScheduleComponent } from '../../../forms/adminOp/form-add-schedule/form-add-schedule.component';
 import { TeachersService } from '../../../services/teacher/teachers.service';
+import { RepresentService } from '../../../services/representative/represent.service';
 
 @Component({
   selector: 'app-schedule-admin',
@@ -23,7 +24,9 @@ import { TeachersService } from '../../../services/teacher/teachers.service';
 export class ScheduleAdminComponent implements OnInit {
 
   cursos: any[] = [];
+  estudiantes: any[] = [];
   selectedCursoId: number | null = null;
+  selectedEstudianteId: number | null = null;
   horarios: any[] = [];
   loadingHorarios = false;
   
@@ -33,6 +36,7 @@ export class ScheduleAdminComponent implements OnInit {
   constructor(private adminService: AdminService,
     private studentsService: StudentsService,
     private teachersService:TeachersService,
+    private representService: RepresentService,
     private modalService: ModalService) {
 
   }
@@ -72,6 +76,29 @@ export class ScheduleAdminComponent implements OnInit {
     }
   }
 
+  // carga horarios por estudiante
+  loadHorariosByEstudiante(event: any): void {
+    const estudianteId = event.target.value;
+    this.selectedEstudianteId = estudianteId;
+    this.loadHorarios();
+  }
+
+  loadHorarios(): void {
+    this.loadingHorarios = true;
+    if (this.rolUser === 'Representante' && this.selectedEstudianteId) {
+      this.representService.getHorarios(this.selectedEstudianteId).subscribe(
+        data => {
+          this.horarios = data;
+          this.loadingHorarios = false;
+        },
+        error => {
+          console.error('Error al cargar los horarios:', error);
+          this.loadingHorarios = false;
+        }
+      );
+    } 
+  }
+
   getInfoUser() {
     this.studentsService.getUser().subscribe(data => {
       console.log('Información del usuario:', data); // Útil para depuración
@@ -80,6 +107,8 @@ export class ScheduleAdminComponent implements OnInit {
         this.rolUser = data.rol; // Asigna la información del usuario al objeto local
         if (this.rolUser === 'Docente') {
           this.loadHorariosDocente();
+        } else if (this.rolUser === 'Representante') {
+          this.loadEstudiantes();
         } else {
           this.loadCursos();
         }
@@ -87,6 +116,18 @@ export class ScheduleAdminComponent implements OnInit {
         console.error('Datos incompletos recibidos:', data);
       }
     });
+  }
+
+  loadEstudiantes(): void {
+    this.representService.getEstudiantes().subscribe(
+      data => {
+        this.estudiantes = data;
+        console.log('Estudiantes:', this.estudiantes); // Útil para depuración
+      },
+      error => {
+        console.error('Error al cargar los estudiantes:', error);
+      }
+    );
   }
 
   // Cargar horarios de los docentes

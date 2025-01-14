@@ -1,0 +1,23 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RepresentService {
+
+  private readonly apiUrl = 'http://localhost:8080';
+
+  constructor(private http: HttpClient) { }
+
+  // Traer a los estudiantes por representante
+  getEstudiantes(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/representante/estudiantes");
+  }
+
+  // Traer horarios por id del estudiante
+  getHorarios(idEstudiante: number): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/representante/horario/estudiante/" + idEstudiante);
+  }
+}
