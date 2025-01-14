@@ -97,9 +97,10 @@ export class DatapikerComponent implements OnInit, ControlValueAccessor {
 
     generateDaysInMonth(year: number, month: number) {
         this.daysInMonth = [];
-        const date = new Date(year, month, 1);
+        const date = new Date(year, month, 1); // Primer día del mes
         const today = new Date();
 
+        // Generar los días válidos del mes
         while (date.getMonth() === month) {
             const day = date.getDate();
             const isFutureDate = date > today;
@@ -108,13 +109,18 @@ export class DatapikerComponent implements OnInit, ControlValueAccessor {
                 empty: false,
                 selectable: !this.disableFutureDates || !isFutureDate,
             });
-            date.setDate(day + 1);
+            date.setDate(day + 1); // Avanza al siguiente día
         }
 
-        // Añadir días vacíos al comienzo del mes
+        // Obtener el primer día del mes (0 = Domingo, 6 = Sábado)
         const firstDay = new Date(year, month, 1).getDay();
-        for (let i = 1; i < (firstDay + 6) % 7; i++) {
-            this.daysInMonth.unshift({ day: 0, empty: true, selectable: false });
+
+        // Ajustar para que la semana comience en lunes
+        const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1; // Si es domingo (0), pásalo al final (6)
+
+        // Añadir días vacíos al principio de la semana
+        for (let i = 0; i < adjustedFirstDay; i++) {
+            this.daysInMonth.unshift({day: 0, empty: true, selectable: false});
         }
     }
 
