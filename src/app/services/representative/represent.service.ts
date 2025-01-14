@@ -30,4 +30,9 @@ export class RepresentService {
   inscribirEstudiante(data: any): Observable<any> {
     return this.http.post<any>(this.apiUrl + "/api/representante/inscripcion/estudiante", data);
   }
+
+  // Eliminar inscripción de un estudiante
+  eliminarInscripcion(cedula: string): Observable<any> {
+    return this.http.delete<any>(this.apiUrl + "/api/representante/inscripcion/" + cedula);
+  }
 }

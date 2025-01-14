@@ -44,4 +44,19 @@ export class InscriptionsEstudentComponent implements OnInit {
   onFormSubmitted(): void {
     this.loadEstudiantesInscritos();
   }
+
+  // Método para eliminar estudiante
+  eliminarEstudiante(cedula: string): void {
+    if (confirm('¿Está seguro de que desea eliminar este estudiante?')) {
+      this.representService.eliminarInscripcion(cedula).subscribe(
+        () => {
+          console.log(`Estudiante con cédula ${cedula} eliminado`);
+          this.loadEstudiantesInscritos();
+        },
+        error => {
+          console.error('Error al eliminar el estudiante:', error);
+        }
+      );
+    }
+  }
 }
