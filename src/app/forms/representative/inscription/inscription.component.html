@@ -1,427 +1,146 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="grid grid-cols-2 gap-x-4">
-        <div class="flex items-center mt-1 col-span-1 ">
-            <ui-input
-                    class="w-full"
-                    id="cedula"
-                    label="Cedula"
-                    type="text"
-                    placeholder="Ingrese su numero de cedula"
-                    formControlName="cedula"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="10"
-                    [maxlength]="10"
-                    pattern="^[0-9 ]+$"
-                    permissivePattern="^[0-9 ]*$"
-            ></ui-input>
-        </div>
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="nombres"
-                    label="Nombre"
-                    type="text"
-                    placeholder="Ingrese su nombre"
-                    formControlName="nombres"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="3"
-                    [maxlength]="50"
-                    pattern="^[a-zA-Z ]+$"
-                    permissivePattern="^[a-zA-Z ]*$"
 
-            ></ui-input>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="apellidos"
-                    label="Apellido"
-                    type="text"
-                    placeholder="Ingrese su apellido"
-                    formControlName="apellidos"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="3"
-                    [maxlength]="50"
-                    pattern="^[a-zA-Z ]+$"
-                    permissivePattern="^[a-zA-Z ]+$"
-
-            ></ui-input>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="email"
-                    label="Correo Electrónico"
-                    type="email"
-                    placeholder="Ingrese su correo electrónico"
-                    formControlName="email"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="5"
-                    [maxlength]="50"
-                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                    permissivePattern="^[a-zA-Z0-9._%+-@]*$"
-
-            ></ui-input>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1 ">
-            <ui-input
-                    class="w-full"
-                    id="telefono"
-                    label="Telefono"
-                    type="text"
-                    placeholder="Ingrese su numero de telefono"
-                    formControlName="telefono"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="10"
-                    [maxlength]="10"
-                    pattern="^[0-9 ]+$"
-                    permissivePattern="^[0-9 ]*$"
-
-            ></ui-input>
-        </div>
-        <div class="flex items-center mt-1 col-span-2">
-            <ui-input
-                    class="w-full"
-                    id="direccion"
-                    label="Direccion"
-                    type="text"
-                    placeholder="Ingrese su dirección"
-                    formControlName="direccion"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="5"
-                    [maxlength]="50"
-            ></ui-input>
-        </div>
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-datapiker
-                    class="w-full"
-                    id="fechaNacimiento"
-                    formControlName="fechaNacimiento"
-                    [required]="true"/>
-
-
-        </div>
-
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-select
-                    class="w-full"
-                    id="genero"
-                    labelText="Género"
-                    placeholderText="Seleccione su género"
-                    [options]="genderOptions"
-                    [sendform]="sendform"
-                    formControlName="genero"
-                    [required]="true"
-
-
-            ></ui-select>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-select
-                    class="w-full"
-                    id="grado"
-                    labelText="Grado"
-                    placeholderText="Seleccione su género"
-                    [options]="gradeOptions"
-                    [sendform]="sendform"
-                    formControlName="grado"
-                    [required]="true"
-
-
-            ></ui-select>
-        </div>
-
-        <div class="flex flex-col mt-1 col-span-2 mb-5">
-            <p class="font-serif text-lg text-darkGray ml-2">Información de los padres</p>
-            <p class="font-serif text-sm text-darkGray-500 ml-2">Complete la información del padre del
-                representado</p>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="nombresPadre"
-                    label="Nombre padre"
-                    type="text"
-                    placeholder="Nombre padre"
-                    formControlName="nombresPadre"
-                    [sendform]="sendform"
-                    [minlength]="3"
-                    [maxlength]="50"
-
-            ></ui-input>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="apellidosPadre"
-                    label="Apellido padre"
-                    type="text"
-                    placeholder="Apellido padre"
-                    formControlName="apellidosPadre"
-                    [sendform]="sendform"
-                    [minlength]="3"
-                    [maxlength]="50"
-
-            ></ui-input>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="correoPadre"
-                    label="Correo Electrónico"
-                    type="email"
-                    placeholder="Ingrese su correo electrónico padre"
-                    formControlName="correoPadre"
-                    [required]="false"
-                    [sendform]="sendform"
-                    [minlength]="5"
-                    [maxlength]="50"
-                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                    permissivePattern="^[a-zA-Z0-9._%+-@]*$"
-
-            ></ui-input>
-        </div>
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="telefonoPadre"
-                    label="telefonoPadre"
-                    type="text"
-                    placeholder="Ingrese telefono padre"
-                    formControlName="telefonoPadre"
-                    [required]="false"
-                    [sendform]="sendform"
-                    [minlength]="10"
-                    [maxlength]="10"
-                    pattern="^[0-9 ]+$"
-                    permissivePattern="^[0-9 ]*$"
-
-            ></ui-input>
-        </div>
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="ocupacionPadre"
-                    label="Ocupacion padre"
-                    type="email"
-                    placeholder="Ingrese su correo electrónico"
-                    formControlName="ocupacionPadre"
-                    [required]="false"
-                    [sendform]="sendform"
-                    [minlength]="5"
-                    [maxlength]="50"
-
-
-            ></ui-input>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-file-uploader
-                    formControlName="cedulaPadre"
-                    [label]="'Cédula del padre'"
-                    [multiple]="false"
-                    [view]="'single'"
-                    [required]="false"
-            />
-        </div>
-
-        <div class="flex flex-col mt-1 col-span-2 mb-5">
-            <p class="font-serif text-sm text-darkGray-500 ml-2">Complete la información del padre del
-                representado</p>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="nombresMadre"
-                    label="Nombre madre"
-                    type="text"
-                    placeholder="Nombre madre"
-                    formControlName="nombresMadre"
-                    [sendform]="sendform"
-                    [minlength]="3"
-                    [maxlength]="50"
-
-            ></ui-input>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="apellidosMadre"
-                    label="Apellido madre"
-                    type="text"
-                    placeholder="Apellido madre"
-                    formControlName="apellidosMadre"
-                    [sendform]="sendform"
-                    [minlength]="3"
-                    [maxlength]="50"
-
-            ></ui-input>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="correoMadre"
-                    label="Correo Electrónico"
-                    type="email"
-                    placeholder="Ingrese su correo electrónico madre"
-                    formControlName="correoMadre"
-                    [required]="false"
-                    [sendform]="sendform"
-                    [minlength]="5"
-                    [maxlength]="50"
-                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                    permissivePattern="^[a-zA-Z0-9._%+-@]*$"
-
-            ></ui-input>
-        </div>
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="telefonoMadre"
-                    label="telefonoMadre"
-                    type="text"
-                    placeholder="Ingrese telefono madre"
-                    formControlName="telefonoMadre"
-                    [required]="false"
-                    [sendform]="sendform"
-                    [minlength]="10"
-                    [maxlength]="10"
-                    pattern="^[0-9 ]+$"
-                    permissivePattern="^[0-9 ]*$"
-
-            ></ui-input>
-        </div>
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-input
-                    class="w-full"
-                    id="ocupacionMadre"
-                    label="Ocupacion madre"
-                    type="email"
-                    placeholder="Ingrese su correo electrónico"
-                    formControlName="ocupacionMadre"
-                    [required]="false"
-                    [sendform]="sendform"
-                    [minlength]="5"
-                    [maxlength]="50"
-
-            ></ui-input>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-file-uploader
-                    formControlName="cedulaMadre"
-                    [multiple]="false"
-                    [view]="'single'"
-                    [required]="false"
-            />
-        </div>
-
-        <div class="flex flex-col mt-1 col-span-2 mb-5">
-            <p class="font-serif text-sm text-darkGray-500 ml-2">Documentos del estudiante</p>
-        </div>
-
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-file-uploader
-                    formControlName="cedulaEstudiante"
-                    [label]="'Cédula del Estudiante'"
-                    [multiple]="false"
-                    [view]="'single'"
-                    [required]="false"
-            />
-        </div>
-        <div class="flex items-center mt-1 col-span-1">
-            <ui-file-uploader
-                    [inputId]="'certificadoNotas'"
-                    formControlName="certificadoNotas"
-                    [label]="'Certificado de notas'"
-                    [multiple]="false"
-                    [view]="'single'"
-                    (change)="handleFileInput('certificadoNotas', $event)"
-                    [required]="false"
-            />
-        </div>
-
-        <div
-                data-hs-file-upload='{
-    "url": "/upload",
-    "maxFiles": 1,
-    "singleton": true
-  }'
-                class="w-full"
-                [formGroup]="form"
-        >
-            <!-- Plantilla para vista previa del archivo -->
-            <template data-hs-file-upload-preview="">
-                <div class="flex items-center w-full">
-      <span class="grow-0 overflow-hidden truncate" data-hs-file-upload-file-name="">
-        {{ selectedFile?.name || 'No Chosen File' }}
-      </span>
-                    <span class="grow-0">.</span>
-                    <span class="grow-0" data-hs-file-upload-file-ext="">
-                        @if (selectedFile) {
-                            <span class="grow-0">
-          {{ selectedFile?.name ? selectedFile.name.split('.').pop() : '' }}
-        </span>
-                        }
-
-      </span>
+<ui-toast #toast></ui-toast>
+<div class="container mx-auto">
+    <h2 class="text-xl font-semibold mb-4">Inscripción</h2>
+    
+    <div *ngIf="currentStep === 1">
+        <h3 class="text-lg font-medium mb-2">Datos del Estudiante</h3>
+        <form [formGroup]="form">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="">
+                    <label class="block text-gray-700">Cédula</label>
+                    <input formControlName="cedula" class="w-full px-3 py-2 border rounded" />
                 </div>
-            </template>
+                <div class="">
+                    <label class="block text-gray-700">Nombres</label>
+                    <input formControlName="nombres" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="">
+                    <label class="block text-gray-700">Apellidos</label>
+                    <input formControlName="apellidos" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="">
+                    <label class="block text-gray-700">Fecha de Nacimiento</label>
+                    <input formControlName="fechaNacimiento" type="date" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-gray-700">Correo Electrónico</label>
+                    <input formControlName="email" class="w-full px-3 py-2 border rounded" />
+                </div>
+                
+                <div class="col-span-2">
+                    <label class="block text-gray-700">Dirección</label>
+                    <input formControlName="direccion" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div >
+                    <label class="block text-gray-700">Teléfono</label>
+                    <input formControlName="telefono" class="w-full px-3 py-2 border rounded" />
+                </div>
+                
+                <div >
+                    <label class="block text-gray-700">Género</label>
+                    <select formControlName="genero" class="w-full px-3 py-2 border rounded">
+                        <option *ngFor="let option of genderOptions" [value]="option.id">{{ option.name }}</option>
+                    </select>
+                </div>
+                <div >
+                    <label class="block text-gray-700">Grado</label>
+                    <select formControlName="grado" class="w-full px-3 py-2 border rounded">
+                        <option *ngFor="let option of gradeOptions" [value]="option.id">{{ option.name }}</option>
+                    </select>
+                </div>
+                <div >
+                    <label class="block text-gray-700">Cédula del Estudiante</label>
+                    <input type="file" (change)="handleFileInput('cedulaEstudiante', $event)" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div >
+                    <label class="block text-gray-700">Certificado de Calificaciones</label>
+                    <input type="file" (change)="handleFileInput('certificadoNotas', $event)" class="w-full px-3 py-2 border rounded" />
+                </div>
+            </div>
+            <button type="button" (click)="nextStep()" class="bg-blue-500 text-white px-4 py-2 mt-4 mp-4 rounded hover:bg-blue-700">Siguiente</button>
+        </form>
+    </div>
 
-            <!-- Botón de carga del archivo -->
-            <button
-                    type="button"
-                    (click)="triggerFileInput('file-input')"
-                    class="relative flex w-full border overflow-hidden border-gray-200 shadow-sm rounded-lg text-sm focus:outline-none focus:z-10 focus:border-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:border-neutral-600"
-            >
-                <span class="h-full py-3 px-4 bg-gray-100 text-nowrap dark:bg-neutral-800">Seleccione un archivo</span>
-                <span
-                        class="group grow flex overflow-hidden h-full py-3 px-4"
-                        data-hs-file-upload-previews=""
-                >
-      <div class="flex overflow-hidden max-w-full">
-  <span class="truncate">
-    {{ selectedFile?.name || 'Ningun archivo seleccionado' }}
-  </span>
+    <div *ngIf="currentStep === 2">
+        <h3 class="text-lg font-medium mb-2">Datos del Padre</h3>
+        <form [formGroup]="form">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="mb-4">
+                    <label class="block text-gray-700">Nombres</label>
+                    <input formControlName="nombresPadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Apellidos</label>
+                    <input formControlName="apellidosPadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Correo Electrónico</label>
+                    <input formControlName="correoPadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Teléfono</label>
+                    <input formControlName="telefonoPadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Ocupación</label>
+                    <input formControlName="ocupacionPadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Cédula</label>
+                    <input type="file" (change)="handleFileInput('cedulaPadre', $event)" class="w-full px-3 py-2 border rounded" />
+                </div>
+            </div>
+            <button type="button" (click)="previousStep()" class="bg-gray-500 mr-6 text-white px-4 py-2 rounded hover:bg-gray-700">Anterior</button>
+            <button type="button" (click)="nextStep()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Siguiente</button>
+        </form>
+    </div>
+
+    <div *ngIf="currentStep === 3">
+        <h3 class="text-lg font-medium mb-2">Datos de la Madre</h3>
+        <form [formGroup]="form">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="mb-4">
+                    <label class="block text-gray-700">Nombres</label>
+                    <input formControlName="nombresMadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Apellidos</label>
+                    <input formControlName="apellidosMadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Correo Electrónico</label>
+                    <input formControlName="correoMadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Teléfono</label>
+                    <input formControlName="telefonoMadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Ocupación</label>
+                    <input formControlName="ocupacionMadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Cédula</label>
+                    <input type="file" (change)="handleFileInput('cedulaMadre', $event)" class="w-full px-3 py-2 border rounded" />
+                </div>
+            </div>
+            <button type="button" (click)="previousStep()" class="bg-gray-500 mr-6 text-white px-4 py-2 rounded hover:bg-gray-700">Anterior</button>
+            <button type="button" (click)="nextStep()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Siguiente</button>
+        </form>
+    </div>
+
+    <div *ngIf="currentStep === 4">
+        <h3 class="text-lg font-medium mb-2">Documentos de Servicios Básicos</h3>
+        <form [formGroup]="form">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="mb-4">
+                    <label class="block text-gray-700">Servicios Básicos</label>
+                    <input type="file" (change)="handleFileInput('serviciosBasicos', $event)" class="w-full px-3 py-2 border rounded" />
+                </div>
+            </div>
+            <button type="button" (click)="previousStep()" class="bg-gray-500 mr-6 text-white px-4 py-2 rounded hover:bg-gray-700">Anterior</button>
+            <button type="button" (click)="onSubmit()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">Enviar</button>
+        </form>
+    </div>
 </div>
-    </span>
-                <span class="absolute top-0 left-0 w-full h-full" data-hs-file-upload-trigger=""></span>
-            </button>
-
-            <!-- Input oculto para la subida de archivos -->
-            <input
-                    type="file"
-                    id="file-input"
-                    class="hidden"
-                    (change)="handleFileInput('serviciosBasicos', $event)"
-            />
-        </div>
-
-
-    </div>
-
-
-    <div class="mt-6">
-        <button type="submit"
-                class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-[#4D869C] rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-            Enviar
-        </button>
-    </div>
-</form>

@@ -24,6 +24,7 @@ import { CoursesAdComponent } from './pages/opAdmin/courses-ad/courses-ad.compon
 import { EstudentsTableComponent } from './pages/opAdmin/estudents-table/estudents-table.component';
 import { InscriptionComponent } from './forms/representative/inscription/inscription.component';
 import { InscriptionTableComponent } from './pages/opAdmin/inscription-table/inscription-table.component';
+import { InscriptionsEstudentComponent } from './pages/representative/inscriptions-estudent/inscriptions-estudent.component';
 
 export const routes: Routes = [
     {
@@ -54,7 +55,8 @@ export const routes: Routes = [
             {path: 'students/conduct', component: ConductComponent},
             {path: 'students/grades', component: GradesComponent},
             {path: 'example', component: ViewtimelineComponent},
-            {path: 'representative/inscription', component: RepreInscriptionComponent},
+            {path: 'representative/inscription/form', component: RepreInscriptionComponent},
+            {path: 'representative/inscriptions', component: InscriptionsEstudentComponent},
         ]
     },
     {path: 'register', component: PageRegisterComponent, canActivate: [loginGuard]},

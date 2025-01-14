@@ -20,4 +20,14 @@ export class RepresentService {
   getHorarios(idEstudiante: number): Observable<any> {
     return this.http.get<any>(this.apiUrl + "/api/representante/horario/estudiante/" + idEstudiante);
   }
+
+  // Traer inscripciones por representante
+  getInscripciones(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/representante/inscripcion");
+  }
+
+  // Inscribir a un estudiante
+  inscribirEstudiante(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl + "/api/representante/inscripcion/estudiante", data);
+  }
 }

@@ -1,22 +1,17 @@
-import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
-import {DatapikerComponent} from "../../../shared/ui/datapiker/datapiker.component";
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {InputComponent} from "../../../shared/ui/input/input.component";
-import {SelectComponent} from "../../../shared/ui/select/select.component";
-import {FileUploaderComponent} from "../../../shared/ui/file-uploader/file-uploader.component";
-import {DecimalPipe, NgIf} from "@angular/common";
+import { ChangeDetectorRef, Component, EventEmitter, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NgForOf, NgIf } from '@angular/common';
+import { ToastComponent } from '../../../shared/ui/toast/toast.component';
+import { RepresentService } from '../../../services/representative/represent.service';
 
 @Component({
     selector: 'form-inscription',
     imports: [
-        DatapikerComponent,
         FormsModule,
-        InputComponent,
         ReactiveFormsModule,
-        SelectComponent,
-        FileUploaderComponent,
         NgIf,
-        DecimalPipe
+        NgForOf,
+        ToastComponent,
     ],
     templateUrl: './inscription.component.html',
     styleUrl: './inscription.component.css'
@@ -25,22 +20,28 @@ export class InscriptionComponent implements OnInit {
     formErrors: { [key: string]: string } = {};
     form!: FormGroup;
     sendform = false;
+    currentStep = 1;
 
+    @Output() formSubmitted = new EventEmitter<void>(); // Variable que indica si la operación fue exitosa
+
+    @ViewChild('toast', { static: true }) toast!: ToastComponent;
 
     genderOptions: { id: number; name: string }[] = [
-        {id: 1, name: 'Masculino'},
-        {id: 2, name: 'Femenino'},
-        {id: 3, name: 'Otros'},
+        { id: 1, name: 'Masculino' },
+        { id: 2, name: 'Femenino' },
+        { id: 3, name: 'Otros' },
     ];
 
     gradeOptions: { id: number; name: string }[] = [
-        {id: 1, name: 'Octavo'},
-        {id: 2, name: 'Noveno'},
-        {id: 3, name: 'Décimo'},
+        { id: 1, name: 'Octavo' },
+        { id: 2, name: 'Noveno' },
+        { id: 3, name: 'Décimo' },
     ];
 
-    constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private ngZone: NgZone) {
-    }
+    constructor(private fb: FormBuilder,
+        private cdr: ChangeDetectorRef,
+        private ngZone: NgZone,
+        private representService: RepresentService) { }
 
     ngOnInit(): void {
         this.form = this.fb.group({
@@ -77,41 +78,86 @@ export class InscriptionComponent implements OnInit {
         });
     }
 
-    onSubmit() {
+    nextStep() {
+        this.currentStep++;
+    }
+
+    previousStep() {
+        this.currentStep--;
+    }
+
+    async onSubmit() {
         this.sendform = true;
         if (Object.keys(this.formErrors).length > 0) {
             console.log('Form has errors:', this.formErrors);
         } else {
+            const formValue = this.form.value;
+            const formattedData = {
+                cedula: formValue.cedula,
+                nombres: formValue.nombres,
+                apellidos: formValue.apellidos,
+                email: formValue.email,
+                telefono: formValue.telefono,
+                direccion: formValue.direccion,
+                fechaNacimiento: formValue.fechaNacimiento,
+                genero: formValue.genero,
+                grado: formValue.grado,
+                nombresPadre: formValue.nombresPadre,
+                apellidosPadre: formValue.apellidosPadre,
+                correoPadre: formValue.correoPadre,
+                telefonoPadre: formValue.telefonoPadre,
+                ocupacionPadre: formValue.ocupacionPadre,
+                cedulaPadre: await this.convertFileToBase64(formValue.cedulaPadre[0]),
+                nombresMadre: formValue.nombresMadre,
+                apellidosMadre: formValue.apellidosMadre,
+                correoMadre: formValue.correoMadre,
+                telefonoMadre: formValue.telefonoMadre,
+                ocupacionMadre: formValue.ocupacionMadre,
+                cedulaMadre: await this.convertFileToBase64(formValue.cedulaMadre[0]),
+                cedulaEstudiante: await this.convertFileToBase64(formValue.cedulaEstudiante[0]),
+                certificadoNotas: await this.convertFileToBase64(formValue.certificadoNotas[0]),
+                serviciosBasicos: await this.convertFileToBase64(formValue.serviciosBasicos[0]),
+                representanteId: formValue.representanteId,
+            };
             console.log('Form submitted successfully');
-            console.log('Form value:', this.form.value);
+            this.representService.inscribirEstudiante(formattedData).subscribe(
+                (data) => {
+                    console.log('Estudiante inscrito:', data);
+                    this.toast.showToast('success', "Estudiante inscrito", "El estudiante ha sido agregado correctamente", 5000);
+                    this.formSubmitted.emit();
+                    this.resetForm();
+                },
+                (error) => {
+                    console.error('Error al inscribir estudiante:', error);
+                    this.toast.showToast('error', "Error al inscribir estudiante", "Ha ocurrido un error al intentar inscribir al estudiante", 5000);
+                }
+            );
         }
     }
 
-    onErrorsChange(event: { id: string, errorMessage: string }) {
-        if (event.errorMessage) {
-            this.formErrors[event.id] = event.errorMessage;
-        } else {
-            delete this.formErrors[event.id];
-        }
-        this.cdr.detectChanges(); // Trigger change detection manually
+    resetForm(): void {
+        this.form.reset();
+        this.sendform = false;
+        this.currentStep = 1;
     }
 
-    getFormErrorsKeys(): string[] {
-        return Object.keys(this.formErrors);
+    async convertFileToBase64(file: File): Promise<{ base64: string, mime: string }> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                const base64 = (reader.result as string).split(',')[1];
+                resolve({ base64, mime: file.type });
+            };
+            reader.onerror = error => reject(error);
+        });
     }
-
-
-    selectedFile: File | null = null;
 
     handleFileInput(controlName: string, event: Event): void {
         const input = event.target as HTMLInputElement;
         const files = input?.files ? Array.from(input.files) : [];
 
         if (files.length) {
-            // Tomar el archivo seleccionado
-            this.selectedFile = files[0];
-
-            // Vincular el archivo seleccionado al formulario reactivo
             this.form.get(controlName)?.setValue(files);
             this.form.get(controlName)?.markAsDirty();
             this.form.get(controlName)?.markAsTouched();
@@ -119,10 +165,6 @@ export class InscriptionComponent implements OnInit {
     }
 
     removeFile(controlName: string): void {
-        // Eliminar el archivo seleccionado
-        this.selectedFile = null;
-
-        // Quitar el valor del formulario reactivo
         this.form.get(controlName)?.setValue(null);
         this.form.get(controlName)?.markAsDirty();
         this.form.get(controlName)?.markAsTouched();
@@ -131,7 +173,7 @@ export class InscriptionComponent implements OnInit {
     triggerFileInput(inputId: string): void {
         const inputElement = document.getElementById(inputId) as HTMLInputElement;
         if (inputElement) {
-            inputElement.click(); // Simula un clic en el input oculto
+            inputElement.click();
         }
     }
 
@@ -152,30 +194,21 @@ export class InscriptionComponent implements OnInit {
         if (event.dataTransfer?.files) {
             const files = Array.from(event.dataTransfer.files);
             if (files.length) {
-                this.selectedFile = files[0];
                 this.form.get('serviciosBasicos')?.setValue(files);
             }
         }
     }
 
-    /**
-     * Trunca el nombre del archivo si es demasiado largo.
-     * @param name Nombre completo del archivo
-     * @param maxLength Longitud máxima permitida para el nombre
-     * @returns Nombre truncado con extensión visible
-     */
-    truncateFileName(name: string, maxLength: number): string {
-        if (name.length <= maxLength) {
-            return name; // El nombre está dentro del límite, no se recorta
+    onErrorsChange(event: { id: string, errorMessage: string }) {
+        if (event.errorMessage) {
+            this.formErrors[event.id] = event.errorMessage;
+        } else {
+            delete this.formErrors[event.id];
         }
-
-        const extIndex = name.lastIndexOf('.'); // Buscar el índice del último punto para obtener la extensión
-        const extension = extIndex >= 0 ? name.substring(extIndex) : ''; // Extrae la extensión (si hay)
-
-        const baseNameLength = maxLength - extension.length - 3; // Resta los caracteres "..." y la extensión
-        const truncatedBaseName = name.substring(0, Math.max(baseNameLength, 0)); // Ajusta la base al tamaño permitido
-
-        return `${truncatedBaseName}...${extension}`; // Combina el nombre truncado con la extensión
+        this.cdr.detectChanges();
     }
 
+    getFormErrorsKeys(): string[] {
+        return Object.keys(this.formErrors);
+    }
 }
