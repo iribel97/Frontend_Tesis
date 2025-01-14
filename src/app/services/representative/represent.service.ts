@@ -35,4 +35,9 @@ export class RepresentService {
   eliminarInscripcion(cedula: string): Observable<any> {
     return this.http.delete<any>(this.apiUrl + "/api/representante/inscripcion/" + cedula);
   }
+
+  // Traer matriculas por representante
+  getMatriculas(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/representante/matriculas");
+  }
 }
