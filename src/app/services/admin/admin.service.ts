@@ -94,5 +94,16 @@ export class AdminService {
         return this.http.post<any>(`${this.apiUrl}/api/admin/calendario`, requestBody);
     }
 
+    // ENDPOINTS PARA EL DASHBOARD ---------------------------------------------------------------------
+    // Obtener info del calendario académico
+    getCalendario(): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/api/general/controller/calendario`);
+    }
+
+    // Info de docentes asignados
+    getDocentesAsignados(): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/api/admin/dashboard/docentes`);
+    }
+
 }
 

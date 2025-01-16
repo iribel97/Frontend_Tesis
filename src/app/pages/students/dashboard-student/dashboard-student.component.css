@@ -1,0 +1,63 @@
+/* From Uiverse.io by kushalyadavweb */
+.card {
+    color: white;
+    overflow: visible;
+    height: 100%; /* Ensure the card takes the full height of the container */
+    width: 100%;
+}
+
+.card .item {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Ensure each item takes the full height of the card */
+}
+
+.item:hover {
+    transform: scale(1.1); /* Adjusted scale for better fit */
+    transition: all 350ms ease-in-out;
+}
+
+.item svg {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 7px;
+}
+
+.item--1 {
+    background: #c7c7ff;
+}
+
+.item--2 {
+    background: #ffd8be;
+}
+
+.item--3 {
+    background: #a9ecbf;
+}
+
+.quantity {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.text {
+    font-size: 1.2rem;
+    font-family: inherit;
+    font-weight: 600;
+}
+
+.text--1 {
+    color: rgba(149, 149, 255, 1);
+}
+
+.text--2 {
+    color: rgba(252, 161, 71, 1);
+}
+
+.text--3 {
+    color: rgba(66, 193, 110, 1);
+}
+

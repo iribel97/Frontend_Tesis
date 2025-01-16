@@ -43,7 +43,19 @@ export class FormLoginComponent implements OnInit {
             console.log('Form has errors:', this.formErrors);
         } else {
             this.authService.login(this.formLogin.value).subscribe(response => {
-                this.router.navigate(['/home']);
+                if (response.rolUsuario === 'Admin') {
+                    this.router.navigate(['admin/dashboard']);
+                } else if (response.rolUsuario === 'Institucional') {
+                    this.router.navigate(['institutional/dashboard']);
+                } else if (response.rolUsuario === 'Docente') {
+                    this.router.navigate(['teacher/dashboard']);
+                } else if (response.rolUsuario === 'Estudiante') {
+                    this.router.navigate(['student/dashboard']);
+                } else if (response.rolUsuario === 'Representante') {
+                    this.router.navigate(['representative/dashboard']);
+                } else {
+                    this.router.navigate(['home']);
+                }
             }, error => {
                 this.toast.showToast('error', error.error.detalles,error.error.mensaje,10000); // Show toast message
                 console.error('Login error:', error);

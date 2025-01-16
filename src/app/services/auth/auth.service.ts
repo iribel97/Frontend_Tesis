@@ -10,6 +10,7 @@ interface LoginRequest {
 
 interface LoginResponse {
     token: string;
+    rolUsuario: string;
     estadoUsuario: string;
 }
 

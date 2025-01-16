@@ -220,7 +220,10 @@
                         <li>
                             <a routerLinkActive="bg-gray-100 dark:bg-primary-dark-hover"
                                 class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover focus:outline-none focus:bg-gray-100 dark:text-white"
-                                routerLink="dashboard">
+                                [routerLink]="infoUser.rol === 'Admin' ? 'admin/dashboard' : 
+                                infoUser.rol === 'Institucional' ? 'institutional/dashboard' : 
+                                infoUser.rol === 'Docente' ? 'teacher/dashboard' : 
+                                infoUser.rol === 'Estudiante' ? 'student/dashboard' : 'representative/dashboard'">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round"
