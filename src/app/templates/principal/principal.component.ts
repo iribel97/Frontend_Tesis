@@ -122,7 +122,6 @@ export class PrincipalComponent implements OnInit {
 
     getInfoUser() {
         this.studentsService.getUser().subscribe(data => {
-            console.log('Información del usuario:', data); // Útil para depuración
             this.initialUserLS =
                 (data.nombres ? data.nombres.slice(0, 1).toUpperCase() : '') +
                 (data.apellidos ? data.apellidos.slice(0, 1).toUpperCase() : '');
@@ -130,8 +129,6 @@ export class PrincipalComponent implements OnInit {
             // Verifica que data tenga todas las propiedades necesarias
             if (data && data.cedula && data.nombres && data.apellidos) {
                 this.infoUser = data; // Asigna la información del usuario al objeto local
-                console.log('Información del usuario asignada a infoUser:', this.infoUser);
-
                 // Ahora que infoUser está correctamente asignado, podemos cargar las materias
                 this.cargarMaterias();
             } else {
@@ -145,7 +142,6 @@ export class PrincipalComponent implements OnInit {
     }
 
     cargarMaterias(): void {
-        console.log("Rol usuario 2: " + this.infoUser.rol);
         if (this.infoUser.rol == 'Docente') {
             this.teachersService.getMaterias().subscribe({
                 next: (data) => {

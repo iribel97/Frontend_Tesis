@@ -1,0 +1,136 @@
+<div class="w-full">
+    <div class="flex flex-row items-center justify-between">
+        <div class="w-1/2 p-3">
+            <app-calendar></app-calendar>
+        </div>
+        <div class="w-1/2 h-96 flex flex-col items-center justify-center">
+            <div class="card grid grid-cols-3 gap-4 h-full">
+                <div class="item item--1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-square-check">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+                        <path d="M9 12l2 2l4 -4" />
+                    </svg>
+                    <span class="quantity"> 90% </span>
+                    <span class="text text--1"> Asistencias </span>
+                </div>
+                <div class="item item--2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-stars">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M17.657 12.007a1.39 1.39 0 0 0 -1.103 .765l-.855 1.723l-1.907 .277c-.52 .072 -.96 .44 -1.124 .944l-.038 .14c-.1 .465 .046 .954 .393 1.29l1.377 1.337l-.326 1.892a1.393 1.393 0 0 0 2.018 1.465l1.708 -.895l1.708 .896a1.388 1.388 0 0 0 1.462 -.105l.112 -.09a1.39 1.39 0 0 0 .442 -1.272l-.325 -1.891l1.38 -1.339c.38 -.371 .516 -.924 .352 -1.427l-.051 -.134a1.39 1.39 0 0 0 -1.073 -.81l-1.907 -.278l-.853 -1.722a1.393 1.393 0 0 0 -1.247 -.773l-.143 .007z" />
+                        <path
+                            d="M6.057 12.007a1.39 1.39 0 0 0 -1.103 .765l-.855 1.723l-1.907 .277c-.52 .072 -.96 .44 -1.124 .944l-.038 .14c-.1 .465 .046 .954 .393 1.29l1.377 1.337l-.326 1.892a1.393 1.393 0 0 0 2.018 1.465l1.708 -.895l1.708 .896a1.388 1.388 0 0 0 1.462 -.105l.112 -.09a1.39 1.39 0 0 0 .442 -1.272l-.324 -1.891l1.38 -1.339c.38 -.371 .516 -.924 .352 -1.427l-.051 -.134a1.39 1.39 0 0 0 -1.073 -.81l-1.908 -.279l-.853 -1.722a1.393 1.393 0 0 0 -1.247 -.772l-.143 .007z" />
+                        <path
+                            d="M11.857 2.007a1.39 1.39 0 0 0 -1.103 .765l-.855 1.723l-1.907 .277c-.52 .072 -.96 .44 -1.124 .944l-.038 .14c-.1 .465 .046 .954 .393 1.29l1.377 1.337l-.326 1.892a1.393 1.393 0 0 0 2.018 1.465l1.708 -.894l1.709 .896a1.388 1.388 0 0 0 1.462 -.105l.112 -.09a1.39 1.39 0 0 0 .442 -1.272l-.325 -1.892l1.38 -1.339c.38 -.371 .516 -.924 .352 -1.427l-.051 -.134a1.39 1.39 0 0 0 -1.073 -.81l-1.908 -.279l-.853 -1.722a1.393 1.393 0 0 0 -1.247 -.772l-.143 .007z" />
+                    </svg>
+                    <span class="quantity"> A </span>
+                    <span class="text text--2"> Conducta </span>
+                </div>
+                <div class="item item--3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-note">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M13 20l7 -7" />
+                        <path d="M13 20v-6a1 1 0 0 1 1 -1h6v-7a2 2 0 0 0 -2 -2h-12a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7" />
+                    </svg>
+                    <span class="quantity"> 8.5 </span>
+                    <span class="text text--3"> Calificación </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-row items-center justify-between">
+        <div class="w-full p-8 flex flex-col items-center">
+            <!-- Título -->
+            <div class="text-center mb-4">
+                <h1 class="text-3xl font-bold">Mi Aventura Académica</h1>
+                <p class="text-gray-600 mt-2">Completa tus misiones para avanzar</p>
+            </div>
+
+            <!-- Contenedor con scroll horizontal -->
+            <div class="relative w-full max-w-4xl overflow-x-auto">
+                <!-- Contenedor flexible para las tarjetas y la línea -->
+                <div class="relative flex items-center min-w-max">
+                    <!-- Línea horizontal dinámica -->
+                    <div class="absolute top-4 left-0 right-0 h-1 bg-gray-300 w-full"></div>
+
+                    <!-- Tarjetas dinámicas -->
+                    <div *ngFor="let tarea of tareas" class="relative flex flex-col items-center mx-4">
+                        <!-- Punto -->
+                        <div [class.bg-blue-500]="tarea.estado === 'pendiente'"
+                            [class.bg-yellow-500]="tarea.estado === 'en progreso'"
+                            [class.bg-red-500]="tarea.estado === 'urgente'"
+                            class="w-8 h-8 rounded-full border-4 border-white relative z-10"></div>
+                        <!-- Tarjeta -->
+                        <div
+                            class="bg-white shadow-md rounded-lg p-4 mt-6 w-48 text-center hover:shadow-xl transition-shadow">
+                            <h2 class="text-lg font-semibold text-gray-800">{{ tarea.nombre }}</h2>
+                            <p class="text-sm text-gray-500 mt-1">{{ tarea.descripcion }}</p>
+                            <p class="text-sm text-gray-500 mt-1">Fecha límite: {{ tarea.fecha }}</p>
+                            <button class="mt-4 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+                                Ver tarea
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col items-center justify-center w-full">
+        <div class=" flex flex-col items-center w-full">
+            <!-- Título -->
+            <div class="text-center mb-6">
+                <h1 class="text-3xl font-bold">Materias y Progreso</h1>
+                <p class="text-gray-600">Consulta tu promedio y el avance en cada materia</p>
+            </div>
+
+            <!-- Contenedor del carrusel -->
+            <div class="relative max-w-4xl">
+                <!-- Botones de navegación -->
+                <button
+                    class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 z-10"
+                    (click)="prevSlide()">
+                    &#10094;
+                </button>
+                <button
+                    class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 z-10"
+                    (click)="nextSlide()">
+                    &#10095;
+                </button>
+
+                <!-- Carrusel -->
+                <div class="overflow-hidden mb-4 pb-4">
+                    <div class="flex transition-transform duration-500 ease-in-out"
+                        [style.transform]="'translateX(' + currentTranslate + 'px)'">
+                        <!-- Tarjetas dinámicas -->
+                        <div *ngFor="let materia of materias"
+                            class="bg-white shadow-md rounded-lg p-6 w-72 flex-shrink-0 mx-3">
+                            <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ materia.nombre }}</h2>
+                            <p class="text-gray-500 text-sm">Docente: {{ materia.docente }}</p>
+                            <p class="text-gray-500 text-sm mt-2">
+                                Promedio Actual: <span class="font-semibold">{{ materia.promedio }}</span>
+                            </p>
+                            <!-- Barra de progreso -->
+                            <div class="mt-4">
+                                <div class="h-2 rounded-full bg-gray-200">
+                                    <div [style.width.%]="materia.progreso" class="h-full bg-blue-500 rounded-full">
+                                    </div>
+                                </div>
+                                <p class="text-right text-sm text-gray-500 mt-1">
+                                    {{ materia.progreso }}% completado
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

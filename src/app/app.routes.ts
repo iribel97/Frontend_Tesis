@@ -26,6 +26,11 @@ import { InscriptionComponent } from './forms/representative/inscription/inscrip
 import { InscriptionTableComponent } from './pages/opAdmin/inscription-table/inscription-table.component';
 import { InscriptionsEstudentComponent } from './pages/representative/inscriptions-estudent/inscriptions-estudent.component';
 import { MatriculateStudensComponent } from './pages/representative/matriculate-studens/matriculate-studens.component';
+import { DashboardAdminComponent } from './pages/admin/dashboard-admin/dashboard-admin.component';
+import { DashboardOpAdminComponent } from './pages/opAdmin/dashboard-op-admin/dashboard-op-admin.component';
+import { DashboardTeacherComponent } from './pages/teacher/dashboard-teacher/dashboard-teacher.component';
+import { DashboardStudentComponent } from './pages/students/dashboard-student/dashboard-student.component';
+import { DashboardRepresentativeComponent } from './pages/representative/dashboard-representative/dashboard-representative.component';
 
 export const routes: Routes = [
     {
@@ -40,6 +45,7 @@ export const routes: Routes = [
         children: [
             {path: 'home', component: HomeComponent},
             {path: 'admin/users', component: UsersComponent},
+            {path: 'admin/dashboard', component: DashboardAdminComponent},
             {path: 'course/schedule', component: ScheduleComponent},
             {path: 'course/:id', component: HomeCourseComponent},
             {path: 'course/assignment/:id', component: AssignmentViewComponent},
@@ -48,14 +54,18 @@ export const routes: Routes = [
             {path: 'admin/ratingSystem', component: RatingSystemComponent},
             {path: 'admin/academic/calendar', component: AcademicCalendarComponent},
             {path: 'admin/schedule', component: ScheduleAdminComponent},
+            {path: 'institutional/dashboard', component: DashboardOpAdminComponent},
             {path: 'institutional/matriculate', component: MatriculateComponent},
             {path: 'institutional/courses', component: CoursesAdComponent},
             {path: 'institutional/inscriptions', component: InscriptionTableComponent},
             {path: 'institutional/students', component: EstudentsTableComponent},
+            {path: 'teacher/dashboard', component: DashboardTeacherComponent},
+            {path: 'student/dashboard', component: DashboardStudentComponent},
             {path: 'students/attendance', component: AttendanceComponent},
             {path: 'students/conduct', component: ConductComponent},
             {path: 'students/grades', component: GradesComponent},
             {path: 'example', component: ViewtimelineComponent},
+            {path: 'representative/dashboard', component: DashboardRepresentativeComponent},
             {path: 'representative/inscription/form', component: RepreInscriptionComponent},
             {path: 'representative/inscriptions', component: InscriptionsEstudentComponent},
             {path: 'representative/matriculates', component: MatriculateStudensComponent},
