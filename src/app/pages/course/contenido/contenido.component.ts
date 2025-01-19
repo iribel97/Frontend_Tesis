@@ -4,11 +4,13 @@ import {TeachersService} from "../../../services/teacher/teachers.service";
 import {StudentsService} from "../../../services/students/students.service";
 import {UtilityService} from "../../../shared/service/utility/utility.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {FormsModule} from "@angular/forms";
 
 @Component({
     selector: 'app-contenido',
     imports: [
-        NgIf
+        NgIf,
+        FormsModule
     ],
     templateUrl: './contenido.component.html',
     styleUrl: './contenido.component.css'
@@ -23,16 +25,18 @@ export class ContenidoComponent implements OnInit {
     ) {
     }
 
+    tituloUnidad: string = '';       // Para almacenar el nombre de la unidad ingresado
+    mostrarInput: boolean = false;   // Controla si mostrar el input o no
     materia: any = null; // Datos completos de la materia desde el backend
     rolUser: string = ''; // Rol del usuario
+    idMateria: number = 0;
 
     ngOnInit(): void {
 
         // Escuchar cambios en los parámetros de la URL
         this.route.params.subscribe((params) => {
-            const idMateria = +params['id']; // Obtener el ID desde la ruta
-
-            this.getInfoUser(idMateria);
+            this.idMateria = +params['id']; // Obtener el ID desde la ruta
+            this.getInfoUser(this.idMateria);
         });
     }
 
@@ -115,4 +119,51 @@ export class ContenidoComponent implements OnInit {
         this.router.navigate(['/course/assignment', idAsignacion], {state: {data: {idDistributivo}}});
     }
 
+    crearUnidad(): void {
+        // Lógica para crear una nueva unidad
+        console.log('Crear Unidad');
+        // Aquí podrías abrir un modal o redirigir al usuario a un formulario.
+    }
+
+    // Mostrar el input al presionar el botón "Crear Unidad"
+    mostrarInputUnidad(): void {
+        this.mostrarInput = true;
+        this.tituloUnidad = ''; // Limpia el campo cada vez que presionas el botón
+    }
+
+    // Captura y muestra en consola los datos al presionar Enter
+    guardarUnidad(): void {
+        if (this.tituloUnidad.trim() === '') {
+            console.warn('El título no puede estar vacío.');
+            return;
+        }
+
+        // Datos a enviar al backend
+        const datosUnidad = {
+            tema: this.tituloUnidad,
+            activo: true,                                  // Unidad activa por defecto
+            idDistributivo: this.materia.idDistributivo || 0           // ID del distributivo (usar el correspondiente)
+        };
+
+        console.log('Datos para el backend:', datosUnidad);
+
+        this.teachersService.addUnidad(datosUnidad).subscribe(
+            (data) => {
+                console.log('Unidad creada:', data);
+                this.materia.unidades.push(data);
+            },
+            (error) => {
+                console.error('Error al crear la unidad:', error);
+            }
+        )
+        this.getMateria(this.idMateria);
+        // Reiniciar el input
+        this.mostrarInput = false;
+        this.tituloUnidad = '';
+    }
+
+
+    ocultarInputUnidad() {
+        this.mostrarInput = false;
+    }
 }
