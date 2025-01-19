@@ -23,7 +23,7 @@ export class DashboardOpAdminComponent implements OnInit {
         label: 'Estado de Matrículas',
         data: [10, 20, 5], // Datos quemados
         backgroundColor: [
-          'rgb(255, 205, 86)',
+          'rgb(199, 199, 255)',
           'rgb(75, 192, 192)',
           'rgb(255, 99, 132)'
         ],

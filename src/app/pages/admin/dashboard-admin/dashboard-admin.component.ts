@@ -55,7 +55,7 @@ export class DashboardAdminComponent implements OnInit {
       labels: ['Admin', 'Institucional', 'Docentes', 'Estudiantes', 'Representantes'],
       datasets: [{
         label: 'Cantidad',
-        data: [5, 10, 15, 20, 25], // Datos quemados
+        data: [0, 0, 0, 0, 0], // Datos quemados
         backgroundColor: [
           'rgba(255, 99, 132)',
           'rgba(255, 159, 64)',
@@ -83,13 +83,13 @@ export class DashboardAdminComponent implements OnInit {
         {
           type: 'bar',
           label: 'Total',
-          data: [30, 25, 20], // Datos quemados
+          data: [0, 0, 0], // Datos quemados
           backgroundColor: 'rgba(75, 192, 192)',
         },
         {
           type: 'bar',
           label: 'Asignados',
-          data: [28, 20, 18], // Datos quemados
+          data: [0, 0, 0], // Datos quemados
           backgroundColor: 'rgba(255, 159, 64)',
         }
       ]
@@ -110,7 +110,7 @@ export class DashboardAdminComponent implements OnInit {
       labels: ['Asistencias', 'Inasistencias', 'Justificaciones'],
       datasets: [{
         label: 'Porcentaje de Asistencias',
-        data: [60, 30, 10], // Datos quemados
+        data: [0, 0, 0], // Datos quemados
         backgroundColor: [
           'rgb(75, 192, 192)',
           'rgb(255, 99, 132)',
@@ -124,7 +124,7 @@ export class DashboardAdminComponent implements OnInit {
       plugins: {
         tooltip: {
           callbacks: {
-            label: function(context: any) {
+            label: function (context: any) {
               let label = context.label || '';
               if (label) {
                 label += ': ';
@@ -139,7 +139,7 @@ export class DashboardAdminComponent implements OnInit {
       }
     }
   };
-  
+
 
   pieChart: any;
   barChart: any;
@@ -157,9 +157,9 @@ export class DashboardAdminComponent implements OnInit {
 
 
     this.loadChartData();
-    this.intervalId = setInterval(() => {
-      this.loadChartData();
-    }); // Actualiza cada 30 segundos
+    this.loadUserChartData();
+    this.loadMixedChartData();
+    this.loadAttendanceChartData();
   }
 
   ngOnDestroy(): void {
@@ -173,6 +173,47 @@ export class DashboardAdminComponent implements OnInit {
       (data: any) => {
         this.pieChartConfig.data.datasets[0].data = [data.porcentajeCompleto, data.porcentajeIncompleto];
         this.pieChart.update();
+      },
+      (error: any) => {
+        console.error('Error fetching chart data', error);
+      }
+    );
+  }
+
+  loadUserChartData(): void {
+    this.adminService.getUsersCount().subscribe(
+      (data: any) => {
+        this.barChartConfig.data.datasets[0].data = [data.cantAdmin, data.cantAdminOp, data.cantDocente, data.cantEstudiante, data.cantRepresentante];
+        this.barChart.update();
+      },
+      (error: any) => {
+        console.error('Error fetching chart data', error);
+      }
+    );
+  }
+
+  loadMixedChartData(): void {
+    this.adminService.getStudentsCountPerGrade().subscribe(
+      (data: any) => {
+        console.log(data);
+        const totalEstudiantes = data.map((item: any) => item.totalEstudiantes);
+        const asigEstudiantes = data.map((item: any) => item.asigEstudiantes);
+
+        this.mixedChartConfig.data.datasets[0].data = totalEstudiantes;
+        this.mixedChartConfig.data.datasets[1].data = asigEstudiantes;
+        this.mixedChart.update();
+      },
+      (error: any) => {
+        console.error('Error fetching chart data', error);
+      }
+    );
+  }
+
+  loadAttendanceChartData(): void {
+    this.adminService.getAsistenciasByCiclo().subscribe(
+      (data: any) => {
+        this.attendancePieChartConfig.data.datasets[0].data = [data.porcentajeCompleto, data.porcentajeIncompleto, data.porcentajeReservado];
+        this.attendancePieChart.update();
       },
       (error: any) => {
         console.error('Error fetching chart data', error);

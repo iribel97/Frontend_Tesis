@@ -25,7 +25,6 @@ export class CalendarComponent implements OnInit {
     this.adminService.getCalendario().subscribe(
       (resp: any) => {
         this.calendario = resp;
-        console.log(this.calendario);
       },
       (error: any) => {
         console.log(error);
