@@ -1,58 +1,30 @@
-import {AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {NgIf} from "@angular/common";
+import {TeachersService} from "../../../services/teacher/teachers.service";
 import {StudentsService} from "../../../services/students/students.service";
 import {UtilityService} from "../../../shared/service/utility/utility.service";
-import {TabsComponent} from '../../../shared/ui/tabs/tabs.component';
-import {NgForOf, NgIf} from '@angular/common';
-import {TeachersService} from '../../../services/teacher/teachers.service';
-import {AttendanceComponent} from '../../students/attendance/attendance.component';
-import {AttendancePersonalComponent} from "../../students/attendance-personal/attendance-personal.component";
-import {AttendancePerSubjectComponent} from '../../teacher/attendance-per-subject/attendance-per-subject.component';
-import {ContenidoComponent} from "../contenido/contenido.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
-    selector: 'app-home-course',
-    templateUrl: './home-course.component.html',
+    selector: 'app-contenido',
     imports: [
-        TabsComponent,
-        NgIf,
-        AttendancePersonalComponent,
-        AttendancePerSubjectComponent,
-        ContenidoComponent,
+        NgIf
     ],
-    styleUrl: './home-course.component.css'
+    templateUrl: './contenido.component.html',
+    styleUrl: './contenido.component.css'
 })
-export class HomeCourseComponent implements AfterViewInit, OnInit {
+export class ContenidoComponent implements OnInit {
 
-    @ViewChild('tab1Content', {static: true}) tab1Content!: TemplateRef<any>;
-    @ViewChild('tab2Content', {static: true}) tab2Content!: TemplateRef<any>;
-    @ViewChild('tab3Content', {static: true}) tab3Content!: TemplateRef<any>;
-    @ViewChild('tab4Content', {static: true}) tab4Content!: TemplateRef<any>;
-
-    tabs: { id: string; title: string; content: TemplateRef<any> }[] = [];
-    materia: any = null; // Datos completos de la materia desde el backend
-    rolUser: string = ''; // Rol del usuario
-
-    constructor(
-        private cdr: ChangeDetectorRef,
-        private route: ActivatedRoute, // Escucha cambios en la ruta
-        private studentsService: StudentsService, // Servicio para obtener datos
-        private teachersService: TeachersService,
-        private router: Router,
-        protected utilityService: UtilityService
+    constructor(private teachersService: TeachersService,
+                private studentsService: StudentsService, // Servicio para obtener datos
+                private router: Router,
+                private route: ActivatedRoute, // Escucha cambios en la ruta
+                protected utilityService: UtilityService
     ) {
     }
 
-    ngAfterViewInit(): void {
-        this.tabs = [
-            {id: 'tab1', title: 'Contenido', content: this.tab1Content},
-            {id: 'tab2', title: 'Notas', content: this.tab2Content},
-            {id: 'tab3', title: 'Asistencias', content: this.tab3Content},
-            {id: 'tab4', title: 'Conducta', content: this.tab4Content},
-        ];
-        // Forzar la detección de cambios
-        this.cdr.detectChanges();
-    }
+    materia: any = null; // Datos completos de la materia desde el backend
+    rolUser: string = ''; // Rol del usuario
 
     ngOnInit(): void {
 
@@ -128,7 +100,6 @@ export class HomeCourseComponent implements AfterViewInit, OnInit {
         );
     }
 
-
     // Alternar el estado de una unidad
     toggleUnidad(unidad: any): void {
         unidad.open = !unidad.open;
@@ -139,20 +110,9 @@ export class HomeCourseComponent implements AfterViewInit, OnInit {
         tema.open = !tema.open;
     }
 
-
     irADetalleAsignacion(idAsignacion: number, idDistributivo: number): void {
         console.log("idAsignacion:", idAsignacion, "idDistributivo:", idDistributivo);
         this.router.navigate(['/course/assignment', idAsignacion], {state: {data: {idDistributivo}}});
     }
 
-
-    // Función trackBy para unidades
-    trackByUnidad(index: number, unidad: any): number {
-        return unidad.idUnidad;
-    }
-
-    // Función trackBy para temas
-    trackByTema(index: number, tema: any): number {
-        return tema.idTema;
-    }
 }

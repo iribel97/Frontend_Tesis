@@ -8,140 +8,37 @@
             </h2>
         </section><!-- Horarios -->
         @if (materia?.horarios.length > 0) {
-        <section class="mb-5 w-full lg:w-3/4">
-            <table class="table-auto w-full border-collapse border border-gray-300">
-                <thead>
+            <section class="mb-5 w-full lg:w-3/4">
+                <table class="table-auto w-full border-collapse border border-gray-300">
+                    <thead>
                     <tr class="bg-gray-100">
                         <th class="border border-gray-300 px-4 py-2 text-left">Día</th>
                         <th class="border border-gray-300 px-4 py-2 text-left">Hora Inicio</th>
                         <th class="border border-gray-300 px-4 py-2 text-left">Hora Fin</th>
                     </tr>
-                </thead>
-                <tbody>
-                    @for (horario of materia?.horarios; track horario.dia) {
-                    <tr class="hover:bg-gray-50">
-                        <td class="border border-gray-300 px-4 py-2">{{ horario.dia }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ horario.horaInicio }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ horario.horaFin }}</td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-        </section>
+                    </thead>
+                    <tbody>
+                        @for (horario of materia?.horarios; track horario.dia) {
+                            <tr class="hover:bg-gray-50">
+                                <td class="border border-gray-300 px-4 py-2">{{ horario.dia }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ horario.horaInicio }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ horario.horaFin }}</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
         } @else {
-        <section class="mb-5 w-3/4">
-            <p class="text-gray-700">No hay horarios registrados para esta materia.</p>
-        </section>
+            <section class="mb-5 w-3/4">
+                <p class="text-gray-700">No hay horarios registrados para esta materia.</p>
+            </section>
         }
     </section><!-- Acordeón dinámico para unidades -->
     <ui-tabs [tabs]="tabs"></ui-tabs>
     <ng-template #tab1Content>
         <div class="mt-5">
-            <!-- Acordeón principal: Unidades -->
-            @for (unidad of materia?.unidades; track unidad.idUnidad) {
-            <div class="border border-gray-300 rounded-md mb-4">
-                <!-- Botón del acordeón (Unidad) -->
-                <button (click)="toggleUnidad(unidad)"
-                    class="w-full text-left px-4 py-3 text-gray-900 font-semibold bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring transition duration-300">
-                    {{ unidad.nombre }}
-                    <!-- Botón para mostrar si la unidad es visible para los estudiantes (solo para docentes) -->
-                    <button *ngIf="rolUser === 'Docente'" class="ml-2 text-sm text-blue-500 hover:underline">
-                        {{ unidad.activo ? 'Visible para estudiantes' : 'No visible para estudiantes' }}
-                    </button>
-                </button>
-
-                <!-- Contenido oculto/visible (Unidad) -->
-                <div [hidden]="!unidad.open" class="px-4 pt-2 pb-4 bg-gray-50">
-                    <!-- Acordeón secundario: Temas -->
-                    @for (tema of unidad.contenido; track tema.idTema) {
-                    <div class="border border-gray-200 rounded-md mb-2">
-                        <!-- Botón del acordeón (Tema) -->
-                        <button (click)="toggleTema(tema)"
-                            class="w-full text-left px-4 py-2 text-gray-800 font-medium bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring transition duration-300">
-                            {{ tema.nombreTema }} - <small>{{ tema.descripcion }}</small>
-                            <!-- Botón para mostrar si el tema es visible para los estudiantes (solo para docentes) -->
-                            <button *ngIf="rolUser === 'Docente'" class="ml-2 text-sm text-blue-500 hover:underline">
-                                {{ tema.activo ? 'Visible para estudiantes' : 'No visible para estudiantes' }}
-                            </button>
-                        </button>
-
-                        <!-- Contenido oculto/visible (Tema) -->
-                        <div [hidden]="!tema.open" class="px-4 py-2 bg-white border-t border-gray-200">
-                            <!-- Materiales -->
-                            <h4 class="text-md font-semibold text-gray-700 mb-1">Materiales:</h4>
-                            @if (tema.materiales.length === 0) {
-                            <p class="text-gray-700">No hay materiales registrados para este tema.</p>
-                            } @else {
-                            <ul class="list-disc list-inside mb-2">
-                                @for (material of tema.materiales; track material.idMaterial) {
-                                <li class="flex items-center">
-                                    @if (material.link) {
-                                    <a [href]="material.link"
-                                        class="text-blue-600 hover:text-blue-800 flex items-center transition duration-300"
-                                        target="_blank" rel="noopener noreferrer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-link mr-2">
-                                            <path stroke="none" d="M0 0h24V0H0z" fill="none" />
-                                            <path d="M9 15l6 -6" />
-                                            <path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" />
-                                            <path
-                                                d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" />
-                                        </svg>
-                                        {{ material.nombreLink }}
-                                    </a>
-                                    } @else {
-                                    <div
-                                        class="flex items-center text-blue-600 hover:text-blue-800 transition duration-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-file mr-2">
-                                            <path stroke="none" d="M0 0h24V0H0z" fill="none" />
-                                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                                            <path
-                                                d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
-                                        </svg>
-                                        <!-- Botón con el nombre del archivo -->
-                                        <a (click)="utilityService.descargarDocumento(material.documento.base64, material.documento.nombre, material.documento.mime)"
-                                            class="cursor-pointer">
-                                            {{ material.documento.nombre }}
-                                        </a>
-                                    </div>
-                                    }
-                                </li>
-                                }
-                            </ul>
-                            }
-                            <!-- Asignaciones -->
-                            <h4 class="text-md font-semibold text-gray-700 mb-1">Asignaciones:</h4>
-                            @if (tema.asignaciones.length === 0) {
-                            <p class="text-gray-700">No hay asignaciones registradas para este tema.</p>
-                            } @else {
-                            <ul class="list-disc list-inside">
-                                @for (asignacion of tema.asignaciones; track asignacion.idAsignacion) {
-                                <li>
-                                    {{ asignacion.nombre }}
-                                    : {{ asignacion.fechaFin }} {{ asignacion.horaFin }}
-                                    <button
-                                        (click)="irADetalleAsignacion(asignacion.idAsignacion,materia.idDistributivo)"
-                                        class="text-blue-600 hover:underline cursor-pointer">
-                                        Ir a la Asignación
-                                    </button>
-                                </li>
-                                }
-                            </ul>
-                            }
-
-                        </div>
-                    </div>
-                    }
-                </div>
-            </div>
-            }
+            <app-contenido></app-contenido>
         </div>
-
     </ng-template>
     <ng-template #tab2Content>
         <p>aqui va la nota</p>
@@ -150,11 +47,11 @@
     <ng-template #tab3Content>
         @if (rolUser == 'Estudiante') {
             <app-attendance-personal></app-attendance-personal>
-        } 
+        }
         @if (rolUser == 'Docente') {
             <app-attendance-per-subject></app-attendance-per-subject>
         }
-        
+
     </ng-template>
     <ng-template #tab4Content>
         <p>aqui va la conducta</p>
