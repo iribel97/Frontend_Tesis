@@ -75,4 +75,20 @@ export class OpAdminService {
     return this.http.get<any>(this.apiUrl + "/api/adminop/docentes");
   }
 
+  // DASHBOARD --------------------------------------------------------------
+  // cantidad de estado de instripciones
+  getInscripcionesCount(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/adminop/dashboard/inscripciones");
+  }
+
+  // cantidad de estado de matricula
+  getMatriculasCount(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/adminop/dashboard/matriculas");
+  }
+
+  // cntidad de estudiantes por curso/aula
+  getEstudiantesPorCurso(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/adminop/dashboard/estudiantes/aulas");
+  }
+
 }

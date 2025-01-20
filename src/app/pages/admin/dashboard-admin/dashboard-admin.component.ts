@@ -21,8 +21,8 @@ export class DashboardAdminComponent implements OnInit {
         label: 'Distribución de Docentes',
         data: [0, 0], // Datos iniciales
         backgroundColor: [
-          'rgb(54, 162, 235)',
-          'rgb(255, 99, 132)'
+          'rgb(199, 199, 255)',
+          'rgb(255, 216, 190)'
         ],
         hoverOffset: 4
       }]
@@ -57,11 +57,11 @@ export class DashboardAdminComponent implements OnInit {
         label: 'Cantidad',
         data: [0, 0, 0, 0, 0], // Datos quemados
         backgroundColor: [
-          'rgba(255, 99, 132)',
-          'rgba(255, 159, 64)',
-          'rgba(255, 205, 86)',
-          'rgba(75, 192, 192)',
-          'rgba(54, 162, 235)'
+          'rgb(199, 199, 255)',
+          'rgb(255, 216, 190)',
+          'rgb(169, 236, 191)',
+          'rgb(255, 239, 184)',
+          'rgb(190, 220, 255)'
         ],
       }]
     },
@@ -84,13 +84,13 @@ export class DashboardAdminComponent implements OnInit {
           type: 'bar',
           label: 'Total',
           data: [0, 0, 0], // Datos quemados
-          backgroundColor: 'rgba(75, 192, 192)',
+          backgroundColor: 'rgb(199, 199, 255)',
         },
         {
           type: 'bar',
           label: 'Asignados',
           data: [0, 0, 0], // Datos quemados
-          backgroundColor: 'rgba(255, 159, 64)',
+          backgroundColor: 'rgb(255, 216, 190)',
         }
       ]
     },
@@ -112,9 +112,10 @@ export class DashboardAdminComponent implements OnInit {
         label: 'Porcentaje de Asistencias',
         data: [0, 0, 0], // Datos quemados
         backgroundColor: [
-          'rgb(75, 192, 192)',
-          'rgb(255, 99, 132)',
-          'rgb(255, 205, 86)'
+          
+          'rgb(199, 199, 255)',
+          'rgb(255, 216, 190)',
+          'rgb(255, 239, 184)',
         ],
         hoverOffset: 4
       }]

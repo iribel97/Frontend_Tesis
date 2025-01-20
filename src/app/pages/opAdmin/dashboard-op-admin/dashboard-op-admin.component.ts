@@ -18,14 +18,14 @@ export class DashboardOpAdminComponent implements OnInit {
   public enrollmentPieChartConfig: any = {
     type: 'pie',
     data: {
-      labels: ['Aceptadas', 'Pendientes', 'Suspendidas'],
+      labels: ['Aceptadas', 'Suspendidas', 'Pendientes'],
       datasets: [{
         label: 'Estado de Matrículas',
-        data: [10, 20, 5], // Datos quemados
+        data: [0, 0, 0], // Datos quemados
         backgroundColor: [
           'rgb(199, 199, 255)',
-          'rgb(75, 192, 192)',
-          'rgb(255, 99, 132)'
+          'rgb(255, 216, 190)',
+          'rgb(255, 239, 184)'
         ],
         hoverOffset: 4
       }]
@@ -35,7 +35,7 @@ export class DashboardOpAdminComponent implements OnInit {
       plugins: {
         tooltip: {
           callbacks: {
-            label: function(context: any) {
+            label: function (context: any) {
               let label = context.label || '';
               if (label) {
                 label += ': ';
@@ -59,17 +59,17 @@ export class DashboardOpAdminComponent implements OnInit {
       datasets: [
         {
           label: 'Curso A',
-          data: [30, 28, 26], // Datos quemados para Curso A
+          data: [0, 0, 0], // Datos quemados para Curso A
           backgroundColor: 'rgba(255, 99, 132)',
         },
         {
           label: 'Curso B',
-          data: [25, 22, 24], // Datos quemados para Curso B
+          data: [0, 0, 0], // Datos quemados para Curso B
           backgroundColor: 'rgba(54, 162, 235)',
         },
         {
           label: 'Curso C',
-          data: [20, 18, 19], // Datos quemados para Curso C
+          data: [0, 0, 0], // Datos quemados para Curso C
           backgroundColor: 'rgba(75, 192, 192)',
         }
       ]
@@ -84,18 +84,18 @@ export class DashboardOpAdminComponent implements OnInit {
     }
   };
 
-  //MUESTRA EL ESTADO DE LAS MATRICULAS DE LOS ESTUDIANTES
+  //MUESTRA EL ESTADO DE LAS INSCRIPCIONES DE LOS ESTUDIANTES
   public studentStatusPieChartConfig: any = {
     type: 'pie',
     data: {
       labels: ['Aceptados', 'Pendientes', 'Rechazados'],
       datasets: [{
         label: 'Estado de Estudiantes',
-        data: [50, 30, 10], // Datos quemados
+        data: [0, 0, 0], // Datos quemados
         backgroundColor: [
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)',
-          'rgb(255, 99, 132)'
+          'rgb(199, 199, 255)',
+          'rgb(255, 216, 190)',
+          'rgb(255, 239, 184)'
         ],
         hoverOffset: 4
       }]
@@ -108,7 +108,7 @@ export class DashboardOpAdminComponent implements OnInit {
         },
         tooltip: {
           callbacks: {
-            label: function(context: any) {
+            label: function (context: any) {
               let label = context.label || '';
               if (label) {
                 label += ': ';
@@ -128,7 +128,7 @@ export class DashboardOpAdminComponent implements OnInit {
   studentStatusPieChart: any;
   courseBarChart: any;
 
-  
+
   constructor(private opAdminService: OpAdminService) { }
 
   ngOnInit(): void {
@@ -136,6 +136,66 @@ export class DashboardOpAdminComponent implements OnInit {
     this.studentStatusPieChart = new Chart('studentStatusPieCanvas', this.studentStatusPieChartConfig);
     this.courseBarChart = new Chart('courseBarCanvas', this.courseBarChartConfig);
 
+    this.loadDashInscriptions();
+    this.loadDashEnrollments();
+    this.loadDashCourses();
+  }
+
+  // cargar la cantidad de inscripciones
+  loadDashInscriptions() {
+    this.opAdminService.getInscripcionesCount().subscribe(
+      (data: any) => {
+        this.studentStatusPieChartConfig.data.datasets[0].data = [data.completo, data.reservado, data.incompleto];
+        this.studentStatusPieChart.update();
+
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  // cargar la cantidad de matriculas
+  loadDashEnrollments() {
+    this.opAdminService.getMatriculasCount().subscribe(
+      (data: any) => {
+        this.enrollmentPieChartConfig.data.datasets[0].data = [data.completo, data.reservado, data.incompleto];
+        this.enrollmentPieChart.update();
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  // cargar la cantidad de estudiantes por curso
+  loadDashCourses() {
+    this.opAdminService.getEstudiantesPorCurso().subscribe(
+      (data: any) => {
+        const labels = ['Octavo', 'Noveno', 'Décimo'];
+        const colors = [
+          'rgb(199, 199, 255)', // lila suave
+          'rgb(255, 216, 190)', // naranja pastel
+          'rgb(169, 236, 191)', // verde pastel
+          'rgb(255, 239, 184)', // amarillo pastel cálido
+          'rgb(190, 220, 255)'  // azul pastel frío
+        ];
+        const datasets = data.map((item: any, index: number) => {
+          return {
+            label: item.etiqueta,
+            data: item.datos.map((d: any) => d.asigEstudiantes),
+            backgroundColor: colors[index % colors.length]
+          };
+        });
+
+        this.courseBarChartConfig.data.labels = labels;
+        this.courseBarChartConfig.data.datasets = datasets;
+        this.courseBarChart.update();
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    )
   }
 
 
