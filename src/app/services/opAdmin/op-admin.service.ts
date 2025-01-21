@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
 })
 export class OpAdminService {
 
-  private readonly apiUrl = 'http://localhost:8080';
+  private readonly apiUrl = 'http://192.168.2.149:8080';
 
   constructor(private http: HttpClient) {
   }
@@ -73,6 +73,22 @@ export class OpAdminService {
   // obtener docentes
   getDocentes(): Observable<any> {
     return this.http.get<any>(this.apiUrl + "/api/adminop/docentes");
+  }
+
+  // DASHBOARD --------------------------------------------------------------
+  // cantidad de estado de instripciones
+  getInscripcionesCount(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/adminop/dashboard/inscripciones");
+  }
+
+  // cantidad de estado de matricula
+  getMatriculasCount(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/adminop/dashboard/matriculas");
+  }
+
+  // cntidad de estudiantes por curso/aula
+  getEstudiantesPorCurso(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + "/api/adminop/dashboard/estudiantes/aulas");
   }
 
 }

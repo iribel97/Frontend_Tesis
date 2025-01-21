@@ -7,7 +7,7 @@ import { Observable } from "rxjs";
 })
 export class AdminService {
 
-    private readonly apiUrl = 'http://localhost:8080';
+    private readonly apiUrl = 'http://192.168.2.149:8080';
 
     constructor(private http: HttpClient) {
     }
@@ -103,6 +103,21 @@ export class AdminService {
     // Info de docentes asignados
     getDocentesAsignados(): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/api/admin/dashboard/docentes`);
+    }
+
+    // Info de cantidad de usuarios
+    getUsersCount(): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/api/admin/dashboard/catidad/usuarios/rol`);
+    }
+
+    // Info de cantidad de estudiantes por grado
+    getStudentsCountPerGrade(): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/api/admin/dashboard/estudiantes/grado`);
+    }
+
+    // Info de asistencias por ciclo
+    getAsistenciasByCiclo(): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/api/docente/admin/dashboard/total/asistencias`);
     }
 
 }
