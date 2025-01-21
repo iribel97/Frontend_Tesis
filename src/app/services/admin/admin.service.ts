@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AdminService {
 
-    private readonly apiUrl = 'http://192.168.2.149:8080';
+    private readonly apiUrl = 'http://localhost:8080';
 
     constructor(private http: HttpClient) {
     }
@@ -19,7 +19,7 @@ export class AdminService {
     // registrar usuarios
     registerUser(mappedDatta: String, request: any): Observable<any> {
         if (mappedDatta === 'Administrador') {
-            return this.http.post<any>(`${this.apiUrl}/api/admin/registro/admin`,request);
+            return this.http.post<any>(`${this.apiUrl}/api/admin/registro/admin`, request);
         } else if (mappedDatta === 'Institucional') {
             return this.http.post<any>(`${this.apiUrl}/api/admin/registro/adminOp`, request);
         } else {

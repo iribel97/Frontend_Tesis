@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 })
 export class TeachersService {
 
-    private readonly apiUrl = 'http://192.168.2.149:8080';
+    private readonly apiUrl = 'http://localhost:8080';
 
     constructor(private http: HttpClient) {
     }

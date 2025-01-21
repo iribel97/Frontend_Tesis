@@ -3,20 +3,64 @@
     @for (unidad of materia?.unidades; track unidad.idUnidad) {
         <div class="border border-gray-300 rounded-md mb-4">
             <!-- Botón del acordeón (Unidad) -->
-            <button (click)="toggleUnidad(unidad)"
-                    class="w-full text-left px-4 py-2 text-gray-900 font-semibold bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring transition duration-300">
-                {{ unidad.nombre }}
+            <div class="flex items-center justify-between px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring transition duration-300">
+                <!-- Modo Visual -->
+                <div *ngIf="!unidad.editando; else editandoUnidad" class="flex items-center justify-between w-full">
+                    <!-- Título de la unidad a la izquierda -->
+                    <span class="text-gray-900 font-semibold text-left">
+            {{ unidad.nombre }}
+        </span>
 
-                <!-- Botón de editar Unidad -->
-                <button class="ml-2 px-2 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600">
-                    Editar
-                </button>
+                    <!-- Botón de edición a la derecha -->
+                    <button (click)="activarEdicionUnidad(unidad)"
+                            class="text-blue-500 hover:text-blue-600 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                            <path stroke="none" d="M0 0h24V0H0z" fill="none"/>
+                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"/>
+                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"/>
+                            <path d="M16 5l3 3"/>
+                        </svg>
+                    </button>
+                </div>
 
-                <!-- Botón para mostrar si la unidad es visible para los estudiantes (solo para docentes) -->
-                <button *ngIf="rolUser === 'Docente'" class="ml-2 text-sm text-blue-500 hover:underline">
-                    {{ unidad.activo ? 'Visible para estudiantes' : 'No visible para estudiantes' }}
-                </button>
-            </button>
+                <!-- Modo de Edición -->
+                <ng-template #editandoUnidad>
+                    <div class="flex items-center justify-between w-full">
+                        <!-- Campo de texto para editar el nombre de la unidad -->
+                        <input [(ngModel)]="unidad.editandoNombre"
+                               type="text"
+                               class="border text-sm border-gray-300 px-2 py-1 rounded-md w-full mr-2"
+                               placeholder="Editar nombre de la unidad">
+
+                        <!-- Botón para guardar los cambios -->
+                        <button (click)="guardarCambiosUnidad(unidad)"
+                                class="text-green-500 hover:text-green-600 focus:outline-none p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 class="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                <path stroke="none" d="M0 0h24V0H0z" fill="none"/>
+                                <path d="M5 12l5 5l10 -10"/>
+                            </svg>
+                        </button>
+
+                        <!-- Botón para cancelar los cambios -->
+                        <button (click)="cancelarEdicionUnidad(unidad)"
+                                class="text-red-500 hover:text-red-600 focus:outline-none p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                                <path stroke="none" d="M0 0h24V0H0z" fill="none"/>
+                                <path d="M18 6l-12 12"/>
+                                <path d="M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </ng-template>
+            </div>
+
 
             @if (unidad.contenido.length > 0) {
                 <!-- Contenido oculto/visible (Unidad) -->
