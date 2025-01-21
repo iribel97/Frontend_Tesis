@@ -3,7 +3,9 @@
     @for (unidad of materia?.unidades; track unidad.idUnidad) {
         <div class="border border-gray-300 rounded-md mb-4">
             <!-- Botón del acordeón (Unidad) -->
-            <div class="flex items-center justify-between px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring transition duration-300">
+            <div class="flex items-center justify-between px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md transition duration-300 cursor-pointer"
+                 (click)="toggleUnidad(unidad)"
+                 [style.userSelect]="'none'">
                 <!-- Modo Visual -->
                 <div *ngIf="!unidad.editando; else editandoUnidad" class="flex items-center justify-between w-full">
                     <!-- Título de la unidad a la izquierda -->
@@ -12,7 +14,7 @@
         </span>
 
                     <!-- Botón de edición a la derecha -->
-                    <button (click)="activarEdicionUnidad(unidad)"
+                    <button (click)="activarEdicionUnidad(unidad); $event.stopPropagation();"
                             class="text-blue-500 hover:text-blue-600 focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -36,7 +38,8 @@
 
                         <!-- Botón para guardar los cambios -->
                         <button (click)="guardarCambiosUnidad(unidad)"
-                                class="text-green-500 hover:text-green-600 focus:outline-none p-1">
+                                class="text-green-500 hover:text-green-600 focus:outline-none p-1"
+                                (click)="$event.stopPropagation()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                  stroke-linejoin="round"
@@ -48,7 +51,8 @@
 
                         <!-- Botón para cancelar los cambios -->
                         <button (click)="cancelarEdicionUnidad(unidad)"
-                                class="text-red-500 hover:text-red-600 focus:outline-none p-1">
+                                class="text-red-500 hover:text-red-600 focus:outline-none p-1"
+                                (click)="$event.stopPropagation()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                  stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x">
