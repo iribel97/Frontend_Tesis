@@ -51,5 +51,24 @@ export class TeachersService {
         return this.http.post<any>(`${this.apiUrl}/api/docente/materia/contenido/unidad`, data);
     }
 
+    // Traer toda la info en caso de ser tutor de un curso
+    getTutoria(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/docente/tutor/notas");
+    }
+
+    // traer el horario que debe ver el docente el día de hoy
+    getHorarioHoy(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/docente/dashboard/horario/hoy");
+    }
+
+    // traer las asignaciones pendentes por revisar
+    getAsignacionesPendientes(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/docente/dashboard/asignaciones/pendientes");
+    }
+
+    // traer promedios de los distributivos que imparte el docente
+    getDashboardPromedios(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/docente/dashboard/promedios");
+    }
 
 }
