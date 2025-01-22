@@ -285,4 +285,9 @@ export class ContenidoComponent implements OnInit {
     cerrarModal() {
         this.modalService.closeModal("formularioMateria")
     }
+
+    irADetalleAsignacion(idAsignacion: number, idDistributivo: number): void {
+        console.log("idAsignacion:", idAsignacion, "idDistributivo:", idDistributivo);
+        this.router.navigate(['/course/assignment', idAsignacion], {state: {data: {idDistributivo}}});
+    }
 }
