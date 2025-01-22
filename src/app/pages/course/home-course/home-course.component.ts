@@ -9,14 +9,15 @@ import {AttendanceComponent} from '../../students/attendance/attendance.componen
 import {AttendancePersonalComponent} from "../../students/attendance-personal/attendance-personal.component";
 import {AttendancePerSubjectComponent} from '../../teacher/attendance-per-subject/attendance-per-subject.component';
 import {ContenidoComponent} from "../contenido/contenido.component";
+import { GradesPerDisComponent } from '../grades-per-dis/grades-per-dis.component';
 
 @Component({
     selector: 'app-home-course',
     templateUrl: './home-course.component.html',
     imports: [
         TabsComponent,
-        NgIf,
         AttendancePersonalComponent,
+        GradesPerDisComponent,
         AttendancePerSubjectComponent,
         ContenidoComponent,
     ],

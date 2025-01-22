@@ -45,4 +45,14 @@ export class StudentsService {
         return this.http.get<any>(`${this.apiUrl}/api/estudiante/asistencia/${id}`);
     }
 
+    // visualizar calificaciones por distributivo
+    getGradesByDistributivo(id: number): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/api/estudiante/calificaciones/${id}`);
+    }
+
+    // visualizar calificaciones general
+    getGrades(): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/api/estudiante/notas`);
+    }
+
 }
