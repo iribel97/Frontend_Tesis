@@ -26,6 +26,7 @@ export class GradesComponent implements OnInit{
     this.studentsService.getGrades().subscribe(
       response => {
         this.materias = response;
+        console.log(response);
       },
       error => {
         console.log(error);
