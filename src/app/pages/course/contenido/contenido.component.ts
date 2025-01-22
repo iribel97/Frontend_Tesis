@@ -187,13 +187,9 @@ export class ContenidoComponent implements OnInit {
     }
 
     activarEdicionTema(tema: any, event: Event): void {
-        event.stopPropagation(); // Evitar que activemos accidentalmente otros eventos (como el toggle)
-
-        // Activamos la edición del tema seleccionado
-        tema.editando = true;
-
-        // Almacenamos temporalmente el título actual del tema (por seguridad)
-        tema.tituloTemporal = tema.nombreTema;
+        event.stopPropagation(); // Evitar que el clic active otros eventos, como abrir/cerrar el tema
+        tema.editando = true; // Habilitar el modo de edición
+        tema.nombreTemporal = tema.nombreTema; // Guardar el nombre original por si se cancela la edición
     }
 
     guardarTema(unidad: any): void {
@@ -212,6 +208,22 @@ export class ContenidoComponent implements OnInit {
 
         unidad.contenido.push(nuevoTema); // Añadir el nuevo tema
         unidad.mostrarInputTema = false;  // Ocultar el input
+    }
+
+    guardarEdicionTema(tema: any, event: Event): void {
+        event.stopPropagation(); // Evitar que se active apertura/cierre del tema
+        if (!tema.nombreTemporal || tema.nombreTemporal.trim() === '') {
+            console.warn('El nombre del tema no puede estar vacío.');
+            return;
+        }
+        tema.nombreTema = tema.nombreTemporal; // Aplicar el nuevo nombre
+        tema.editando = false; // Salir del modo de edición
+    }
+
+    cancelarEdicionTema(tema: any, event: Event): void {
+        event.stopPropagation(); // Prevenir eventos no deseados
+        tema.editando = false; // Salir del modo de edición
+        tema.nombreTemporal = ''; // Limpiar el nombre temporal
     }
 
     activarEdicionUnidad(unidad: any): void {
