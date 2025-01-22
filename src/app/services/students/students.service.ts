@@ -55,4 +55,14 @@ export class StudentsService {
         return this.http.get<any>(`${this.apiUrl}/api/estudiante/notas`);
     }
 
+    // traer principal
+    getPrincipal(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/estudiante/dashboard");
+    }
+
+    // traer las asignaciones pendientes al dashboard
+    getAssignmentsDash(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/estudiante/dashboard/entregas");
+    }
+
 }

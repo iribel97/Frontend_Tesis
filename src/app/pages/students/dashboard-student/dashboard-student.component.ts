@@ -1,38 +1,61 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarComponent } from '../../DashBoard/calendar/calendar.component';
-import { NgForOf } from '@angular/common';
+import { DecimalPipe, NgForOf } from '@angular/common';
+import { StudentsService } from '../../../services/students/students.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-student',
-  imports: [CalendarComponent, NgForOf],
+  imports: [CalendarComponent, NgForOf, DecimalPipe],
   templateUrl: './dashboard-student.component.html',
   styleUrl: './dashboard-student.component.css'
 })
 export class DashboardStudentComponent implements OnInit {
 
-  tareas = [
-    { nombre: 'Tarea 1', descripcion: 'Resolver ejercicios', fecha: '15 enero', estado: 'pendiente' },
-    { nombre: 'Tarea 2', descripcion: 'Escribir un ensayo', fecha: '20 enero', estado: 'en progreso' },
-    { nombre: 'Tarea 3', descripcion: 'Proyecto grupal', fecha: '25 enero', estado: 'urgente' },
-    { nombre: 'Tarea 4', descripcion: 'Preparar presentación', fecha: '30 enero', estado: 'pendiente' },
-    { nombre: 'Tarea 5', descripcion: 'Lectura de capítulo', fecha: '5 febrero', estado: 'pendiente' },
-    { nombre: 'Tarea 6', descripcion: 'Desarrollar app', fecha: '10 febrero', estado: 'en progreso' }
-  ];
-  
+  tareas: any;
 
-  constructor() { }
+  principal: any;
+
+  grades: any;
+
+
+  constructor(private studentsService: StudentsService,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) { }
 
   ngOnInit(): void {
-
+    this.loadPrincipal();
+    this.loadTareas();
+    this.loadNotas();
   }
 
-  materias = [
-    { nombre: 'Matemáticas', docente: 'Juan Pérez', promedio: 8.5, progreso: 75 },
-    { nombre: 'Física', docente: 'María López', promedio: 9.2, progreso: 60 },
-    { nombre: 'Historia', docente: 'Carlos Gómez', promedio: 7.8, progreso: 85 },
-    { nombre: 'Inglés', docente: 'Ana Rodríguez', promedio: 8.0, progreso: 50 },
-    { nombre: 'Ciencias Naturales', docente: 'Pedro Martínez', promedio: 9.5, progreso: 40 }
-  ];
+  // cargar principal
+  loadPrincipal() {
+    this.studentsService.getPrincipal().subscribe(data => {
+      this.principal = data;
+    });
+  }
+
+  // cargar tareas pendientes
+  loadTareas() {
+    this.studentsService.getAssignmentsDash().subscribe(data => {
+      this.tareas = data;
+    });
+  }
+
+  // cargar las notas
+  loadNotas() {
+    this.studentsService.getGrades().subscribe(data => {
+      this.grades = data;
+    });
+  }
+
+  irADetalleAsignacion(idAsignacion: number, idDistributivo: number): void {
+    console.log("idAsignacion:", idAsignacion, "idDistributivo:", idDistributivo);
+    this.router.navigate(['/course/assignment', idAsignacion], { state: { data: { idDistributivo } } });
+  }
+
 
   currentIndex = 0;
 
@@ -47,7 +70,7 @@ export class DashboardStudentComponent implements OnInit {
   }
 
   nextSlide() {
-    if (this.currentIndex < this.materias.length - 1) {
+    if (this.currentIndex < this.grades.length - 1) {
       this.currentIndex++;
     }
   }

@@ -13,7 +13,7 @@
                         <path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
                         <path d="M9 12l2 2l4 -4" />
                     </svg>
-                    <span class="quantity"> 90% </span>
+                    <span class="quantity"> {{principal.porcentajeAsist | number:'1.2-2'}}% </span>
                     <span class="text text--1"> Asistencias </span>
                 </div>
                 <div class="item item--2">
@@ -38,7 +38,7 @@
                         <path d="M13 20l7 -7" />
                         <path d="M13 20v-6a1 1 0 0 1 1 -1h6v-7a2 2 0 0 0 -2 -2h-12a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7" />
                     </svg>
-                    <span class="quantity"> 8.5 </span>
+                    <span class="quantity">{{principal.promedio | number:'1.2-2'}} </span>
                     <span class="text text--3"> Calificación </span>
                 </div>
             </div>
@@ -62,17 +62,15 @@
                     <!-- Tarjetas dinámicas -->
                     <div *ngFor="let tarea of tareas" class="relative flex flex-col items-center mx-4">
                         <!-- Punto -->
-                        <div [class.bg-blue-500]="tarea.estado === 'pendiente'"
-                            [class.bg-yellow-500]="tarea.estado === 'en progreso'"
-                            [class.bg-red-500]="tarea.estado === 'urgente'"
-                            class="w-8 h-8 rounded-full border-4 border-white relative z-10"></div>
+                        <div
+                            class="bg-[#c7c7ff] w-8 h-8 rounded-full border-4 border-blue-100 relative z-10"></div>
                         <!-- Tarjeta -->
                         <div
                             class="bg-white shadow-md rounded-lg p-4 mt-6 w-48 text-center hover:shadow-xl transition-shadow">
-                            <h2 class="text-lg font-semibold text-gray-800">{{ tarea.nombre }}</h2>
-                            <p class="text-sm text-gray-500 mt-1">{{ tarea.descripcion }}</p>
-                            <p class="text-sm text-gray-500 mt-1">Fecha límite: {{ tarea.fecha }}</p>
-                            <button class="mt-4 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+                            <h2 class="text-lg font-semibold text-gray-800">{{ tarea.nombreAsig }}</h2>
+                            <p class="text-sm text-gray-500 mt-1">{{ tarea.nombreMateria }}</p>
+                            <p class="text-sm text-gray-500 mt-1">Fecha límite: {{ tarea.fechaFin }}</p>
+                            <button class="mt-4 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600" (click)="irADetalleAsignacion(tarea.idAsig, tarea.idDis)">
                                 Ver tarea
                             </button>
                         </div>
@@ -108,12 +106,12 @@
                     <div class="flex transition-transform duration-500 ease-in-out"
                         [style.transform]="'translateX(' + currentTranslate + 'px)'">
                         <!-- Tarjetas dinámicas -->
-                        <div *ngFor="let materia of materias"
+                        <div *ngFor="let materia of grades"
                             class="bg-white shadow-md rounded-lg p-6 w-72 flex-shrink-0 mx-3">
-                            <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ materia.nombre }}</h2>
-                            <p class="text-gray-500 text-sm">Docente: {{ materia.docente }}</p>
+                            <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ materia.nombreMateria }}</h2>
+                            <p class="text-gray-500 text-sm">Docente: {{ materia.nombreDocente }}</p>
                             <p class="text-gray-500 text-sm mt-2">
-                                Promedio Actual: <span class="font-semibold">{{ materia.promedio }}</span>
+                                Promedio Actual: <span class="font-semibold">{{ materia.promedio | number:'1.2-2' }}</span>
                             </p>
                             <!-- Barra de progreso -->
                             <div class="mt-4">
@@ -122,7 +120,7 @@
                                     </div>
                                 </div>
                                 <p class="text-right text-sm text-gray-500 mt-1">
-                                    {{ materia.progreso }}% completado
+                                    {{ materia.progreso | number:'1.2-2' }}% completado
                                 </p>
                             </div>
                         </div>
