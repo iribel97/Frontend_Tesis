@@ -34,6 +34,11 @@ export class ContenidoComponent implements OnInit {
     rolUser: string = ''; // Rol del usuario
     idMateria: number = 0;
 
+    mostrarInputTema: boolean = false; // Controla la visibilidad del input del tema
+    tituloTema: string = ''; // Título del tema a crear
+    temas: Array<{ idTema: string; nombre: string }> = []; // Lista de temas
+
+
     ngOnInit(): void {
 
         // Escuchar cambios en los parámetros de la URL
@@ -103,21 +108,6 @@ export class ContenidoComponent implements OnInit {
         );
     }
 
-    // Alternar el estado de una unidad
-    toggleUnidad(unidad: any): void {
-        unidad.open = !unidad.open;
-    }
-
-    // Alternar el estado de un tema
-    toggleTema(tema: any): void {
-        tema.open = !tema.open;
-    }
-
-    irADetalleAsignacion(idAsignacion: number, idDistributivo: number): void {
-        console.log("idAsignacion:", idAsignacion, "idDistributivo:", idDistributivo);
-        this.router.navigate(['/course/assignment', idAsignacion], {state: {data: {idDistributivo}}});
-    }
-
     crearUnidad(): void {
         // Lógica para crear una nueva unidad
         console.log('Crear Unidad');
@@ -174,28 +164,69 @@ export class ContenidoComponent implements OnInit {
         this.mostrarInput = false;
     }
 
+    toggleUnidad(unidad: any): void {
+        // Alternar el estado abierto/cerrado de la unidad
+        unidad.open = !unidad.open;
+    }
+
+    toggleTema(tema: any): void {
+        // Alternar el estado abierto/cerrado del tema
+        tema.open = !tema.open;
+    }
+
+    activarInputTema(unidad: any): void {
+        // Activar el input para añadir un nuevo tema
+        unidad.mostrarInputTema = true;
+        unidad.nuevoTituloTema = ''; // Resetear campo
+    }
+
+    cancelarAgregarTema(unidad: any): void {
+        // Cancelar añadir un tema
+        unidad.mostrarInputTema = false;
+        unidad.nuevoTituloTema = '';
+    }
+
+    activarEdicionTema(tema: any, event: Event): void {
+        event.stopPropagation(); // Evitar que activemos accidentalmente otros eventos (como el toggle)
+
+        // Activamos la edición del tema seleccionado
+        tema.editando = true;
+
+        // Almacenamos temporalmente el título actual del tema (por seguridad)
+        tema.tituloTemporal = tema.nombreTema;
+    }
+
+    guardarTema(unidad: any): void {
+        if (!unidad.nuevoTituloTema.trim()) {
+            console.warn('El título no puede estar vacío.');
+            return;
+        }
+
+        const nuevoTema = {
+            idTema: Math.random().toString(36).substr(2, 9), // ID generado
+            nombreTema: unidad.nuevoTituloTema,
+            descripcion: '',
+            materiales: [],
+            open: false, // Inicialmente cerrado
+        };
+
+        unidad.contenido.push(nuevoTema); // Añadir el nuevo tema
+        unidad.mostrarInputTema = false;  // Ocultar el input
+    }
 
     activarEdicionUnidad(unidad: any): void {
-        unidad.editando = true; // Activa el modo de edición
-        unidad.editandoNombre = unidad.nombre; // Guarda el nombre actual como respaldo temporal
+        unidad.editando = true;
+        unidad.editandoNombre = unidad.nombre;
     }
 
-    // Función para guardar cambios en el nombre de la unidad
-    guardarCambiosUnidad(unidad: any): void {
-        if (unidad.editandoNombre.trim() === '') {
-            return; // No guardar si el campo está vacío
-        }
-        unidad.nombre = unidad.editandoNombre; // Actualiza el nombre de la unidad
-        unidad.editando = false; // Salir del modo de edición
-
-        // Si hace falta, puedes llamar al servicio para guardar los cambios en el servidor:
-        // this.unidadesService.actualizarNombreUnidad(unidad.idUnidad, unidad.nombre).subscribe(...);
-    }
-
-    // Función para cancelar la edición
     cancelarEdicionUnidad(unidad: any): void {
-        unidad.editando = false; // Sale del modo de edición
-        unidad.editandoNombre = ''; // Limpia el respaldo temporal
+        unidad.editando = false;
     }
+
+    guardarCambiosUnidad(unidad: any): void {
+        unidad.nombre = unidad.editandoNombre; // Actualizar el nombre
+        unidad.editando = false;
+    }
+
 
 }
