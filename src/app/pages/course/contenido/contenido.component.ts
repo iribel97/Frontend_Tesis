@@ -5,12 +5,17 @@ import {StudentsService} from "../../../services/students/students.service";
 import {UtilityService} from "../../../shared/service/utility/utility.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
+import {FormMaterialComponent} from "../../../forms/teacher/form-material/form-material.component";
+import {ModalComponent} from "../../../shared/ui/modal/modal.component";
+import {ModalService} from "../../../shared/service/modal/modal.service";
 
 @Component({
     selector: 'app-contenido',
     imports: [
         NgIf,
-        FormsModule
+        FormsModule,
+        FormMaterialComponent,
+        ModalComponent
     ],
     templateUrl: './contenido.component.html',
     styleUrl: './contenido.component.css'
@@ -23,7 +28,8 @@ export class ContenidoComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         protected utilityService: UtilityService,
-        private cdr: ChangeDetectorRef // ¡Inyectar aquí!
+        private cdr: ChangeDetectorRef, // ¡Inyectar aquí!
+        private modalService: ModalService
     ) {
     }
 
@@ -241,4 +247,42 @@ export class ContenidoComponent implements OnInit {
     }
 
 
+    materialSeleccionado: any = null; // Material seleccionado
+    tema = {
+        idTema: 1, // ID del tema de ejemplo
+        materiales: [], // Lista de materiales
+    };
+
+
+    onMaterialSubmit(materialData: any): void {
+        if (!materialData) {
+            console.error('Error: No se recibieron datos del formulario.');
+            return;
+        }
+
+        // Crear el objeto JSON que se enviará al backend
+        const payload = {
+            idMaterial: materialData.idMaterial || null, // Si es un material nuevo, su ID puede ser opcional
+            nombre: materialData.nombre,
+            link: materialData.link || '',
+            documento: materialData.documento || null, // Puede contener el archivo si lo hay
+            activo: materialData.activo || true,
+            idTema: this.tema.idTema, // Relacionar con el tema actual
+        };
+
+        // Mostrar el objeto JSON en consola
+        console.log('JSON a enviar:', JSON.stringify(payload, null, 2));
+
+        // Aquí acabaría el método si solo deseas mostrar el JSON
+    }
+
+
+    AbrirModalMaterias() {
+        this.modalService.openModal("formularioMateria")
+    }
+
+
+    cerrarModal() {
+        this.modalService.closeModal("formularioMateria")
+    }
 }
