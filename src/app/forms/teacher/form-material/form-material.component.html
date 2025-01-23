@@ -1,27 +1,53 @@
-<form [formGroup]="materialForm" (ngSubmit)="submitForm()" class="space-y-4">
-    <!-- Campo de Link -->
+<form [formGroup]="materialForm" (ngSubmit)="submitForm()" class="space-y-6">
+    <!-- Selector entre Link o Documento -->
     <div>
-        <label for="link" class="block text-sm font-medium text-gray-700">Link (Opcional)</label>
+        <label class="block text-sm font-medium text-gray-700">Tipo de Material</label>
+        <div class="flex space-x-4 mt-2">
+            <!-- Opción para Link -->
+            <div class="flex items-center">
+                <input type="radio"
+                       id="tipoLink"
+                       formControlName="tipoMaterial"
+                       value="link"
+                       class="h-4 w-4 text-blue-500 focus:ring-blue-400 focus:ring-2">
+                <label for="tipoLink" class="ml-2 text-sm font-medium text-gray-700">Link</label>
+            </div>
+            <!-- Opción para Documento -->
+            <div class="flex items-center">
+                <input type="radio"
+                       id="tipoDocumento"
+                       formControlName="tipoMaterial"
+                       value="documento"
+                       class="h-4 w-4 text-green-500 focus:ring-green-400 focus:ring-2">
+                <label for="tipoDocumento" class="ml-2 text-sm font-medium text-gray-700">Documento</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Campo de Link -->
+    <div [class.hidden]="materialForm.get('tipoMaterial')?.value !== 'link'">
+        <label for="link" class="block text-sm font-medium text-gray-700">Enlace (Opcional)</label>
         <input id="link"
                type="url"
                formControlName="link"
                class="mt-1 p-2 border rounded-md w-full focus:ring-2 focus:ring-blue-500 focus:outline-none"
-               placeholder="Ingrese un enlace (http://)">
-        <small class="text-gray-500">Si ingresa un link, no suba un archivo.</small>
+               placeholder="http://example.com">
+        <small class="text-gray-500">Ingrese un enlace válido.</small>
     </div>
 
     <!-- Campo para Documento -->
-    <div>
-        <label for="documento" class="block text-sm font-medium text-gray-700">Documento (Opcional)</label>
+    <div [class.hidden]="materialForm.get('tipoMaterial')?.value !== 'documento'">
+        <label for="documento" class="block text-sm font-medium text-gray-700">Archivo</label>
         <input id="documento"
                type="file"
                (change)="onFileChange($event)"
                class="mt-1 p-2 border rounded-md w-full focus:ring-2 focus:ring-green-500 focus:outline-none">
-        <small class="text-gray-500">Si sube un archivo, no ingrese un link.</small>
+        <small class="text-gray-500">Suba un archivo. Asegúrese de que sea válido.</small>
     </div>
 
     <!-- Botones -->
     <div class="flex justify-end space-x-2">
+        <!-- Botón Cancelar -->
         <button *ngIf="isEditing"
                 type="button"
                 (click)="resetForm()"
@@ -29,6 +55,7 @@
             Cancelar
         </button>
 
+        <!-- Botón Guardar -->
         <button type="submit"
                 [disabled]="materialForm.invalid"
                 class="px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none">
@@ -36,4 +63,3 @@
         </button>
     </div>
 </form>
->

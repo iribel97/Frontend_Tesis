@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {TeachersService} from "../../../services/teacher/teachers.service";
 import {StudentsService} from "../../../services/students/students.service";
 import {UtilityService} from "../../../shared/service/utility/utility.service";
@@ -15,7 +15,8 @@ import {ModalService} from "../../../shared/service/modal/modal.service";
         NgIf,
         FormsModule,
         FormMaterialComponent,
-        ModalComponent
+        ModalComponent,
+        NgForOf
     ],
     templateUrl: './contenido.component.html',
     styleUrl: './contenido.component.css'
@@ -32,6 +33,12 @@ export class ContenidoComponent implements OnInit {
         private modalService: ModalService
     ) {
     }
+
+    tema: any = {
+        idTema: 1,
+        materiales: [], // Lista de materiales asociados al tema
+    };
+    materialSeleccionado: any | null = null; // Variable temporal: qué material se edita o usa para crear uno
 
 
     tituloUnidad: string = '';       // Para almacenar el nombre de la unidad ingresado
@@ -247,47 +254,42 @@ export class ContenidoComponent implements OnInit {
     }
 
 
-    materialSeleccionado: any = null; // Material seleccionado
-    tema = {
-        idTema: 1, // ID del tema de ejemplo
-        materiales: [], // Lista de materiales
-    };
+    // Abrir el modal para crear o editar un material
+    AbrirModalMaterias(material: any | null): void {
+        // Asignar el material seleccionado
+        this.materialSeleccionado = material ? {...material} : null;
 
+        // Verifica que el valor es correcto antes de abrir el modal
+        console.log('Material seleccionado para el formulario:', this.materialSeleccionado);
 
+        // Abrir el modal después de asignar el material
+        this.modalService.openModal('formularioMateria');
+    }
+
+    // Manejar el evento de envío desde el formulario
     onMaterialSubmit(materialData: any): void {
-        if (!materialData) {
-            console.error('Error: No se recibieron datos del formulario.');
-            return;
+        if (this.materialSeleccionado) {
+            // Actualizar el material existente
+            const index = this.tema.materiales.findIndex(
+                (mat: any) => mat.idMaterial === this.materialSeleccionado.idMaterial
+            );
+            if (index !== -1) {
+                this.tema.materiales[index] = materialData;
+            }
+        } else {
+            // Agregar un nuevo material
+            materialData.idMaterial = new Date().getTime(); // Genera un ID único
+            this.tema.materiales.push(materialData);
         }
 
-        // Crear el objeto JSON que se enviará al backend
-        const payload = {
-            idMaterial: materialData.idMaterial || null, // Si es un material nuevo, su ID puede ser opcional
-            nombre: materialData.nombre,
-            link: materialData.link || '',
-            documento: materialData.documento || null, // Puede contener el archivo si lo hay
-            activo: materialData.activo || true,
-            idTema: this.tema.idTema, // Relacionar con el tema actual
-        };
-
-        // Mostrar el objeto JSON en consola
-        console.log('JSON a enviar:', JSON.stringify(payload, null, 2));
-
-        // Aquí acabaría el método si solo deseas mostrar el JSON
+        // Limpiar el material seleccionado y cerrar el modal
+        this.CerrarModalMaterias();
     }
 
-
-    AbrirModalMaterias() {
-        this.modalService.openModal("formularioMateria")
+    // Cerrar el modal
+    CerrarModalMaterias(): void {
+        this.modalService.closeModal('formularioMateria'); // Cierra el modal usando el servicio
+        this.materialSeleccionado = null; // Limpiar el estado
     }
 
-
-    cerrarModal() {
-        this.modalService.closeModal("formularioMateria")
-    }
-
-    irADetalleAsignacion(idAsignacion: number, idDistributivo: number): void {
-        console.log("idAsignacion:", idAsignacion, "idDistributivo:", idDistributivo);
-        this.router.navigate(['/course/assignment', idAsignacion], {state: {data: {idDistributivo}}});
-    }
 }
