@@ -71,4 +71,29 @@ export class TeachersService {
         return this.http.get<any>(this.apiUrl + "/api/docente/dashboard/promedios");
     }
 
+    // traer los cursos que imparte el docente
+    getCursos(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/docente/cursos");
+    }
+
+    // traer estudiantes por id del curso
+    getEstudiantesCurso(idCurso: any): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/general/controller/estudiantes/curso/" + idCurso);
+    }
+
+    // traer citaciones
+    getCitaciones(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/docente/citaciones");
+    }
+
+    // crear citación
+    createCitacion(data: any): Observable<any> {
+        return this.http.post<any>(this.apiUrl + "/api/docente/citacion", data);
+    }
+
+    // cambiar estado de citación
+    changeStateCitacion(idCitacion: any): Observable<any> {
+        return this.http.put<any>(this.apiUrl + "/api/docente/citacion/estado/" + idCitacion, {});
+    }
+
 }

@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarComponent } from '../../DashBoard/calendar/calendar.component';
-import { NgForOf, NgIf } from '@angular/common';
+import { DecimalPipe, NgForOf, NgIf } from '@angular/common';
 import { ChartOptions, ChartType, Chart, plugins, registerables } from 'chart.js';
+import { RepresentService } from '../../../services/representative/represent.service';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard-representative',
-  imports: [CalendarComponent, NgForOf, NgIf],
+  imports: [CalendarComponent, NgForOf, NgIf, DecimalPipe],
   templateUrl: './dashboard-representative.component.html',
   styleUrl: './dashboard-representative.component.css'
 })
@@ -25,12 +26,15 @@ export class DashboardRepresentativeComponent implements OnInit {
     { nombre: 'Estudiante 4', curso: 'Undécimo D', asistencia: 80, promedio: 7.0, conducta: 8.5, materiaBaja: 'Inglés', assignments: [{ name: 'Tarea 7', timeRemaining: '2 días' }, { name: 'Tarea 8', timeRemaining: '7 días' }], materias: { Matemáticas: 6.5, Historia: 7.0, Ciencias: 7.5 } }
   ];
 
-  constructor() { }
+  students: any;
+
+  constructor(private representService : RepresentService) { }
 
   ngOnInit(): void {
     this.selectedStudent = this.representados[0]; // Selecciona el primer estudiante por defecto
     this.selectedStudentForGrades = this.representados[0]; // Selecciona el primer estudiante por defecto para el gráfico de promedio por materia
 
+    this.getDashboard();
 
     this.attendanceChart = new Chart('attendanceChartCanvas', {
       type: 'bar',
@@ -66,6 +70,19 @@ export class DashboardRepresentativeComponent implements OnInit {
         }
       }
     });
+  }
+
+  // cargar información general de sus estudiantes
+  getDashboard(): void {
+    this.representService.getDashboard().subscribe(
+      data => {
+        console.log(data);
+        this.students = data;
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   onStudentChange(event: any): void {

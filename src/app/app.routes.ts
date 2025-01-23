@@ -31,6 +31,7 @@ import { DashboardOpAdminComponent } from './pages/opAdmin/dashboard-op-admin/da
 import { DashboardTeacherComponent } from './pages/teacher/dashboard-teacher/dashboard-teacher.component';
 import { DashboardStudentComponent } from './pages/students/dashboard-student/dashboard-student.component';
 import { DashboardRepresentativeComponent } from './pages/representative/dashboard-representative/dashboard-representative.component';
+import { CitationTeacherComponent } from './pages/teacher/citation-teacher/citation-teacher.component';
 
 export const routes: Routes = [
     {
@@ -60,6 +61,7 @@ export const routes: Routes = [
             {path: 'institutional/inscriptions', component: InscriptionTableComponent},
             {path: 'institutional/students', component: EstudentsTableComponent},
             {path: 'teacher/dashboard', component: DashboardTeacherComponent},
+            {path: 'teacher/citations', component: CitationTeacherComponent},
             {path: 'student/dashboard', component: DashboardStudentComponent},
             {path: 'students/attendance', component: AttendanceComponent},
             {path: 'students/conduct', component: ConductComponent},

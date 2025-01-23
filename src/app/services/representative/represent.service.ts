@@ -41,4 +41,10 @@ export class RepresentService {
     getMatriculas(): Observable<any> {
         return this.http.get<any>(this.apiUrl + "/api/representante/matriculas");
     }
+
+    // DASHBOARD --------------------------------------------
+    // mostrar info general de cada uno de los estudiantes a quien representa
+    getDashboard(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/estudiante/dashboard/representante");
+    }
 }
