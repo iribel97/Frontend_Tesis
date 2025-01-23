@@ -292,4 +292,9 @@ export class ContenidoComponent implements OnInit {
         this.materialSeleccionado = null; // Limpiar el estado
     }
 
+    irADetalleAsignacion(idAsignacion: number, idDistributivo: number): void {
+        console.log("idAsignacion:", idAsignacion, "idDistributivo:", idDistributivo);
+        this.router.navigate(['/course/assignment', idAsignacion], {state: {data: {idDistributivo}}});
+    }
+
 }
