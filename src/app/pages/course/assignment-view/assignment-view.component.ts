@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgClass} from "@angular/common";
 import {StudentsService} from "../../../services/students/students.service";
 import {UtilityService} from "../../../shared/service/utility/utility.service";
@@ -7,6 +7,9 @@ import {ModalComponent} from "../../../shared/ui/modal/modal.component";
 import {ModalService} from "../../../shared/service/modal/modal.service";
 import {SutmitAssignmentComponent} from "../../../forms/student/sutmit-assignment/sutmit-assignment.component";
 import {Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {ToastComponent} from "../../../shared/ui/toast/toast.component";
+import {FormsModule} from "@angular/forms";
 
 @Component({
     selector: 'app-assignment-view',
@@ -15,7 +18,9 @@ import {Router} from "@angular/router";
         NgClass,
         ButtonComponent,
         ModalComponent,
-        SutmitAssignmentComponent
+        SutmitAssignmentComponent,
+        ToastComponent,
+        FormsModule
     ],
     styleUrls: ['./assignment-view.component.css']
 })
@@ -23,11 +28,17 @@ export class AssignmentViewComponent implements OnInit {
     asignacion: any; // Declaramos la variable para asignar los datos de la asignación
     idAssignment: number = 0;
     idDistributivo?: number; // Almacenar el valor recibido
+    nota: number = 1; // Nota a enviar
+
+    @ViewChild('toast', {static: true}) toast!: ToastComponent;
+
 
     constructor(private studentsService: StudentsService,
                 protected utilityService: UtilityService,
-                private modalService: ModalService,
-                private router: Router) {
+                protected modalService: ModalService,
+                private router: Router,
+                private http: HttpClient
+    ) {
     }
 
     ngOnInit(): void {
@@ -69,7 +80,35 @@ export class AssignmentViewComponent implements OnInit {
         this.modalService.openModal(modalId);
     }
 
+    // Método para enviar la calificación al backend
+    enviarCalificacion(event: Event): void {
+        event.preventDefault();
+
+        const payload = {
+            idEntrega: this.idAssignment,
+            nota: this.nota.toString(), // Convertir a cadena según el formato del backend
+        };
+
+        this.http.put('http://localhost:8080/api/docente/entrega/calificar', payload).subscribe({
+            next: (response: any) => {
+                if (!response.error) {
+                    this.toast.showToast('success', '¡Éxito!', 'Calificación enviada correctamente.', 10000);
+                } else {
+                    this.toast.showToast('error', 'Error al calificar', response.mensaje, 10000);
+                }
+            },
+            error: (error) => {
+                console.error('Error al enviar la calificación', error);
+                this.toast.showToast('error', 'Error', 'No se pudo enviar la calificación.', 10000);
+            },
+            complete: () => {
+                this.modalService.closeModal('calificarEntrega'); // Cerrar el modal
+            }
+        });
+    }
+
     goBack() {
         this.router.navigate([`/course/${this.idDistributivo}`]);
     }
+
 }

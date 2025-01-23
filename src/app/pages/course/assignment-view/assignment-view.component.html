@@ -1,6 +1,6 @@
 <div class="w-full p-3 rounded-lg bg-gray-50 border shadow-sm">
     <button class="flex items-center gap-2 text-gray-900 hover:text-blue-600 transition mb-3"
-    (click)="goBack()">
+            (click)="goBack()">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
              class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
@@ -64,6 +64,15 @@
 <!-- Entrega del Estudiante -->
 <div class="mb-6">
     <h2 class="text-lg font-semibold text-gray-900 mb-2">Datos de entrega</h2>
+    <!-- Botón para calificar -->
+    <div class="mt-6">
+        <button
+                class="px-4 py-2 text-white bg-green-600 hover:bg-green-700 rounded-lg shadow transition"
+                (click)="openModal('calificarEntrega')">
+            Calificar
+        </button>
+    </div>
+
     <p class="text-sm text-gray-600">
         <strong class="text-gray-800">Estudiante:</strong> {{ asignacion.entregaEst.nombresEstudiante }}
     </p>
@@ -132,7 +141,47 @@
     <ui-modal modalId="openSendSutmit" [isOpen]="false">
         <h2 class="text-lg font-semibold text-gray-900 mb-2"
             style="margin-bottom: 1rem;">Enviar Entrega</h2>
-        <form-sutmit-assignment [idAssignment]="idAssignment" />
+        <form-sutmit-assignment [idAssignment]="idAssignment"/>
+    </ui-modal>
+
+    <!-- Modal para Calificar Entrega -->
+    <ui-modal modalId="calificarEntrega" [isOpen]="false">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Calificar Entrega</h2>
+        <form (submit)="enviarCalificacion($event)">
+            <!-- Campo para la nota -->
+            <div class="mb-4">
+                <label for="nota"
+                       class="block text-sm font-medium text-gray-700 mb-1">
+                    Nota (1 a 10)
+                </label>
+                <input
+                        type="number"
+                        id="nota"
+                        name="nota"
+                        min="1"
+                        max="10"
+                        step="0.1"
+                        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
+                        [(ngModel)]="nota"
+                        required
+                >
+            </div>
+
+            <!-- Botones del modal -->
+            <div class="flex justify-end gap-4">
+                <button type="button"
+                        class="px-4 py-2 bg-gray-500 text-white hover:bg-gray-600 rounded-lg"
+                        (click)="modalService.closeModal('calificarEntrega')">
+                    Cancelar
+                </button>
+                <button
+                        type="submit"
+                        class="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg">
+                    Enviar Calificación
+                </button>
+            </div>
+        </form>
     </ui-modal>
 
 </div>
+<ui-toast #toast></ui-toast>
