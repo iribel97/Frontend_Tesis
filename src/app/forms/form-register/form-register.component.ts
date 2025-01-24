@@ -1,38 +1,44 @@
-import {Component, OnInit, ChangeDetectorRef, NgZone, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {InputComponent} from "../../shared/ui/input/input.component";
-import {SelectComponent} from "../../shared/ui/select/select.component";
-import {DatapikerComponent} from "../../shared/ui/datapiker/datapiker.component";
-import {AuthService} from "../../services/auth/auth.service";
-import {Router} from "@angular/router";
-import {ToastComponent} from "../../shared/ui/toast/toast.component";
+import { Component, OnInit, ChangeDetectorRef, NgZone, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { InputComponent } from "../../shared/ui/input/input.component";
+import { SelectComponent } from "../../shared/ui/select/select.component";
+import { DatapikerComponent } from "../../shared/ui/datapiker/datapiker.component";
+import { AuthService } from "../../services/auth/auth.service";
+import { Router } from "@angular/router";
+import { ToastComponent } from "../../shared/ui/toast/toast.component";
+import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
     selector: 'form-register',
-    imports: [ReactiveFormsModule, InputComponent, SelectComponent, DatapikerComponent, ToastComponent],
+    imports: [ReactiveFormsModule,
+        ToastComponent,
+        NgForOf,
+        NgIf
+    ],
     templateUrl: './form-register.component.html'
 })
 export class FormRegisterComponent implements OnInit {
-    @ViewChild('toast', {static: true}) toast!: ToastComponent;
+    @ViewChild('toast', { static: true }) toast!: ToastComponent;
     formErrors: { [key: string]: string } = {};
     formRegister!: FormGroup;
     sendform = false;
+    currentStep = 1;
 
-    genderOptions: { id: number; name: string }[] = [
-        {id: 1, name: 'Masculino'},
-        {id: 2, name: 'Femenino'}
+    genderOptions: any[] = [
+        { id: 1, name: 'Masculino' },
+        { id: 2, name: 'Femenino' }
     ];
 
     constructor(private fb: FormBuilder,
-                private cdr: ChangeDetectorRef,
-                private ngZone: NgZone,
-                private authService: AuthService,
-                private router: Router,) {
+        private cdr: ChangeDetectorRef,
+        private ngZone: NgZone,
+        private authService: AuthService,
+        private router: Router) {
     }
 
     ngOnInit(): void {
         this.formRegister = this.fb.group({
-            ci: [''],
+            ci: ['' ],
             name: [''],
             last_name: [''],
             email: [''],
@@ -52,30 +58,39 @@ export class FormRegisterComponent implements OnInit {
         });
     }
 
-    onSubmit() {
+    nextStep(): void {
+        if (this.currentStep < 2) {
+            this.currentStep++;
+        }
+    }
+
+    previousStep(): void {
+        if (this.currentStep > 1) {
+            this.currentStep--;
+        }
+    }
+
+    onSubmit(): void {
         this.sendform = true;
 
-        if (Object.keys(this.formErrors).length > 0) {
-            console.log('Form has errors:', this.formErrors);
+        if (this.formRegister.invalid) {
+            console.log('Form has errors:', this.formRegister.errors);
+            this.formRegister.markAllAsTouched(); // Marcar todos los campos como tocados para mostrar errores
         } else {
             // Transformar el formato del formulario
             const mappedData = this.mapFormData(this.formRegister.value);
 
             console.log('Mapped form data:', mappedData);
-            this.authService.registerRepresentative(mappedData).subscribe(responde => {
-                    this.router.navigate(['/home']);
-                }, error => {
-                    this.toast.showToast('error', error.error.detalles, error.error.mensaje, 10000); // Show toast message
-                    console.error('Login error:', error);
-                }
-            );
-
-            // Aquí envías `mappedData` al backend
-            // ejemplo: this.httpClient.post('url-endpoint', mappedData).subscribe(...)
+            this.authService.registerRepresentative(mappedData).subscribe(response => {
+                this.router.navigate(['/home']);
+            }, error => {
+                this.toast.showToast('error', error.error.detalles, error.error.mensaje, 10000); // Show toast message
+                console.error('Registration error:', error);
+            });
         }
     }
 
-// Método para mapear los datos del formulario al formato esperado
+    // Método para mapear los datos del formulario al formato esperado
     mapFormData(formData: any): any {
         return {
             cedula: formData.ci, // Mapea "ci" a "cedula"
@@ -86,15 +101,14 @@ export class FormRegisterComponent implements OnInit {
             telefono: formData.phone, // Mapea "phone" a "telefono"
             direccion: formData.address, // Mapea "address" a "direccion"
             nacimiento: formData.birth_date, // Mapea "birth_date" a "nacimiento"
-            genero: formData.gender?.name || '', // Extrae solo `name` de `gender`
-            ocupacion: 'Ocupación x', // Si no existe en el formulario, coloca un valor por defecto
+            genero: formData.gender, // Mapea "gender" a "genero"
             empresa: formData.company, // Mapea "company" a "empresa"
             direccionEmpresa: formData.company_address, // Mapea "company_address" a "direccionEmpresa"
             telefonoEmpresa: formData.company_phone // Mapea "company_phone" a "telefonoEmpresa"
         };
     }
 
-    onErrorsChange(event: { id: string, errorMessage: string }) {
+    onErrorsChange(event: { id: string, errorMessage: string }): void {
         if (event.errorMessage) {
             this.formErrors[event.id] = event.errorMessage;
         } else {

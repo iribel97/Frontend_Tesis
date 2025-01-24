@@ -25,6 +25,8 @@ export class UsersTableComponent implements OnInit {
 
   @ViewChild('toast', { static: true }) toast!: ToastComponent;
 
+  editingUser: string | null = null;
+
   users: any[] = []; // Lista de usuarios original traída del backend
   filteredUsers: any[] = []; // Lista resultante después de aplicar filtros
   paginatedUsers: any[] = []; // Lista de usuarios visibles en la tabla (paginados)
@@ -106,7 +108,30 @@ export class UsersTableComponent implements OnInit {
   }
 
   editUser(cedula: any) {
-    // Lógica para editar usuario
+    this.editingUser = cedula;
+  }
+
+  saveUser(user: any) {
+
+    // Mandar cedula del usuario a editar y el estado
+    const data = {
+      cedula: user.cedula,
+      estado: user.estado
+    }
+
+    this.adminService.editUserState(data).subscribe({
+      next: (data) => {
+        this.toast.showToast('success', data.detalles, data.mensaje, 10000); // Show toast message
+      },
+      error: (err) => {
+        console.error('Error al editar el usuario:', err);
+        this.toast.showToast('error', err.error.detalles, err.error.mensaje, 10000); // Show toast message
+      }
+    });
+
+
+    console.log('Usuario editado:', user);
+    this.editingUser = null;
   }
 
   // Abrir modal de agregar usuario

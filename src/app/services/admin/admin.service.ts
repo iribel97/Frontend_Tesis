@@ -31,6 +31,11 @@ export class AdminService {
         return this.http.delete<any>(`${this.apiUrl}/api/admin/usuario/${cedula}`);
     }
 
+    // editar el estado del usuario
+    editUserState(data : any): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/api/admin/usuario`, data);
+    }
+
     // traer todos los ciclos academicos
     getAllCiclos(): Observable<any> {
         return this.http.get<any>(this.apiUrl + "/api/general/controller/ciclos");
