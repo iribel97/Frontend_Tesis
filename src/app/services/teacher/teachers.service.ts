@@ -51,6 +51,18 @@ export class TeachersService {
         return this.http.post<any>(`${this.apiUrl}/api/docente/materia/contenido/unidad`, data);
     }
 
+    updateUnidad(data: any): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/api/docente/materia/contenido/unidad`, data);
+    }
+
+    addTema(data: any): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/api/docente/materia/contenido/tema`, data);
+    }
+
+    updateTema(data: any): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/api/docente/materia/contenido/tema`, data);
+    }
+
     // Traer toda la info en caso de ser tutor de un curso
     getTutoria(): Observable<any> {
         return this.http.get<any>(this.apiUrl + "/api/docente/tutor/notas");
@@ -95,5 +107,6 @@ export class TeachersService {
     changeStateCitacion(idCitacion: any): Observable<any> {
         return this.http.put<any>(this.apiUrl + "/api/docente/citacion/estado/" + idCitacion, {});
     }
+
 
 }
