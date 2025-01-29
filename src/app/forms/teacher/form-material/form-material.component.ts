@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
+import {TeachersService} from "../../../services/teacher/teachers.service";
 
 @Component({
     selector: 'app-form-material',
@@ -21,7 +22,7 @@ export class FormMaterialComponent implements OnInit, OnChanges {
     fileMime: string | null = null; // Tipo MIME del archivo.
     isEditing = false; // Por defecto, es falso.
 
-    constructor(private fb: FormBuilder) {
+    constructor(private fb: FormBuilder, private teachersService: TeachersService) {
     }
 
 
@@ -46,9 +47,9 @@ export class FormMaterialComponent implements OnInit, OnChanges {
     private initForm(): void {
         this.materialForm = this.fb.group(
             {
-                tipoMaterial: ['link', Validators.required], // Selección inicial: 'link'
+                tipoMaterial: ['link'], // Selección inicial: 'link'
                 link: [null, [Validators.pattern(/https?:\/\/.+/)]], // Formato válido de URL.
-                activo: [true, Validators.required], // Indica estado activo.
+                activo: [true], // Indica estado activo.
             },
             {validators: this.atLeastOneValidator(() => this.fileBase64)} // Validación personalizada.
         );
@@ -86,29 +87,45 @@ export class FormMaterialComponent implements OnInit, OnChanges {
         };
     }
 
-    // Procesar el envío del formulario
     submitForm(): void {
         if (this.materialForm.valid) {
+            // Construir el objeto esperado por el backend
             const materialData = {
-                link: this.materialForm.get('link')?.value,
+                link: this.materialForm.get('link')?.value, // Link del material (string)
                 documento: this.fileBase64
-                    ? {base64: this.fileBase64, mime: this.fileMime}
-                    : null,
-                activo: true,
-                idTema: this.idTema,
-                idMaterial: this.materialToEdit?.idMaterial || null,
+                    ? {base64: this.fileBase64, mime: this.fileMime} // Documento si existe
+                    : null, // O null si no hay archivo
+                activo: true, // Material estará activo por defecto
+                idTema: this.idTema // ID del tema relacionado
             };
 
-            this.onSubmit.emit(materialData);
-            this.resetForm();
+            // Llamar al servicio para enviar el material al backend con la estructura adecuada
+            this.teachersService.addmaterialescursos(materialData).subscribe(
+                (response) => {
+                    console.log('Material agregado exitosamente:', response);
+
+                    // Opcional: emitir un evento para actualizar la lista de materiales en el componente padre
+                    this.onSubmit.emit(materialData);
+
+                    // Restablecer el formulario después de procesar
+                    this.resetForm();
+                },
+                (error) => {
+                    console.error('Error al agregar el material:', error);
+                    // Manejar errores (ejemplo: mostrar un mensaje en la interfaz)
+                }
+            );
+        } else {
+            console.warn('Formulario de material no válido.');
         }
     }
 
     // Resetear el formulario
-    protected resetForm(): void {
-        this.materialForm.reset({activo: true});
-        this.fileBase64 = null;
-        this.fileMime = null;
+    resetForm(): void {
+        this.materialForm.reset(); // Reiniciar valores del formulario
+        this.fileBase64 = null;    // Borrar el archivo almacenado
+        this.fileMime = null;      // Borrar el MIME almacenado
+        this.materialToEdit = null; // Restablecer material a editar (si aplica)
     }
 
     onFileChange(event: any): void {
@@ -122,6 +139,26 @@ export class FormMaterialComponent implements OnInit, OnChanges {
             };
             reader.readAsDataURL(file);
         }
+    }
+
+    onFileSelected(file: File): void {
+        const maxSizeInMB = 5;
+        if (file.size / 1024 / 1024 > maxSizeInMB) {
+            console.warn('El archivo excede el tamaño máximo permitido (5MB).');
+            return;
+        }
+
+        if (!['application/pdf', 'image/png', 'image/jpeg'].includes(file.type)) {
+            console.warn('Tipo de archivo no permitido. Solo se permiten PDFs e imágenes.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.fileBase64 = reader.result as string;
+            this.fileMime = file.type;
+        };
+        reader.readAsDataURL(file);
     }
 
 

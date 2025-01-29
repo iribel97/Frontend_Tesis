@@ -88,6 +88,15 @@ export class TeachersService {
         return this.http.get<any>(this.apiUrl + "/api/docente/cursos");
     }
 
+    addmaterialescursos(data: any): Observable<any> {
+        return this.http.post<any>(this.apiUrl + "/api/docente/materia/contenido/material", data);
+    }
+
+    Updatematerialescursos(data: any): Observable<any> {
+        return this.http.put<any>(this.apiUrl + "/api/docente/materia/contenido/material", data);
+    }
+
+
     // traer estudiantes por id del curso
     getEstudiantesCurso(idCurso: any): Observable<any> {
         return this.http.get<any>(this.apiUrl + "/api/general/controller/estudiantes/curso/" + idCurso);
