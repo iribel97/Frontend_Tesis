@@ -90,18 +90,18 @@ export class ContenidoComponent implements OnInit {
             (data) => {
                 this.materia = data;
 
-                // Verifica que cada unidad tenga los datos esperados
+                // Inicializa unidades y contenido si están indefinidos
                 if (this.materia?.unidades) {
                     this.materia.unidades = this.materia.unidades.map((unidad: any) => ({
                         idUnidad: unidad.idUnidad,
-                        nombre: unidad.nombre || 'Sin Nombre', // Proporcionar valor por defecto si falta
-                        contenido: unidad.contenido || [],    // Asegurar que el contenido sea un array
-                        activo: unidad.activo || true         // Definir activo como verdadero por defecto
+                        nombre: unidad.nombre || 'Sin Nombre',
+                        contenido: unidad.contenido || [],    // Asegurarte de inicializar con un array vacío
+                        activo: unidad.activo || true
                     }));
                 }
             },
             (error) => {
-                console.error('Error al obtener el contenido de la materia del docente:', error);
+                console.error('Error al cargar el contenido:', error);
             }
         );
     }
@@ -207,96 +207,108 @@ export class ContenidoComponent implements OnInit {
         event.stopPropagation(); // Evitar que el clic active otros eventos, como abrir/cerrar el tema
         tema.editando = true; // Habilitar el modo de edición
         tema.nombreTemporal = tema.nombreTema; // Guardar el nombre original por si se cancela la edición
+        tema.descripcionTemporal = tema.descripcion;
     }
 
     guardarTema(unidad: any): void {
-        if (!unidad.nuevoTituloTema.trim()) {
+        const titulo = unidad.nuevoTituloTema?.trim();  // Capturar el título del input
+        const detalle = unidad.detalleNuevoTema?.trim(); // Capturar la descripción del input
+
+        if (!titulo) {
             console.warn('El título no puede estar vacío.');
             return;
         }
 
-        // Crear el objeto según lo que el backend espera
+        if (!detalle) {
+            console.warn('La descripción no puede estar vacía.');
+            return;
+        }
+
+        // Crear el objeto para enviar al backend
         const nuevoTema = {
-            activo: true,                      // Por defecto, el tema estará activo
-            tema: unidad.nuevoTituloTema.trim(), // Título del tema ingresado
-            detalle: unidad.detalleNuevoTema || '', // Detalle opcional (se deja vacío si no es proporcionado)
-            idUnidad: unidad.idUnidad          // ID de la unidad a la que pertenece el tema
+            activo: true,                       // Por defecto, el tema estará activo
+            tema: titulo,                       // Título del tema ingresado
+            detalle: detalle,                   // Descripción del tema
+            idUnidad: unidad.idUnidad           // ID de la unidad a la que pertenece el tema
         };
 
-        // Enviar el nuevo tema al backend usando el servicio
+        // Enviar el tema al backend usando el servicio
         this.teachersService.addTema(nuevoTema).subscribe(
             (response) => {
                 console.log('Tema creado exitosamente:', response);
 
-                // Agregar el tema al contenido de la unidad después de la respuesta exitosa
+                // Agregar el nuevo tema con las claves correctas
                 unidad.contenido.push({
                     idTema: response.id,             // ID generado por el backend
-                    nombreTema: nuevoTema.tema,      // Título del nuevo tema
-                    descripcion: nuevoTema.detalle,  // Detalle proporcionado
-                    materiales: [],                  // Lista inicial de materiales (vacía por defecto)
-                    open: false                      // Inicialmente cerrado
+                    nombreTema: titulo,              // Asegúrate de usar nombreTema
+                    descripcion: detalle,            // Asegúrate de usar descripcion
+                    materiales: [],                  // Lista vacía inicial de materiales
+                    open: false                      // Inicialmente está colapsado
                 });
 
                 // Resetear los valores de los inputs
-                unidad.nuevoTituloTema = '';        // Limpiar el campo de título
-                unidad.detalleNuevoTema = '';       // Limpiar el campo de detalle
-                unidad.mostrarInputTema = false;    // Ocultar la entrada de texto
+                unidad.nuevoTituloTema = '';
+                unidad.detalleNuevoTema = '';
+                unidad.mostrarInputTema = false;
+                // Llamar al endpoint para obtener la materia actualizada
+                this.loadContenidoDocente(this.idMateria);
+
             },
             (error) => {
                 console.error('Error al crear el tema:', error);
-                // Puedes mostrar un mensaje al usuario en caso de error
+                // Manejo de error cuando el backend falla
             }
         );
     }
 
-    guardarEdicionTema(unidad: any, event: Event): void {
-        event.stopPropagation(); // Evitar que se active apertura/cierre del tema
+    guardarEdicionTema(tema: any, idUni: number, event: Event): void {
+        event.stopPropagation(); // Evitar que se cierre el tema al guardar
 
-        // Validar que el campo temporal del nombre no esté vacío
-        if (!unidad.nuevoTituloTema || unidad.nuevoTituloTema.trim() === '') {
+        // Obtener los valores nuevos del tema (título y descripción, asegurándose de que estén definidos)
+        const nuevoTitulo = tema.nombreTemporal?.trim(); // Nombre temporal ingresado
+        const nuevaDescripcion = tema.descripcionTemporal?.trim(); // Descripción temporal ingresada
+
+        if (!nuevoTitulo) {
             console.warn('El nombre del tema no puede estar vacío.');
             return;
         }
 
-        // Crear el objeto con los datos que el backend espera
-        const nuevoTema = {
-            activo: true,                       // El tema será activo por defecto
-            tema: unidad.nuevoTituloTema.trim(), // Título del tema
-            detalle: unidad.detalleNuevoTema || '', // Descripción del tema (vacío si no es proporcionado)
-            idUnidad: unidad.idUnidad           // ID de la unidad a la que pertenece este tema
+        if (!nuevaDescripcion) {
+            console.warn('La descripción no puede estar vacía.');
+            return;
+        }
+
+        // Crear el objeto que cumple la estructura esperada por el backend
+        const temaActualizado = {
+            id: tema.idTema,                 // ID del tema
+            activo: tema.activo,             // Estado activo/inactivo del tema
+            tema: nuevoTitulo,               // Nuevo título del tema
+            detalle: nuevaDescripcion,       // Nueva descripción del tema
+            idUnidad: idUni          // ID de la unidad a la que pertenece este tema
         };
 
         // Usar el servicio para enviar la solicitud al backend
-        this.teachersService.addTema(nuevoTema).subscribe(
+        this.teachersService.updateTema(temaActualizado).subscribe(
             (response) => {
-                console.log('Tema creado exitosamente:', response);
+                console.log('Tema actualizado exitosamente:', response);
 
-                // Añadir el tema creado al contenido de la unidad
-                unidad.contenido.push({
-                    idTema: response.idTema,          // Usar el ID generado por el backend
-                    nombreTema: nuevoTema.tema,       // Título del nuevo tema
-                    descripcion: nuevoTema.detalle,   // Descripción asociada al tema
-                    materiales: [],                   // Lista vacía de materiales por defecto
-                    activo: nuevoTema.activo,         // Estado activo del tema
-                    open: false                       // Inicialmente cerrado
-                });
-
-                // Resetear los campos e inputs relacionados al tema
-                unidad.nuevoTituloTema = ''; // Limpiar el título del tema
-                unidad.detalleNuevoTema = ''; // Limpiar la descripción del tema (si se usa)
-                unidad.mostrarInputTema = false; // Ocultar el input de creación del tema
+                // Actualizar los valores en la lista local tras una respuesta exitosa
+                tema.nombreTema = nuevoTitulo;           // Actualiza el título del tema localmente
+                tema.descripcion = nuevaDescripcion;     // Actualiza la descripción localmente
+                tema.editando = false;                   // Salir del modo de edición
             },
             (error) => {
-                console.error('Error al crear el tema:', error);
-                // Aquí podrías agregar un mensaje de error para el usuario si es necesario
+                console.error('Error al actualizar el tema:', error);
+                // Opcional: muestra un mensaje en la UI si ocurre un error
             }
         );
     }
 
     cancelarEdicionTema(tema: any, event: Event): void {
-        event.stopPropagation(); // Prevenir eventos no deseados
-        tema.editando = false; // Salir del modo de edición
-        tema.nombreTemporal = ''; // Limpiar el nombre temporal
+        event.stopPropagation();
+        tema.editando = false;
+        tema.nombreTemporal = '';
+        tema.descripcionTemporal = '';
     }
 
     activarEdicionUnidad(unidad: any): void {
