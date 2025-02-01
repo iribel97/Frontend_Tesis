@@ -44,7 +44,7 @@
                         </svg>
                     </button>
                     <button class="bg-green-500 px-2 py-1 rounded text-white mr-2"
-                        (click)="acceptStudent(student.cedula)">
+                        (click)="openModal(student)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-check">
@@ -74,6 +74,45 @@
         </button>
     </div>
 </div>
+
+<!-- Modal -->
+    <div *ngIf="showModal" class="fixed z-10 inset-0 overflow-y-auto">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                Seleccionar Curso
+                            </h3>
+                            <div class="mt-2">
+                                <label for="cursoSelect" class="block text-sm font-medium text-gray-700">Seleccione un curso:</label>
+                                <select id="cursoSelect" (change)="loadSelectedCurso($event)" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    <option value="" disabled selected>Seleccione un curso</option>
+                                    <option *ngFor="let curso of cursos" [value]="curso.id">
+                                        {{ curso.nombreGrado }} - {{ curso.paralelo }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" (click)=" acceptInscripcion()">
+                        Guardar
+                    </button>
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm" (click)="closeModal()">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <!-- Modal para ver información del estudiante -->
 <div *ngIf="showStudentInfoModal" class="fixed inset-0 flex items-center justify-center z-50">
     <div class="bg-white p-6 rounded-lg shadow-lg w-1/2 z-50">
@@ -207,33 +246,29 @@
                     <p class="text-sm text-gray-900">{{ selectedStudent?.ocupacionMadre }}</p>
                 </div>
             </div>
-            <div class="w-full col-span-6">
-                <h3 class="text-md font-semibold text-gray-800">Documentos</h3>
-            </div>
+        </div>
+        <div class="w-full col-span-6">
+            <h3 class="text-md font-semibold text-gray-800">Documentos</h3>
         </div>
         <div *ngIf="selectedStudent?.documentos?.length > 0; else noDocuments">
-            <ul class="grid grid-cols-1 lg:grid-cols-8 gap-x-4 gap-y-2 list-disc list-inside text-gray-700 mb-3">
-                <li *ngFor="let doc of selectedStudent.documentos" class="flex items-center mb-3">
-                    <button class="button button--descargar" type="button"
-                            (click)="utilityService.descargarDocumento(doc.base64, doc.nombre, doc.mime)"
-                            title="{{doc.nombre}}">
-                        <span class="button__text">Descargar</span>
-                        <span class="button__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35"
-                                 id="bdd05811-e15d-428c-bb53-8661459f9307"
-                                 data-name="Layer 2" class="svg">
-                                <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
-                                <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
-                                <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
-                            </svg>
-                        </span>
+            <div class="flex flex-wrap gap-4">
+                <div *ngFor="let doc of selectedStudent.documentos"
+                    class="flex items-center justify-center p-4 border rounded-lg shadow-sm bg-white">
+                    <button
+                        class=" text-white p-3 rounded-full shadow-sm hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
+                        (click)="utilityService.descargarDocumento(doc.base64, doc.nombre, doc.mime)"
+                        title="{{doc.nombre}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 16l-6-6h4V4h4v6h4z" />
+                            <path d="M20 18H4v-2h16v2z" />
+                        </svg>
                     </button>
-                    <p class="text-sm block lg:hidden">{{ doc.nombre }}</p>
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
         <ng-template #noDocuments>
-            <p class="text-gray-600 mb-3">No hay documentos entregados.</p>
+            <p class="text-gray-500">No hay documentos disponibles.</p>
         </ng-template>
         <div class="flex justify-end gap-2 mt-4">
             <button class="bg-gray-500 text-white px-4 py-2 rounded" (click)="closeStudentInfoModal()">Cerrar</button>

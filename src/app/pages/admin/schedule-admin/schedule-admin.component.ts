@@ -77,7 +77,7 @@ export class ScheduleAdminComponent implements OnInit {
   }
 
   // carga horarios por estudiante
-  loadHorariosByEstudiante(event: any): void {
+  loadHorariosByEstudiante(event: any): void { 
     const estudianteId = event.target.value;
     this.selectedEstudianteId = estudianteId;
     this.loadHorarios();
@@ -96,7 +96,18 @@ export class ScheduleAdminComponent implements OnInit {
           this.loadingHorarios = false;
         }
       );
-    } 
+    } else if (this.rolUser === 'Estudiante') {
+      this.studentsService.getHorarios().subscribe(
+        data => {
+          this.horarios = data;
+          this.loadingHorarios = false;
+        },
+        error => {
+          console.error('Error al cargar los horarios del estudiante:', error);
+          this.loadingHorarios = false;
+        }
+      );
+    }
   }
 
   getInfoUser() {
@@ -109,6 +120,8 @@ export class ScheduleAdminComponent implements OnInit {
           this.loadHorariosDocente();
         } else if (this.rolUser === 'Representante') {
           this.loadEstudiantes();
+        } else if (this.rolUser === 'Estudiante') {
+          this.loadHorarios();
         } else {
           this.loadCursos();
         }

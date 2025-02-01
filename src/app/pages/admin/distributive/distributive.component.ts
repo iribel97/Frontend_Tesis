@@ -1,11 +1,12 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {AdminService} from '../../../services/admin/admin.service';
-import {NgForOf, NgIf} from '@angular/common';
-import {ModalComponent} from '../../../shared/ui/modal/modal.component';
-import {ModalService} from '../../../shared/service/modal/modal.service';
-import {FormSubjectComponent} from '../../../forms/admin/form-subject/form-subject.component';
-import {TabsComponent} from "../../../shared/ui/tabs/tabs.component";
-import {CreateDistributivoComponent} from "../../../forms/admin/create-distributivo/create-distributivo.component";
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AdminService } from '../../../services/admin/admin.service';
+import { NgForOf, NgIf } from '@angular/common';
+import { ModalComponent } from '../../../shared/ui/modal/modal.component';
+import { ModalService } from '../../../shared/service/modal/modal.service';
+import { FormSubjectComponent } from '../../../forms/admin/form-subject/form-subject.component';
+import { TabsComponent } from "../../../shared/ui/tabs/tabs.component";
+import { CreateDistributivoComponent } from "../../../forms/admin/create-distributivo/create-distributivo.component";
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-distributive',
@@ -15,24 +16,26 @@ import {CreateDistributivoComponent} from "../../../forms/admin/create-distribut
         ModalComponent,
         FormSubjectComponent,
         TabsComponent,
-        CreateDistributivoComponent
+        CreateDistributivoComponent,
+        FormsModule,
+        ReactiveFormsModule
     ],
     templateUrl: './distributive.component.html',
     styleUrl: './distributive.component.css'
 })
 export class DistributiveComponent implements AfterViewInit, OnInit {
 
-    @ViewChild('DistributivoContent', {static: true}) DistributivoContent!: TemplateRef<any>;
-    @ViewChild('MateriasContent', {static: true}) MateriasContent!: TemplateRef<any>;
-    @ViewChild('GradosContent', {static: true}) GradosContent!: TemplateRef<any>;
+    @ViewChild('DistributivoContent', { static: true }) DistributivoContent!: TemplateRef<any>;
+    @ViewChild('MateriasContent', { static: true }) MateriasContent!: TemplateRef<any>;
+    @ViewChild('GradosContent', { static: true }) GradosContent!: TemplateRef<any>;
 
     tabs: { id: string; title: string; content: TemplateRef<any> }[] = [];
 
     ngAfterViewInit(): void {
         this.tabs = [
-            {id: 'DistributivoContent', title: 'Distributivo', content: this.DistributivoContent},
-            {id: 'MateriasContent', title: 'Materias', content: this.MateriasContent},
-            {id: 'GradosContent', title: 'Grados', content: this.GradosContent},
+            { id: 'DistributivoContent', title: 'Distributivo', content: this.DistributivoContent },
+            { id: 'MateriasContent', title: 'Materias', content: this.MateriasContent },
+            { id: 'GradosContent', title: 'Grados', content: this.GradosContent },
         ];
 
         // Forzar la detección de cambios
@@ -40,12 +43,16 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
     }
 
     ciclos: any[] = []; // Lista de ciclos académicos
+    selectedCicloId: number | null = null;
+    isAddCicloModalOpen = false;
+    cicloForm: FormGroup;
     distributivos: any[] = []; // Lista completa de distributivos
     paginatedDistributivos: any[] = []; // Subconjunto de distributivos paginados
     materias: any[] = [];
 
     filteredMaterias: any[] = []; // Lista de materias filtradas
     paginatedMaterias: any[] = [];
+    editingMateria: string | null = null;
     materiasCurrentPage = 1;
     materiasItemsPerPage = 7;
     materiasTotalPages = 0;
@@ -58,8 +65,17 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
     totalPages: number = 1; // Total de páginas
 
     constructor(private cdr: ChangeDetectorRef,
-                private adminService: AdminService,
-                private modalService: ModalService) {
+        private adminService: AdminService,
+        private modalService: ModalService,
+        private fb: FormBuilder) {
+        this.cicloForm = this.fb.group({
+            nombre: [''],
+            cantPeriodos: [''],
+            fechaInicio: [''],
+            fechaFin: [''],
+            pruebaInscrip: [false],
+            activo: [false]
+        });
     }
 
     ngOnInit(): void {
@@ -72,6 +88,8 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
         this.adminService.getAllCiclos().subscribe({
             next: (data) => {
                 this.ciclos = data;
+                this.cdr.detectChanges(); // Forzar la detección de cambios
+
             },
             error: (err) => {
                 console.error('Error al cargar ciclos académicos:', err);
@@ -92,9 +110,16 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
 
     onCicloChange(event: Event): void {
         const selectedCicloId = (event.target as HTMLSelectElement).value;
-        if (selectedCicloId) {
-            this.fetchDistributivos(Number(selectedCicloId));
+        if (selectedCicloId === 'addCiclo') {
+            this.openModal('addCicloModal');
+            (event.target as HTMLSelectElement).value = ''; // Reset the select value
+        } else {
+
+            if (selectedCicloId) {
+                this.fetchDistributivos(Number(selectedCicloId));
+            }
         }
+
     }
 
     fetchDistributivos(cicloId: number): void {
@@ -145,6 +170,29 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
         );
     }
 
+    editMateria(id: string) {
+        this.editingMateria = id;
+    }
+
+    saveMateria(materia: any) {
+        const request = {
+            id: materia.id,
+            nombre: materia.nombre,
+            grado: materia.nombreGrado,
+            area: materia.area,
+            horas: materia.horasSemanales
+        };
+        this.adminService.editMateria(request).subscribe(
+            (data) => {
+                this.editingMateria = null;
+            },
+            (error) => {
+                console.error('Error al editar la materia:', error);
+            }
+        );
+        this.editingMateria = null;
+    }
+
     onSearchMateria(event: Event): void {
         const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
         this.searchMateriaTerm = searchTerm;
@@ -179,5 +227,26 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
 
     openModal(modalId: string): void {
         this.modalService.openModal(modalId);
+        this.isAddCicloModalOpen = true;
+    }
+
+    closeModal(modalId: string): void {
+        this.modalService.closeModal(modalId);
+        this.isAddCicloModalOpen = false;
+    }
+
+    onSubmitCiclo(): void {
+        if (this.cicloForm.valid) {
+            this.adminService.createCiclo(this.cicloForm.value).subscribe({
+                next: (response) => {
+                    this.cicloForm.reset(); // Reset the form
+                    this.closeModal('addCicloModal');
+                    this.fetchCiclos(); // Refresh the list of ciclos
+                },
+                error: (err) => {
+                    console.error('Error al crear ciclo:', err);
+                }
+            });
+        }
     }
 }

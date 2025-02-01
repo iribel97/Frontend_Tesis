@@ -41,6 +41,11 @@ export class AdminService {
         return this.http.get<any>(this.apiUrl + "/api/general/controller/ciclos");
     }
 
+    // crear un ciclo académico
+    createCiclo(request: any): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/api/admin/ciclo`, request);
+    }
+
     // obtener los distributivos por id de ciclo academico
     getDistributivosByCicloId(id: number): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/api/admin/distributivo/ciclo/${id}`);
@@ -64,6 +69,11 @@ export class AdminService {
     // Crear materia
     createMateria(materia: any): Observable<any> {
         return this.http.post<any>(`${this.apiUrl}/api/admin/materia`, materia);
+    }
+
+    // Editar materia
+    editMateria(materia: any): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/api/admin/materia`, materia);
     }
 
     // obtener horarios por curso

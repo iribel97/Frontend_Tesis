@@ -1,8 +1,8 @@
-import {ChangeDetectorRef, Component, NgZone, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {ToastComponent} from "../../../shared/ui/toast/toast.component";
-import {SelectComponent} from "../../../shared/ui/select/select.component";
-import {AdminService} from "../../../services/admin/admin.service";
+import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { ToastComponent } from "../../../shared/ui/toast/toast.component";
+import { SelectComponent } from "../../../shared/ui/select/select.component";
+import { AdminService } from "../../../services/admin/admin.service";
 
 @Component({
     selector: 'form-create-distributivo',
@@ -15,15 +15,15 @@ import {AdminService} from "../../../services/admin/admin.service";
     styleUrl: './create-distributivo.component.css'
 })
 export class CreateDistributivoComponent implements OnInit {
-    @ViewChild('toast', {static: true}) toast!: ToastComponent;
+    @ViewChild('toast', { static: true }) toast!: ToastComponent;
     formErrors: { [key: string]: string } = {};
     formRegister!: FormGroup;
     sendform = false;
 
     constructor(private fb: FormBuilder,
-                private cdr: ChangeDetectorRef,
-                private ngZone: NgZone,
-                private adminService: AdminService,) {
+        private cdr: ChangeDetectorRef,
+        private ngZone: NgZone,
+        private adminService: AdminService,) {
     }
 
     ciclos: any[] = [];
@@ -58,13 +58,14 @@ export class CreateDistributivoComponent implements OnInit {
             // Transformar los datos del formulario a la estructura esperada
             const sanitizedData = this.sanitizeFormData(formValue);
 
-            console.log('Sanitized form data:', sanitizedData);
-
             this.adminService.addDistributivo(sanitizedData).subscribe(
                 response => {
                     if (!response.error) {
                         // Si no hay error, mostrar el mensaje de éxito usando el toast
                         this.toast.showToast('success', response.detalles, response.mensaje, 10000);
+
+                        // Resetear el formulario a sus valores por defecto
+                        this.formRegister.reset();
                     } else {
                         // Si hay un error, mostrar el mensaje de error usando el toast
                         this.toast.showToast('error', response.detalles, response.mensaje, 10000);
@@ -95,14 +96,12 @@ export class CreateDistributivoComponent implements OnInit {
 
     cargarDatos(): void {
         this.adminService.getMaterias().subscribe(data => {
-            console.log('Materias:', data);
             this.materias = data.map((materia: any) => {
                 return {
                     id: materia.id,
                     name: materia.nombre + " - " + materia.nombreGrado
                 };
             });
-            console.log('Materias transformadas:', this.materias);
         })
 
         this.adminService.getCursos().subscribe(data => {
@@ -115,7 +114,6 @@ export class CreateDistributivoComponent implements OnInit {
         })
 
         this.adminService.getDocentes().subscribe(data => {
-            console.log('Docentes:', data);
             this.docentes = data.map((docente: any) => {
                 return {
                     id: docente.docente.id,
@@ -125,7 +123,6 @@ export class CreateDistributivoComponent implements OnInit {
         })
 
         this.adminService.getAllCiclos().subscribe(data => {
-            console.log('Ciclos:', data);
             this.ciclos = data.map((ciclo: any) => {
                 return {
                     id: ciclo.id,

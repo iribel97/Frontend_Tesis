@@ -18,6 +18,10 @@ export class InscriptionTableComponent {
   totalPages: number = 0;
   showStudentInfoModal: boolean = false;
   selectedStudent: any = null;
+  selectedInscrip: any = null;
+  cursos: any[] = [];
+  selectedCursoId: number | null = null;
+  showModal: boolean = false;
 
   constructor(private opAdminService: OpAdminService, 
     protected utilityService: UtilityService) { }
@@ -56,6 +60,60 @@ export class InscriptionTableComponent {
         console.error('Error al obtener la información del estudiante:', error);
       }
     );
+  }
+
+  openModal(matricula: any): void {
+    this.selectedInscrip = matricula;
+    this.loadCursosByGrado(matricula.grado);
+    this.showModal = true;
+  }
+
+  loadSelectedCurso(event: Event): void {
+    const selectedCursoId = (event.target as HTMLSelectElement).value;
+    if (selectedCursoId) {
+      this.selectedCursoId = Number(selectedCursoId);
+    }
+  }
+
+  loadCursosByGrado(grado: string): void {
+    this.opAdminService.getCursosByGrado(grado).subscribe(
+      (data) => {
+        this.cursos = data;
+      },
+      (error) => {
+        console.error('Error al cargar los cursos:', error);
+      }
+    );
+  }
+
+  acceptInscripcion(): void {
+    if (this.selectedCursoId) {
+      const selectedCurso = this.cursos.find(curso => curso.id === this.selectedCursoId);
+      const requestBody = {
+        cedulaEstudiante: this.selectedInscrip.cedula,
+        grado: this.selectedInscrip.grado,
+        paralelo: selectedCurso.paralelo
+      };
+
+      console.log('Aceptando inscripción:', requestBody);
+
+      this.opAdminService.acceptInscripcion(requestBody).subscribe(
+        () => {
+          this.loadStudents(); // Recargar la tabla después de aceptar la matrícula
+          this.closeModal();
+        },
+        (error) => {
+          console.error('Error al aceptar la matrícula:', error);
+        }
+      );
+    } else {
+      alert('Seleccione un curso válido.');
+    }
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+    this.selectedCursoId = null;
   }
 
   closeStudentInfoModal(): void {

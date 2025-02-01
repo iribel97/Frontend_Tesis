@@ -6,7 +6,6 @@ import { NgForOf, NgIf } from '@angular/common';
   selector: 'app-estudents-table',
   imports: [
     NgForOf,
-    NgIf
   ],
   templateUrl: './estudents-table.component.html',
   styleUrl: './estudents-table.component.css'
@@ -17,7 +16,7 @@ export class EstudentsTableComponent implements OnInit {
 
   filteredEstudiantes: any[] = []; // Estudiantes filtrados
   currentPage: number = 1; // Página actual
-  itemsPerPage: number = 9; // Elementos por página
+  itemsPerPage: number = 12; // Elementos por página
   totalPages: number = 1; // Total de páginas
 
   constructor(private opAdminService: OpAdminService) { }

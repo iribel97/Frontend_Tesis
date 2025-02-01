@@ -75,6 +75,11 @@ export class OpAdminService {
         return this.http.get<any>(this.apiUrl + "/api/adminop/docentes");
     }
 
+    // aceptar inscripción
+    acceptInscripcion(requestBody: any): Observable<any> {
+        return this.http.put<any>(this.apiUrl + "/api/adminop/inscripcion/aceptar", requestBody);
+    }
+
     // DASHBOARD --------------------------------------------------------------
     // cantidad de estado de instripciones
     getInscripcionesCount(): Observable<any> {

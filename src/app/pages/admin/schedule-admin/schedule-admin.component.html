@@ -2,7 +2,7 @@
     <h1 class="text-xl font-semibold mb-4">Visualización de Horarios</h1>
 
     <!-- Dropdown para seleccionar curso (solo si el usuario no es docente) -->
-    <div *ngIf="rolUser !== 'Docente'" class="mt-4 mb-4 flex items-center space-x-4 justify-between">
+    <div *ngIf="rolUser !== 'Docente' && rolUser !== 'Estudiante'" class="mt-4 mb-4 flex items-center space-x-4 justify-between">
         <div class="flex flex-row items-center space-x-4">
             <label *ngIf="rolUser !== 'Representante'" for="cursoSelect"
                 class="block text-sm font-medium text-gray-700 dark:text-neutral-200">Seleccione un curso:</label>
@@ -59,44 +59,44 @@
                     </td>
 
                     <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
-                        {{ horario.lunes?.materia || 'N/A' }}<br />
+                        {{ horario.lunes?.materia || ' ' }}<br />
                         @if (rolUser == 'Docente') {
                         <span class="text-xs text-gray-500">{{ horario.lunes?.curso || '' }}</span>
                         } @else {
-                        <span class="text-xs text-gray-500">{{ horario.lunes?.docente || 'N/A' }}</span>
+                        <span class="text-xs text-gray-500">{{ horario.lunes?.docente || ' ' }}</span>
                         }
 
                     </td>
                     <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
-                        {{ horario.martes?.materia || 'N/A' }}<br />
+                        {{ horario.martes?.materia || ' ' }}<br />
                         @if (rolUser == 'Docente') {
                         <span class="text-xs text-gray-500">{{ horario.martes?.curso || '' }}</span>
                         } @else {
-                        <span class="text-xs text-gray-500">{{ horario.martes?.docente || 'N/A' }}</span>
+                        <span class="text-xs text-gray-500">{{ horario.martes?.docente || ' ' }}</span>
                         }
                     </td>
                     <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
-                        {{ horario.miercoles?.materia || 'N/A' }}<br />
+                        {{ horario.miercoles?.materia || ' ' }}<br />
                         @if (rolUser == 'Docente') {
                         <span class="text-xs text-gray-500">{{ horario.miercoles?.curso || '' }}</span>
                         } @else {
-                        <span class="text-xs text-gray-500">{{ horario.miercoles?.docente || 'N/A' }}</span>
+                        <span class="text-xs text-gray-500">{{ horario.miercoles?.docente || ' ' }}</span>
                         }
                     </td>
                     <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
-                        {{ horario.jueves?.materia || 'N/A' }}<br />
+                        {{ horario.jueves?.materia || ' ' }}<br />
                         @if (rolUser == 'Docente') {
                         <span class="text-xs text-gray-500">{{ horario.jueves?.curso || '' }}</span>
                         } @else {
-                        <span class="text-xs text-gray-500">{{ horario.jueves?.docente || 'N/A' }}</span>
+                        <span class="text-xs text-gray-500">{{ horario.jueves?.docente || ' ' }}</span>
                         }
                     </td>
                     <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
-                        {{ horario.viernes?.materia || 'N/A' }}<br />
+                        {{ horario.viernes?.materia || ' ' }}<br />
                         @if (rolUser == 'Docente') {
                         <span class="text-xs text-gray-500">{{ horario.viernes?.curso || '' }}</span>
                         } @else {
-                        <span class="text-xs text-gray-500">{{ horario.viernes?.docente || 'N/A' }}</span>
+                        <span class="text-xs text-gray-500">{{ horario.viernes?.docente || ' ' }}</span>
                         }
                     </td>
                 </tr>
