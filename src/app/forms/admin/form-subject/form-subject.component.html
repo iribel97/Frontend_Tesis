@@ -1,32 +1,31 @@
 <form [formGroup]="formRegister" (ngSubmit)="onSubmit()"> 
     <div class="grid grid-cols-2 gap-x-4">
-        <div class="flex items-center mt-1 col-span-1">
+                <div class="flex items-center mt-1 col-span-1">
             <ui-input
-                    class="w-full"
-                    id="nombre"
-                    label="Nombre"
-                    type="text"
-                    placeholder="Ingrese el nombre de la materia"
-                    formControlName="nombre"
-                    [required]="true"
-                    [sendform]="sendform"
-                    pattern="^[a-zA-Z ]+$"
-                    permissivePattern="^[a-zA-Z ]*$"
-
+                class="w-full"
+                id="nombre"
+                label="Nombre"
+                type="text"
+                placeholder="Ingrese el nombre de la materia"
+                formControlName="nombre"
+                [required]="true"
+                [sendform]="sendform"
+                pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$"
+                permissivePattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$"
             ></ui-input>
         </div>
         <div class="flex items-center mt-1 col-span-1">
             <ui-input
-                    class="w-full"
-                    id="area"
-                    label="Area"
-                    type="text"
-                    placeholder="Ingrese el area que pertenece"
-                    formControlName="area"
-                    [required]="false"
-                    [sendform]="sendform"
-                    pattern="^[a-zA-Z ]+$"
-                    permissivePattern="^[a-zA-Z ]*$"
+                class="w-full"
+                id="area"
+                label="Area"
+                type="text"
+                placeholder="Ingrese el area que pertenece"
+                formControlName="area"
+                [required]="false"
+                [sendform]="sendform"
+                pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$"
+                permissivePattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$"
             ></ui-input>
         </div>
         @defer (when gradesOption) {
