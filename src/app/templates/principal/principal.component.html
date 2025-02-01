@@ -1,0 +1,550 @@
+<ui-spinner></ui-spinner>
+<!-- ========== HEADER ========== -->
+
+<header class="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-white border-b
+        text-sm py-2.5 lg:ps-[260px] dark:bg-primary-dark dark:border-primary-dark">
+    <nav class="px-4 sm:px-6 flex basis-full items-center w-full mx-auto">
+        <div class="me-5 lg:me-0 lg:hidden">
+            <svg-midudev [size]="{ width: 25, height: 25 }"></svg-midudev>
+        </div>
+
+        <div class="w-full flex items-center justify-end ms-auto md:justify-between gap-x-1 md:gap-x-3">
+
+            <div class="hidden md:block">
+                <!-- Search Input -->
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
+                        <svg class="shrink-0 size-4 text-gray-400 dark:text-white/60" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.3-4.3" />
+                        </svg>
+                    </div>
+                    <input type="text"
+                        class="py-2 ps-10 pe-16 block w-full bg-white border-gray-200 rounded-lg text-sm focus:outline-none border focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-primary-dark dark:border-neutral-500 dark:text-neutral-400 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-600"
+                        placeholder="Search">
+                    <div class="hidden absolute inset-y-0 end-0 flex items-center pointer-events-none z-20 pe-1">
+                        <button type="button"
+                            class="inline-flex shrink-0 justify-center items-center size-6 rounded-full text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500"
+                            aria-label="Close">
+                            <span class="sr-only">Close</span>
+                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="m15 9-6 6" />
+                                <path d="m9 9 6 6" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="absolute inset-y-0 end-0 flex items-center pointer-events-none z-20 pe-3 text-gray-400">
+                        <svg class="shrink-0 size-3 text-gray-400 dark:text-white/60" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
+                        </svg>
+                        <span class="mx-1">
+                            <svg class="shrink-0 size-3 text-gray-400 dark:text-white/60"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M5 12h14" />
+                                <path d="M12 5v14" />
+                            </svg>
+                        </span>
+                        <span class="text-xs">/</span>
+                    </div>
+                </div>
+                <!-- End Search Input -->
+            </div>
+
+            <div class="flex flex-row items-center justify-end gap-1">
+                <button type="button"
+                    class="md:hidden size-[38px] relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-primary-dark-hover dark:focus:bg-neutral-700">
+                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.3-4.3" />
+                    </svg>
+                    <span class="sr-only">Search</span>
+                </button>
+
+                <!-- Botón de modo oscuro/claro -->
+                <button type="button"
+                    class="size-[38px] relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-primary-dark-hover dark:focus:bg-neutral-700"
+                    (click)="toggleDarkMode()">
+                    @if (isDarkMode) {
+                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21.17 16.95A9 9 0 1 1 12 3a7 7 0 0 0 9.17 13.95z" />
+                    </svg>
+                    } @else {
+                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5" />
+                        <path d="M12 1v2" />
+                        <path d="M12 21v2" />
+                        <path d="M4.22 4.22l1.42 1.42" />
+                        <path d="M18.36 18.36l1.42 1.42" />
+                        <path d="M1 12h2" />
+                        <path d="M21 12h2" />
+                        <path d="M4.22 19.78l1.42-1.42" />
+                        <path d="M18.36 5.64l1.42-1.42" />
+                    </svg>
+                    }
+
+                    <span class="sr-only">Toggle Dark Mode</span>
+                </button>
+
+
+                <!--<button type="button"
+                    class="size-[38px] relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-primary-dark-hover dark:focus:bg-neutral-700">
+                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                    </svg>
+                    <span class="sr-only">Notifications</span>
+                </button>
+
+                <button type="button"
+                    class="size-[38px] relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-primary-dark-hover dark:focus:bg-neutral-700">
+                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg>
+                    <span class="sr-only">Activity</span>
+                </button>-->
+
+                <div class="flex flex-row items-center justify-end gap-1">
+                    <!-- Dropdown -->
+                    <div class="relative inline-flex" (document:click)="closeDropdown($event)">
+
+                        <button id="dropdown-account" type="button"
+                            class="w-9 h-9 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
+                            aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown" (click)="toggleDropdown()">
+                            <span
+                                class="inline-flex items-center justify-center w-8 h-8 text-xs font-semibold rounded-full leading-none border border-gray-200 bg-quinary text-gray-800 shadow-sm">
+                                {{ initialUserLS }}
+                            </span>
+                        </button>
+
+                        <div class="absolute right-0 top-7 mt-2 w-48 origin-top-right bg-white border border-gray-200 rounded-md shadow-lg outline-none transition-opacity duration-300"
+                            [ngClass]="{'opacity-100': isDropdownOpen, 'opacity-0 hidden': !isDropdownOpen}"
+                            (clickOutside)="closeDropdown($event)" role="menu" aria-orientation="vertical"
+                            aria-labelledby="dropdown-account">
+                            <div class="py-3 px-5 bg-gray-100 rounded-t-lg">
+                                <p class="text-sm text-darkGray-700">Registrado como</p>
+                                <p class="text-sm font-medium text-darkGray">{{ infoUser.apellidos }}</p>
+                            </div>
+                            <div class="p-1.5 space-y-0.5">
+                                <a (click)="logout()"
+                                    class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 cursor-pointer">
+                                    <svg class="shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M15 12L2 12M2 12L5.5 9M2 12L5.5 15" stroke="#000000"
+                                            stroke-width="1.344" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path
+                                            d="M9.00195 7C9.01406 4.82497 9.11051 3.64706 9.87889 2.87868C10.7576 2 12.1718 2 15.0002 2L16.0002 2C18.8286 2 20.2429 2 21.1215 2.87868C22.0002 3.75736 22.0002 5.17157 22.0002 8L22.0002 16C22.0002 18.8284 22.0002 20.2426 21.1215 21.1213C20.3531 21.8897 19.1752 21.9862 17 21.9983M9.00195 17C9.01406 19.175 9.11051 20.3529 9.87889 21.1213C10.5202 21.7626 11.4467 21.9359 13 21.9827"
+                                            stroke="#000000" stroke-width="1.344" stroke-linecap="round"></path>
+                                    </svg>
+                                    Cerrar sesión
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Dropdown -->
+                </div>
+                <!-- End Dropdown -->
+            </div>
+        </div>
+    </nav>
+</header>
+<!-- ========== END HEADER ========== -->
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="-mt-px">
+    <!-- Breadcrumb -->
+    <div
+        class="sticky top-0 inset-x-0 z-20 bg-white border-y px-4 sm:px-6 lg:px-8 lg:hidden dark:bg-primary-dark dark:border-neutral-700">
+        <div class="flex items-center py-2">
+            <!-- Navigation Toggle -->
+            <button type="button"
+                class="size-8 flex justify-center items-center gap-x-2 border border-gray-200 text-gray-800 hover:text-gray-500 rounded-lg focus:outline-none focus:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
+                aria-haspopup="dialog" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleSidebar()">
+                <span class="sr-only">Toggle Navigation</span>
+                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <rect width="18" height="18" x="3" y="3" rx="2" />
+                    <path d="M15 3v18" />
+                    <path d="m8 9 3 3-3 3" />
+                </svg>
+            </button>
+            <!-- End Navigation Toggle -->
+        </div>
+    </div>
+    <!-- End Breadcrumb -->
+</div>
+
+<div class="flex">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 z-[59] bg-black transition-opacity duration-300 ease-in-out"
+        [ngClass]="{'bg-opacity-50': isSidebarVisible, 'bg-opacity-0 pointer-events-none': !isSidebarVisible}"
+        (click)="toggleSidebar()"></div>
+    <!-- Sidebar -->
+    <div id="hs-application-sidebar" role="dialog" tabindex="-1" aria-label="Sidebar" class="fixed inset-y-0 start-0 z-[60] w-[260px] h-full bg-white border-e border-gray-200 dark:bg-primary-dark dark:border-neutral-700
+      transition-all duration-300 ease-in-out transform lg:block
+      -translate-x-full opacity-0" [ngClass]="{
+        'translate-x-0 opacity-100': isSidebarVisible || isLargeScreen,
+        '-translate-x-full opacity-0': !isSidebarVisible && !isLargeScreen
+     }">
+        <div class="relative flex flex-col h-full max-h-full">
+            <div class="flex row items-center px-6 pt-4">
+                <svg-midudev [size]="{ width: 25, height: 25 }"></svg-midudev>
+                <p class="ml-3 dark:text-white">Básico Superior</p>
+            </div>
+
+            <!-- Content -->
+            <div
+                class="h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+                <nav class="hs-accordion-group p-3 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
+                    <ul class="flex flex-col space-y-1">
+                        <li>
+                            <a routerLinkActive="bg-gray-100 dark:bg-primary-dark-hover"
+                                class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover focus:outline-none focus:bg-gray-100 dark:text-white"
+                                [routerLink]="infoUser.rol === 'Admin' ? 'admin/dashboard' : 
+                                infoUser.rol === 'Institucional' ? 'institutional/dashboard' : 
+                                infoUser.rol === 'Docente' ? 'teacher/dashboard' : 
+                                infoUser.rol === 'Estudiante' ? 'student/dashboard' : 'representative/dashboard'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-home">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+                                    <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+                                    <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+                                </svg>
+                                Dashboard
+                            </a>
+                        </li>
+
+                        <li>
+                            <a routerLinkActive="bg-gray-100 dark:bg-primary-dark-hover" class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover focus:outline-none focus:bg-gray-100 dark:text-white
+                                    cursor-pointer" [routerLink]="'admin/schedule'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-week">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                    <path d="M16 3v4" />
+                                    <path d="M8 3v4" />
+                                    <path d="M4 11h16" />
+                                    <path d="M7 14h.013" />
+                                    <path d="M10.01 14h.005" />
+                                    <path d="M13.01 14h.005" />
+                                    <path d="M16.015 14h.005" />
+                                    <path d="M13.015 17h.005" />
+                                    <path d="M7.01 17h.005" />
+                                    <path d="M10.01 17h.005" />
+                                </svg>
+                                Horarios
+                            </a>
+                        </li>
+
+                        @if (this.infoUser.rol === 'Admin' ) {
+                        <li>
+                            <a routerLinkActive="bg-gray-100 dark:bg-primary-dark-hover" class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover focus:outline-none focus:bg-gray-100 dark:text-white
+                                        cursor-pointer" routerLink="admin/all-user">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+                                </svg>
+                                Gestión de Usuarios
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLinkActive="bg-gray-100 dark:bg-primary-dark-hover" class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover focus:outline-none focus:bg-gray-100 dark:text-white
+                                        cursor-pointer" routerLink="admin/distributive">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-git-fork">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                    <path d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                    <path d="M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                    <path d="M7 8v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2 -2v-2" />
+                                    <path d="M12 12l0 4" />
+                                </svg>
+                                Distributivo
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLinkActive="bg-gray-100 dark:bg-primary-dark-hover" class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover focus:outline-none focus:bg-gray-100 dark:text-white
+                                        cursor-pointer" routerLink="admin/ratingSystem">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-note">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M13 20l7 -7" />
+                                    <path
+                                        d="M13 20v-6a1 1 0 0 1 1 -1h6v-7a2 2 0 0 0 -2 -2h-12a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7" />
+                                </svg>
+                                Sistema de calificación
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLinkActive="bg-gray-100 dark:bg-primary-dark-hover" class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover focus:outline-none focus:bg-gray-100 dark:text-white
+                                        cursor-pointer" routerLink="admin/academic/calendar">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-calendar">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                    <path d="M16 3v4" />
+                                    <path d="M8 3v4" />
+                                    <path d="M4 11h16" />
+                                    <path d="M11 15h1" />
+                                    <path d="M12 15v3" />
+                                </svg>
+                                Calendario académico
+                            </a>
+                        </li>
+                        }
+                        @if (this.infoUser.rol === 'Institucional' || this.infoUser.rol === 'Representante') {
+                        <li>
+                            <a routerLinkActive="bg-gray-100 dark:bg-primary-dark-hover"
+                                class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover focus:outline-none focus:bg-gray-100 dark:text-white cursor-pointer"
+                                [routerLink]="infoUser.rol === 'Representante' ? 'representative/inscriptions' : 'institutional/inscriptions'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-user-square-rounded">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 13a3 3 0 1 0 0 -6a3 3 0 0 0 0 6z" />
+                                    <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
+                                    <path d="M6 20.05v-.05a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v.05" />
+                                </svg>
+                                Inscripciones
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLinkActive="bg-gray-100 dark:bg-primary-dark-hover" class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover focus:outline-none focus:bg-gray-100 dark:text-white
+                                        cursor-pointer"
+                                [routerLink]="infoUser.rol === 'Representante' ? 'representative/matriculates' : 'institutional/matriculate'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-user-square-rounded">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 13a3 3 0 1 0 0 -6a3 3 0 0 0 0 6z" />
+                                    <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
+                                    <path d="M6 20.05v-.05a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v.05" />
+                                </svg>
+                                Matriculas
+                            </a>
+                        </li>
+
+                        }
+
+                        @if (this.infoUser.rol === 'Institucional') {
+                        <li>
+                            <a routerLinkActive="bg-gray-100 dark:bg-primary-dark-hover" class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover focus:outline-none focus:bg-gray-100 dark:text-white
+                                        cursor-pointer" routerLink="institutional/courses">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-school">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
+                                    <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
+                                </svg>
+
+                                Cursos
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLinkActive="bg-gray-100 dark:bg-primary-dark-hover" class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover focus:outline-none focus:bg-gray-100 dark:text-white
+                                        cursor-pointer" routerLink="institutional/students">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+                                </svg>
+                                Estudiantes
+                            </a>
+                        </li>
+                        }
+
+                        @if (this.infoUser.rol === 'Estudiante' || this.infoUser.rol === 'Docente') {
+                        <li class="hs-accordion" id="materias-accordion">
+                            <button type="button" (click)="toggleMenu()" [attr.aria-expanded]="isOpen"
+                                class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:focus:bg-primary-dark-hover dark:bg-primary-dark dark:hover:bg-primary-dark-hover dark:text-neutral-200"
+                                aria-controls="materias-accordion-child">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-bookmarks">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M15 10v11l-5 -3l-5 3v-11a3 3 0 0 1 3 -3h4a3 3 0 0 1 3 3z" />
+                                    <path d="M11 3h5a3 3 0 0 1 3 3v11" />
+                                </svg>
+                                Materias
+
+                                <svg *ngIf="isOpen"
+                                    class="hs-accordion-active:block ms-auto size-4 transition-transform duration-300 transform rotate-180"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="m18 15-6-6-6 6" />
+                                </svg>
+
+                                <svg *ngIf="!isOpen"
+                                    class="hs-accordion-active:block ms-auto size-4 transition-transform duration-300 transform rotate-0"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="m6 9 6 6 6-6" />
+                                </svg>
+                            </button>
+
+                            <!-- Contenido del acordeón -->
+                            <div id="materias-accordion-child"
+                                class="hs-accordion-content w-full overflow-hidden transition-all duration-300 ease-in-out "
+                                [style.maxHeight]="isOpen ? '500px' : '0'" role="region"
+                                aria-labelledby="materias-accordion">
+                                <ul class="ps-8 pt-1 space-y-1">
+                                    <!-- Recorremos las materias dinámicamente -->
+                                    <li *ngFor="let materia of materias">
+                                        <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  dark:focus:bg-primary-dark-hover dark:bg-primary-dark dark:text-neutral-200 dark:hover:bg-primary-dark-hover"
+                                            [attr.title]="'Docente: ' + materia.docente"
+                                            [routerLink]="['/course', materia.id]">
+                                            <span>{{ materia.materia }}</span>
+                                            <span
+                                                class="ml-auto text-xs font-medium px-2 py-1 bg-gray-200 text-gray-800 rounded-md dark:bg-gray-700 dark:text-neutral-200">
+                                                {{ transformarGrado(materia.grado) }}{{ materia.aula }}
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        }
+
+                        @if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional') {
+                        <li>
+                            <a class="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover dark:text-neutral-200 dark:hover:text-neutral-300"
+                                routerLink="students/grades">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-number-10">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M8 20v-16l-5 5" />
+                                    <path d="M16 20a4 4 0 0 0 4 -4v-8a4 4 0 1 0 -8 0v8a4 4 0 0 0 4 4" />
+                                </svg>
+                                Calificaciones
+                            </a>
+                        </li>
+                        }
+
+
+
+                        @if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional') {
+                        <li>
+                            <a class="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover dark:text-neutral-200 dark:hover:text-neutral-300"
+                                routerLink="students/conduct">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-stars">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M17.657 12.007a1.39 1.39 0 0 0 -1.103 .765l-.855 1.723l-1.907 .277c-.52 .072 -.96 .44 -1.124 .944l-.038 .14c-.1 .465 .046 .954 .393 1.29l1.377 1.337l-.326 1.892a1.393 1.393 0 0 0 2.018 1.465l1.708 -.895l1.708 .896a1.388 1.388 0 0 0 1.462 -.105l.112 -.09a1.39 1.39 0 0 0 .442 -1.272l-.325 -1.891l1.38 -1.339c.38 -.371 .516 -.924 .352 -1.427l-.051 -.134a1.39 1.39 0 0 0 -1.073 -.81l-1.907 -.278l-.853 -1.722a1.393 1.393 0 0 0 -1.247 -.773l-.143 .007z" />
+                                    <path
+                                        d="M6.057 12.007a1.39 1.39 0 0 0 -1.103 .765l-.855 1.723l-1.907 .277c-.52 .072 -.96 .44 -1.124 .944l-.038 .14c-.1 .465 .046 .954 .393 1.29l1.377 1.337l-.326 1.892a1.393 1.393 0 0 0 2.018 1.465l1.708 -.895l1.708 .896a1.388 1.388 0 0 0 1.462 -.105l.112 -.09a1.39 1.39 0 0 0 .442 -1.272l-.324 -1.891l1.38 -1.339c.38 -.371 .516 -.924 .352 -1.427l-.051 -.134a1.39 1.39 0 0 0 -1.073 -.81l-1.908 -.279l-.853 -1.722a1.393 1.393 0 0 0 -1.247 -.772l-.143 .007z" />
+                                    <path
+                                        d="M11.857 2.007a1.39 1.39 0 0 0 -1.103 .765l-.855 1.723l-1.907 .277c-.52 .072 -.96 .44 -1.124 .944l-.038 .14c-.1 .465 .046 .954 .393 1.29l1.377 1.337l-.326 1.892a1.393 1.393 0 0 0 2.018 1.465l1.708 -.894l1.709 .896a1.388 1.388 0 0 0 1.462 -.105l.112 -.09a1.39 1.39 0 0 0 .442 -1.272l-.325 -1.892l1.38 -1.339c.38 -.371 .516 -.924 .352 -1.427l-.051 -.134a1.39 1.39 0 0 0 -1.073 -.81l-1.908 -.279l-.853 -1.722a1.393 1.393 0 0 0 -1.247 -.772l-.143 .007z" />
+                                </svg>
+                                Conducta
+                            </a>
+                        </li>
+                        }
+
+                        @if (this.infoUser.rol != 'Admin' && this.infoUser.rol != 'Institucional') {
+                        <li>
+                            <a class="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover dark:text-neutral-200 dark:hover:text-neutral-300"
+                                routerLink="students/attendance">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-square-check">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+                                    <path d="M9 12l2 2l4 -4" />
+                                </svg>
+                                Asistencia
+                            </a>
+                        </li>
+                        }
+
+                        @if (this.infoUser.rol === 'Docente'){
+                        <li>
+                            <a class="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-primary-dark-hover dark:text-neutral-200 dark:hover:text-neutral-300"
+                                routerLink="teacher/citations">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-mail">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
+                                    <path d="M3 7l9 6l9 -6" />
+                                </svg>
+                                Citaciones
+                            </a>
+                        </li>
+                        }
+
+                    </ul>
+                </nav>
+            </div>
+            <!-- End Content -->
+        </div>
+    </div>
+    <!-- End Sidebar -->
+
+    <!-- Content -->
+    <div class="flex-grow lg:pl-[260px]">
+        <div class="bg-white dark:bg-primary-dark mx-5 my-5 rounded-xl shadow p-4 sm:p-6 space-y-4 sm:space-y-6 ">
+            <!-- your content goes here ... -->
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+<!-- End Content -->
+<!-- ========== END MAIN CONTENT ========== -->

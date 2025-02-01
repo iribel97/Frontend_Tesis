@@ -1,0 +1,189 @@
+<ui-tabs [tabs]="tabs"></ui-tabs>
+<ng-template #DistributivoContent>
+    <!-- Título -->
+    <div>
+        <p class="text-xl font-semibold text-gray-800 dark:text-neutral-200">Distributivo</p>
+    </div>
+    <div>
+        <p class="text-lg text-gray-600 dark:text-neutral-100">Distribuye las materias a docentes y cursos</p>
+    </div>
+
+    <!-- Filtro por Ciclo Académico -->
+    <div class="mt-4 flex items-center space-x-4 justify-between">
+        <div class="flex flex-row items-center space-x-4">
+            <label for="ciclo" class="block text-sm font-medium text-gray-700 dark:text-neutral-200">
+                Ciclo Académico:
+            </label>
+            <select id="ciclo"
+                class="py-2 px-3 border border-gray-300 bg-white dark:bg-neutral-800 text-gray-700 dark:text-neutral-200 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                (change)="onCicloChange($event)">
+                <option value="" disabled selected>Seleccione un ciclo</option>
+                <option *ngFor="let ciclo of ciclos" [value]="ciclo.id">{{ ciclo.nombre }}</option>
+            </select>
+        </div>
+
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            (click)="openModal('addDistributivo')">
+            Crear distributivo
+        </button>
+    </div>
+
+    <!-- Tabla de Distributivo -->
+    <div class="mt-6">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+            <thead class="bg-gray-50 dark:bg-neutral-800">
+                <tr>
+                    <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-neutral-300 uppercase tracking-wider">
+                        Docente
+                    </th>
+                    <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-neutral-300 uppercase tracking-wider">
+                        Materia
+                    </th>
+                    <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-neutral-300 uppercase tracking-wider">
+                        Grado
+                    </th>
+                    <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-neutral-300 uppercase tracking-wider">
+                        Aula
+                    </th>
+                    <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-neutral-300 uppercase tracking-wider">
+                        Horas Semanales
+                    </th>
+                    <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-neutral-300 uppercase tracking-wider">
+                        Horas Asignadas
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody class="bg-white dark:bg-neutral-900 divide-y divide-gray-200 dark:divide-neutral-700">
+                <tr *ngFor="let item of paginatedDistributivos">
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-neutral-200">{{ item.docente }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-neutral-200">{{ item.materia }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-neutral-200">{{ item.grado }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-neutral-200">{{ item.aula }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-neutral-200">{{ item.horasSemanales }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-neutral-200">{{ item.horasAsignadas }}</td>
+
+                </tr>
+                <tr *ngIf="paginatedDistributivos.length === 0">
+                    <td colspan="6" class="px-6 py-4 text-sm text-gray-500 text-center">No hay datos disponibles</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginación -->
+    <div class="mt-4 flex justify-center items-center">
+        <button class="px-3 py-1 mx-1 text-sm font-medium text-white bg-gray-700 rounded-md disabled:opacity-50"
+            [disabled]="currentPage === 1" (click)="previousPage()">
+            Anterior
+        </button>
+        <span class="mx-2 text-sm text-gray-700 dark:text-neutral-200">
+            Página {{ currentPage }} de {{ totalPages }}
+        </span>
+        <button class="px-3 py-1 mx-1 text-sm font-medium text-white bg-gray-700 rounded-md disabled:opacity-50"
+            [disabled]="currentPage === totalPages" (click)="nextPage()">
+            Siguiente
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #MateriasContent>
+    <p class="text-lg font-semibold mb-4">Materias</p>
+    <!-- Campo de búsqueda para filtrar materias -->
+    <div class="mt-4 flex items-center space-x-4 justify-between">
+        <div class="flex flex-row items-center space-x-4">
+            <label for="searchMateria" class="block text-sm font-medium text-gray-700 dark:text-neutral-200">Buscar
+                Materia:</label>
+            <input id="searchMateria" type="text"
+                class="py-2 px-3 border border-gray-300 bg-white dark:bg-neutral-800 text-gray-700 dark:text-neutral-200 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Ingrese el nombre materia" (input)="onSearchMateria($event)">
+        </div>
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            (click)="openModal('addMateriaModal')">
+            Agregar Materia
+        </button>
+    </div>
+    <!-- Tabla de materias -->
+    <table class="min-w-full divide-y divide-gray-200 mt-4">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Area</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Horas semanales</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grado</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let materia of paginatedMaterias">
+                <td class="px-6 py-4 text-sm text-gray-900">{{ materia.nombre }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ materia.area }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ materia.horasSemanales }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ materia.nombreGrado }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Controles de paginación para materias -->
+    <div class="mt-4 flex justify-center items-center">
+        <button class="px-3 py-1 mx-1 text-sm font-medium text-white bg-gray-700 rounded-md disabled:opacity-50"
+            [disabled]="materiasCurrentPage === 1" (click)="previousPageMaterias()">
+            Anterior
+        </button>
+        <span class="mx-2 text-sm text-gray-700 dark:text-neutral-200">
+            Página {{ materiasCurrentPage }} de {{ materiasTotalPages }}
+        </span>
+        <button class="px-3 py-1 mx-1 text-sm font-medium text-white bg-gray-700 rounded-md disabled:opacity-50"
+            [disabled]="materiasCurrentPage === materiasTotalPages" (click)="nextPageMaterias()">
+            Siguiente
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #GradosContent>
+    <p class="text-lg font-semibold mb-4">Grados</p>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let grado of grados">
+                <td class="px-6 py-4 text-sm text-gray-900">{{ grado.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+        (click)="openModal('addGradoModal')">Agregar Grado
+    </button>
+</ng-template>
+
+<ui-modal modalId="addDistributivo" [isOpen]="false">
+    <p class="text-lg font-semibold mb-4">Crear distributivo</p>
+    <form-create-distributivo />
+</ui-modal>
+
+
+<div class="container mx-auto p-4">
+
+
+    <!-- Modal Agregar Materia -->
+    <ui-modal modalId="addMateriaModal" [isOpen]="false">
+        <p class="text-lg font-semibold mb-4">Agregar Materia</p>
+        <form-subject></form-subject>
+    </ui-modal>
+
+    <!-- Modal Agregar Grado 
+    <ui-modal modalId="addGradoModal" [isOpen]="false">
+        <p class="text-lg font-semibold mb-4">Agregar Grado</p>
+        <app-agregar-grado-form></app-agregar-grado-form>
+    </ui-modal>
+    -->
+</div>

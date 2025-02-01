@@ -5,7 +5,6 @@ import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-page-register',
-    standalone: true,
     imports: [
         FormRegisterComponent,
         TemplateAuthComponent

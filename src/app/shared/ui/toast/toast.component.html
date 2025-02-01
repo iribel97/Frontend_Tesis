@@ -1,0 +1,14 @@
+<div class="toast-container">
+    <div
+            class="toast"
+            *ngFor="let toast of toasts"
+            [ngClass]="getSeverityClass(toast.severity)"
+    >
+        <span class="toast-icon" *ngIf="toast.icon">{{ toast.icon }}</span>
+        <div>
+            <strong *ngIf="toast.title">{{ toast.title }}</strong>
+            <p>{{ toast.message }}</p>
+        </div>
+        <button class="toast-close" (click)="removeToast(toast)">×</button>
+    </div>
+</div>

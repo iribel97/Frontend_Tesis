@@ -1,0 +1,77 @@
+:host {
+    display: block; /* Ocupa todo el ancho disponible */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Para un mejor control del ancho de las columnas */
+}
+
+/* Estilos del encabezado */
+thead {
+    background-color: #f4f4f4;
+}
+th {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: left;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}
+th a {
+    text-decoration: none;
+    color: #333;
+}
+th a:hover {
+    color: #666;
+}
+
+
+/* Estilos del cuerpo de la tabla */
+tbody tr {
+    transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
+}
+tbody tr:hover {
+    background-color: #f9f9f9;
+}
+td {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    font-size: 0.875rem;  /* Tamaño de fuente del cuerpo */
+    white-space: nowrap; /* Omitir si quieres que el texto se ajuste */
+    overflow: hidden;   /* Para ocultar el texto que se desborde */
+    text-overflow: ellipsis; /* Agrega "..." al final del texto truncado */
+    width: auto;
+}
+
+
+/* Clases de utilidad (puedes ajustarlas o eliminarlas) */
+.size-px {
+    font-size: 14px;
+}
+.whitespace-nowrap {
+    white-space: nowrap;
+}
+.h-px {
+    height: 1px;
+}
+.w-72 {
+    width: 18rem; /* 72px / 4 = 18rem (asumiendo 1rem = 4px)*/
+}
+.min-w-72 {
+    min-width: 18rem;
+}
+
+
+/* Estilos para la paginación (ajusta según tu diseño) */
+.pagination {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+.pagination button {
+    /* Estilos de los botones */
+}

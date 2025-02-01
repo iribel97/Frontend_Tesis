@@ -1,0 +1,74 @@
+<div class="container mx-auto">
+    <h1 class="text-xl font-semibold mb-4">Estudiantes Inscritos</h1>
+    <div class="flex justify-between items-center mb-4">
+        <p class="text-gray-600">A continuación se muestra la lista de estudiantes inscritos en el sistema.</p>
+        <button (click)="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-plus mr-2">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/>
+                <path d="M9 12h6"/>
+                <path d="M12 9v6"/>
+            </svg>
+            Inscripción
+        </button>
+    </div>
+
+    <div *ngIf="estudiantes.length > 0" class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cédula</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombres</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Apellidos</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo Electrónico</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <tr *ngFor="let estudiante of estudiantes">
+                    <td class="px-6 py-4 text-sm text-gray-900">{{ estudiante.cedula }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">{{ estudiante.nombres }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">{{ estudiante.apellidos }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">{{ estudiante.email }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">{{ estudiante.estado }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">
+                        <div class="inline-flex">
+                            <button class="bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-700 flex items-center mr-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+                            </button>
+                            <button *ngIf="estudiante.estado !== 'Aceptado'" class="bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-700 flex items-center mr-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
+
+                            </button>
+                            <button (click)="eliminarEstudiante(estudiante.cedula)" *ngIf="estudiante.estado !== 'Aceptado'" class="bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-700 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-backspace"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-11l-5 -5a1.5 1.5 0 0 1 0 -2l5 -5z" /><path d="M12 10l4 4m0 -4l-4 4" /></svg>
+
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="estudiantes.length === 0" class="text-center py-4 text-gray-500">
+        No hay estudiantes inscritos.
+    </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
+    <div class="fixed inset-0 bg-black opacity-50"></div>
+    <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-2xl sm:w-full">
+        <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Nueva Inscripción</h3>
+            <div class="mt-2">
+                <form-inscription (formSubmitted)="onFormSubmitted()"></form-inscription>
+            </div>
+            <div class="mt-5 sm:mt-6">
+                <button (click)="closeModal()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

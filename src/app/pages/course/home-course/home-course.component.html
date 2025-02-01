@@ -1,0 +1,59 @@
+<div>
+    <!-- Título de la materia -->
+    <section class="flex flex-col lg:flex-row justify-between w-full p-10 bg-white dark:bg-neutral-900">
+        <section class="ml-1">
+            <h1 class="text-xl font-bold text-gray-900 mb-3">{{ materia?.nombreMateria }}</h1>
+            <h2 class="text-md font-semibold text-gray-700 mb-1">
+                Docente: {{ materia?.docenteNombres }} {{ materia?.docenteApellidos }}
+            </h2>
+        </section><!-- Horarios -->
+        @if (materia?.horarios.length > 0) {
+            <section class="mb-5 w-full lg:w-3/4">
+                <table class="table-auto w-full border-collapse border border-gray-300">
+                    <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border border-gray-300 px-4 py-2 text-left">Día</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Hora Inicio</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Hora Fin</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @for (horario of materia?.horarios; track horario.dia) {
+                            <tr class="hover:bg-gray-50">
+                                <td class="border border-gray-300 px-4 py-2">{{ horario.dia }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ horario.horaInicio }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ horario.horaFin }}</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        } @else {
+            <section class="mb-5 w-3/4">
+                <p class="text-gray-700">No hay horarios registrados para esta materia.</p>
+            </section>
+        }
+    </section><!-- Acordeón dinámico para unidades -->
+    <ui-tabs [tabs]="tabs"></ui-tabs>
+    <ng-template #tab1Content>
+        <div class="mt-5">
+            <app-contenido></app-contenido>
+        </div>
+    </ng-template>
+    <ng-template #tab2Content>
+        <app-grades-per-dis></app-grades-per-dis>
+    </ng-template>
+    <ng-template #tab3Content>
+        @if (rolUser == 'Estudiante') {
+            <app-attendance-personal></app-attendance-personal>
+        }
+        @if (rolUser == 'Docente') {
+            <app-attendance-per-subject/>
+        }
+
+    </ng-template>
+    <ng-template #tab4Content>
+        <p>aqui va la conducta</p>
+    </ng-template>
+
+</div>

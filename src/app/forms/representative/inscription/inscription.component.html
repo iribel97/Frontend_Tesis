@@ -1,0 +1,146 @@
+
+<ui-toast #toast></ui-toast>
+<div class="container mx-auto">
+    <h2 class="text-xl font-semibold mb-4">Inscripción</h2>
+    
+    <div *ngIf="currentStep === 1">
+        <h3 class="text-lg font-medium mb-2">Datos del Estudiante</h3>
+        <form [formGroup]="form">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="">
+                    <label class="block text-gray-700">Cédula</label>
+                    <input formControlName="cedula" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="">
+                    <label class="block text-gray-700">Nombres</label>
+                    <input formControlName="nombres" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="">
+                    <label class="block text-gray-700">Apellidos</label>
+                    <input formControlName="apellidos" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="">
+                    <label class="block text-gray-700">Fecha de Nacimiento</label>
+                    <input formControlName="fechaNacimiento" type="date" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-gray-700">Correo Electrónico</label>
+                    <input formControlName="email" class="w-full px-3 py-2 border rounded" />
+                </div>
+                
+                <div class="col-span-2">
+                    <label class="block text-gray-700">Dirección</label>
+                    <input formControlName="direccion" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div >
+                    <label class="block text-gray-700">Teléfono</label>
+                    <input formControlName="telefono" class="w-full px-3 py-2 border rounded" />
+                </div>
+                
+                <div >
+                    <label class="block text-gray-700">Género</label>
+                    <select formControlName="genero" class="w-full px-3 py-2 border rounded">
+                        <option *ngFor="let option of genderOptions" [value]="option.id">{{ option.name }}</option>
+                    </select>
+                </div>
+                <div >
+                    <label class="block text-gray-700">Grado</label>
+                    <select formControlName="grado" class="w-full px-3 py-2 border rounded">
+                        <option *ngFor="let option of gradeOptions" [value]="option.id">{{ option.name }}</option>
+                    </select>
+                </div>
+                <div >
+                    <label class="block text-gray-700">Cédula del Estudiante</label>
+                    <input type="file" (change)="handleFileInput('cedulaEstudiante', $event)" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div >
+                    <label class="block text-gray-700">Certificado de Calificaciones</label>
+                    <input type="file" (change)="handleFileInput('certificadoNotas', $event)" class="w-full px-3 py-2 border rounded" />
+                </div>
+            </div>
+            <button type="button" (click)="nextStep()" class="bg-blue-500 text-white px-4 py-2 mt-4 mp-4 rounded hover:bg-blue-700">Siguiente</button>
+        </form>
+    </div>
+
+    <div *ngIf="currentStep === 2">
+        <h3 class="text-lg font-medium mb-2">Datos del Padre</h3>
+        <form [formGroup]="form">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="mb-4">
+                    <label class="block text-gray-700">Nombres</label>
+                    <input formControlName="nombresPadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Apellidos</label>
+                    <input formControlName="apellidosPadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Correo Electrónico</label>
+                    <input formControlName="correoPadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Teléfono</label>
+                    <input formControlName="telefonoPadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Ocupación</label>
+                    <input formControlName="ocupacionPadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Cédula</label>
+                    <input type="file" (change)="handleFileInput('cedulaPadre', $event)" class="w-full px-3 py-2 border rounded" />
+                </div>
+            </div>
+            <button type="button" (click)="previousStep()" class="bg-gray-500 mr-6 text-white px-4 py-2 rounded hover:bg-gray-700">Anterior</button>
+            <button type="button" (click)="nextStep()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Siguiente</button>
+        </form>
+    </div>
+
+    <div *ngIf="currentStep === 3">
+        <h3 class="text-lg font-medium mb-2">Datos de la Madre</h3>
+        <form [formGroup]="form">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="mb-4">
+                    <label class="block text-gray-700">Nombres</label>
+                    <input formControlName="nombresMadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Apellidos</label>
+                    <input formControlName="apellidosMadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Correo Electrónico</label>
+                    <input formControlName="correoMadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Teléfono</label>
+                    <input formControlName="telefonoMadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Ocupación</label>
+                    <input formControlName="ocupacionMadre" class="w-full px-3 py-2 border rounded" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Cédula</label>
+                    <input type="file" (change)="handleFileInput('cedulaMadre', $event)" class="w-full px-3 py-2 border rounded" />
+                </div>
+            </div>
+            <button type="button" (click)="previousStep()" class="bg-gray-500 mr-6 text-white px-4 py-2 rounded hover:bg-gray-700">Anterior</button>
+            <button type="button" (click)="nextStep()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Siguiente</button>
+        </form>
+    </div>
+
+    <div *ngIf="currentStep === 4">
+        <h3 class="text-lg font-medium mb-2">Documentos de Servicios Básicos</h3>
+        <form [formGroup]="form">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="mb-4">
+                    <label class="block text-gray-700">Servicios Básicos</label>
+                    <input type="file" (change)="handleFileInput('serviciosBasicos', $event)" class="w-full px-3 py-2 border rounded" />
+                </div>
+            </div>
+            <button type="button" (click)="previousStep()" class="bg-gray-500 mr-6 text-white px-4 py-2 rounded hover:bg-gray-700">Anterior</button>
+            <button type="button" (click)="onSubmit()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">Enviar</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<button
+        [id]="id"
+        [type]="buttonType"
+        [class]="buttonClass"
+        [disabled]="disabled"
+        (click)="onClick($event)"
+>
+    <ng-content></ng-content> <!-- Permite insertar contenido dentro del botón -->
+</button>

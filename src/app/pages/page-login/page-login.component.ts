@@ -5,7 +5,6 @@ import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-page-login',
-    standalone: true,
     imports: [
         TemplateAuthComponent,
         FormLoginComponent,

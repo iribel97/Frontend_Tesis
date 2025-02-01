@@ -1,0 +1,11 @@
+/* Botón: Aspecto principal */
+button {
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+/* Botón deshabilitado */
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}

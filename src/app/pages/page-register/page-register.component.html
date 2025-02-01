@@ -1,15 +1,18 @@
 <app-template-auth>
-    <div data-title>
-        <p class="font-serif text-3xl text-darkGray">Regístrate</p>
+    <div main-content class="flex flex-col items-center justify-center h-screen">
+        <div>
+            <p class=" text-3xl text-darkGray">Regístrate</p>
+        </div>
+        <div>
+            <p class=" text-darkGray-500">Ten el seguimiento académico de tus hijos en un solo lugar</p>
+        </div>
+        <div>
+            <form-register></form-register>
+            <button type="button" (click)="navigateToLogin()"
+                    class="w-full bg-mainBackground text-primary border-primary border mt-5 py-2 px-4 rounded-lg hover:bg-quaternary focus:outline-none focus:bg-primary-hover">
+                Iniciar Sesión
+            </button>
+        </div>
     </div>
-    <div data-description>
-        <p class="font-serif text-darkGray-500">Ten el seguimiento total de tus hijos en un solo lugar</p>
-    </div>
-    <div data-component>
-        <form-register></form-register>
-        <button type="button" (click)="navigateToLogin()"
-            class="w-full bg-mainBackground text-primary border-primary border mt-5 py-2 px-4 rounded-lg hover:bg-quaternary focus:outline-none focus:bg-primary-hover">
-        Iniciar Sesión
-    </button>
-    </div>
+
 </app-template-auth>

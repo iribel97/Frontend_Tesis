@@ -3,20 +3,19 @@ import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModul
 import {NgIf} from "@angular/common";
 
 @Component({
-  standalone: true,
-  selector: 'app-date-input',
-  templateUrl: './date.component.html',
-  imports: [
-    ReactiveFormsModule,
-    NgIf
-  ],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DateInputComponent),
-      multi: true
-    }
-  ]
+    selector: 'app-date-input',
+    templateUrl: './date.component.html',
+    imports: [
+        ReactiveFormsModule,
+        NgIf
+    ],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => DateInputComponent),
+            multi: true
+        }
+    ]
 })
 export class DateInputComponent implements OnInit, ControlValueAccessor {
   @Input() id: string = '';

@@ -1,0 +1,19 @@
+<div class="accordion">
+    <div *ngFor="let item of items; let i = index" class="accordion-item">
+        <!-- Botón de encabezado -->
+        <button class="accordion-header" (click)="toggle(i)">
+            {{ item.title }}
+            <span>{{ isOpen(i) ? '-' : '+' }}</span>
+        </button>
+
+        <!-- Cuerpo del acordeón -->
+        <div [class.open]="isOpen(i)" *ngIf="isOpen(i)" class="accordion-body">
+            <!-- Proyección dinámica del contenido -->
+            <ng-container *ngIf="templatesArray[i]">
+                <ng-container
+                        *ngTemplateOutlet="templatesArray[i]; context: { $implicit: items[i] }">
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+</div>

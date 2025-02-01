@@ -1,0 +1,26 @@
+<table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+    <thead class="bg-gray-50 dark:bg-neutral-800">
+    <!-- Header template -->
+    <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
+    </thead>
+    <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+    <tr *ngFor="let row of paginatedData" class="bg-white hover:bg-gray-50 dark:bg-neutral-900 dark:hover:bg-neutral-800">
+        <ng-container *ngFor="let columnTemplate of columnTemplates">
+            <td *ngIf="columnTemplate">
+                <ng-container *ngTemplateOutlet="columnTemplate; context: { $implicit: row }"></ng-container>
+            </td>
+        </ng-container>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Paginador -->
+<div class="flex justify-between items-center mt-4">
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="btn btn-primary">
+        Anterior
+    </button>
+    <span class="text-gray-700">Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="btn btn-primary">
+        Siguiente
+    </button>
+</div>

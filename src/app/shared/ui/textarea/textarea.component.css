@@ -1,0 +1,3 @@
+textarea {
+    resize: vertical; /* Permite ajustar el tamaño vertical, pero no horizontal */
+}

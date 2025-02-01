@@ -1,0 +1,296 @@
+@if (materia?.unidades && materia.unidades.length > 0) {
+    <!-- Acordeón principal: Unidades -->
+    @for (unidad of materia.unidades; track unidad.idUnidad) {
+        <div class="border border-gray-300 rounded-md mb-4">
+            <!-- Botón del acordeón (Unidad) -->
+            <div
+                    class="flex items-center justify-between px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md transition duration-300 cursor-pointer"
+                    (click)="toggleUnidad(unidad)"
+                    [style.userSelect]="'none'">
+                <!-- Mostrar nombre o editar una unidad -->
+                <div *ngIf="!unidad.editando; else editandoUnidad" class="flex items-center justify-between w-full">
+                    <span class="text-gray-900 font-semibold text-left">{{ unidad.nombre }}</span>
+
+                    @if (RolUser === 'Docente') {
+                        <!-- Botón de edición -->
+                        <button (click)="activarEdicionUnidad(unidad); $event.stopPropagation();"
+                                class="text-blue-500 hover:text-blue-600 focus:outline-none">
+                            ✏️
+                        </button>
+                    }
+                </div>
+
+                <!-- Modo de edición -->
+                <ng-template #editandoUnidad>
+                    <div class="flex items-center justify-between w-full">
+                        <input
+                                [(ngModel)]="unidad.editandoNombre"
+                                type="text"
+                                class="border text-sm border-gray-300 px-2 py-1 rounded-md w-full mr-2"
+                                placeholder="Editar nombre de la unidad">
+                        <button
+                                class="text-green-500 hover:text-green-600 focus:outline-none"
+                                (click)="guardarCambiosUnidad(unidad); $event.stopPropagation()">
+                            ✔️
+                        </button>
+                        <button
+                                class="text-red-500 hover:text-red-600 focus:outline-none"
+                                (click)="cancelarEdicionUnidad(unidad); $event.stopPropagation()">
+                            ❌
+                        </button>
+                    </div>
+                </ng-template>
+            </div>
+
+            <!-- Contenido de la Unidad -->
+            <div [hidden]="!unidad.open" class="px-4 py-2 bg-gray-50">
+                @if (unidad.contenido && unidad.contenido.length > 0) {
+                    <!-- Acordeón secundario: Temas -->
+                    @for (tema of unidad.contenido; track tema.idTema) {
+                        <div class="border border-gray-200 rounded-md mb-2">
+                            <!-- Encabezado del tema -->
+                            <div
+                                    class="flex items-center justify-between px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md transition duration-300 cursor-pointer"
+                                    (click)="toggleTema(tema)"
+                                    [style.userSelect]="'none'">
+
+                                <!-- Mostrar nombre del tema o permitir edición -->
+                                <div *ngIf="!tema.editando; else editandoTema"
+                                     class="flex items-center justify-between w-full">
+                                    <div class="flex flex-col">
+                                        <span class="text-gray-900 font-medium">{{ tema.nombreTema }}</span>
+                                        <p class="text-xs text-gray-500">{{ tema.descripcion }}</p>
+                                    </div>
+                                    @if (RolUser == 'Docente') {
+                                        <!-- Botón de edición del tema -->
+                                        <button
+                                                class="ml-2 px-2 py-1 text-white rounded-md text-sm "
+                                                (click)="activarEdicionTema(tema, $event)">
+                                            ✏️
+                                        </button>
+                                    }
+                                </div>
+
+                                <!-- Modo de edición -->
+                                <ng-template #editandoTema>
+                                    <div class="flex flex-col gap-2 w-full">
+                                        <!-- Editar el nombre del tema -->
+                                        <input
+                                                [(ngModel)]="tema.nombreTemporal"
+                                                type="text"
+                                                class="border border-gray-300 px-2 py-1 rounded-md w-full"
+                                                placeholder="Editar nombre del tema"
+                                        />
+                                        <!-- Editar la descripción del tema -->
+                                        <input
+                                                [(ngModel)]="tema.descripcionTemporal"
+                                                type="text"
+                                                class="border border-gray-300 px-2 py-1 rounded-md w-full"
+                                                placeholder="Editar descripción del tema"
+                                        />
+                                        <!-- Botones para guardar o cancelar la edición -->
+                                        <div class="flex gap-2 justify-end">
+                                            <button
+                                                    class="text-green-500 hover:text-green-600 focus:outline-none"
+                                                    (click)="guardarEdicionTema(tema, unidad.idUnidad, $event)">
+                                                ✔️
+                                            </button>
+                                            <button
+                                                    class="text-red-500 hover:text-red-600 focus:outline-none"
+                                                    (click)="cancelarEdicionTema(tema, $event)">
+                                                ❌
+                                            </button>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </div>
+
+                            <!-- Contenido del tema -->
+                            <div [hidden]="!tema.open" class="px-4 py-4 bg-white border-t border-gray-300">
+                                <!-- Título de Materiales -->
+                                <div class="flex items-center justify-between mb-4">
+                                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Materiales</h4>
+                                    @if (RolUser === 'Docente') {
+                                        <!-- Botón para Abrir Modal de Agregar Material -->
+                                        <button
+                                                class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                                                (click)="AbrirModalMaterias(null)">
+                                            Agregar Material
+                                        </button>
+                                    }
+                                </div>
+
+                                <ui-modal modalId="formularioMateria">
+                                    <app-form-material
+                                            [idTema]="tema.idTema"
+                                            [materialToEdit]="materialSeleccionado"
+                                            (onSubmit)="onMaterialSubmit($event)">
+                                    </app-form-material>
+                                </ui-modal>
+
+                                <!-- Si no hay materiales -->
+                                <div *ngIf="!tema.materiales || tema.materiales.length === 0"
+                                     class="flex items-center justify-center py-4 px-2 text-gray-600 text-sm bg-gray-100 border border-gray-200 rounded-md">
+                                    📄 No hay materiales registrados para este tema.
+                                </div>
+
+                                <!-- Lista de materiales -->
+                                <div *ngIf="tema.materiales && tema.materiales.length > 0"
+                                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                                    <div *ngFor="let material of tema.materiales"
+                                         class="border border-gray-300 bg-gray-50 rounded-lg p-4 flex flex-col items-start">
+                                        <!-- Nombre del material, con ícono según el tipo -->
+                                        <div class="flex items-center mb-2">
+                <span *ngIf="material.link" class="text-blue-500 text-2xl mr-2">
+                    📎
+                </span>
+                                            <span *ngIf="material.documento" class="text-green-500 text-2xl mr-2">
+                    📄
+                </span>
+                                            <h5 class="text-gray-900 font-medium">
+                                                {{ material.nombreLink || material.documento.nombre }}
+                                            </h5>
+                                        </div>
+
+                                        <!-- Acción: Enlace o descarga -->
+                                        <a *ngIf="material.link"
+                                           [href]="material.link"
+                                           target="_blank"
+                                           class="text-blue-500 text-sm hover:underline">
+                                            Abrir enlace
+                                        </a>
+                                        <a *ngIf="material.documento"
+                                           [href]="'data:' + material.documento.mime + ';base64,' + material.documento.base64"
+                                           download="{{ material.documento.nombre }}"
+                                           class="text-green-500 text-sm hover:underline">
+                                            Descargar documento
+                                        </a>
+
+                                        @if (RolUser === 'Docente') {
+                                            <!-- Botón para Editar Material -->
+                                            <button
+                                                    class="mt-4 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+                                                    (click)="AbrirModalMaterias(material)">
+                                                Editar Material
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                                <!-- Asignaciones -->
+                                <h4 class="text-2xl font-semibold text-gray-700 mb-1">Asignaciones</h4>
+                                @if (tema.asignaciones.length === 0) {
+                                    <p class="text-gray-700">No hay asignaciones registradas para este tema.</p>
+                                } @else {
+                                    <ul class="list-disc list-inside">
+                                        @for (asignacion of tema.asignaciones; track asignacion.idAsignacion) {
+                                            <li class="border flex flex-row justify-between mb-3 w-full text-left px-4 py-3 text-gray-900 font-semibold bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring transition duration-300">
+                                                {{ asignacion.nombre }}
+                                                : {{ asignacion.fechaFin }} {{ asignacion.horaFin }}
+                                                <button
+                                                        (click)="irADetalleAsignacion(asignacion.idAsignacion,materia.idDistributivo)"
+                                                        class="text-blue-600 hover:underline cursor-pointer">
+                                                    Ir a la Asignación
+                                                </button>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+
+                <!-- Input para agregar un nuevo tema -->
+                <div *ngIf="unidad.mostrarInputTema" class="flex items-center w-full mt-2 gap-2">
+                    <!-- Título del tema -->
+                    <input
+                            type="text"
+                            [(ngModel)]="unidad.nuevoTituloTema"
+                            class="border border-gray-300 px-4 py-2 rounded-md w-full"
+                            placeholder="Escribe el título del nuevo Tema"
+                    />
+                    <!-- Descripción del tema -->
+                    <input
+                            type="text"
+                            [(ngModel)]="unidad.detalleNuevoTema"
+                            class="border border-gray-300 px-4 py-2 rounded-md w-full"
+                            placeholder="Escribe la descripción del nuevo Tema"
+                    />
+                    <!-- Botones para guardar o cancelar -->
+                    <button
+                            class="px-4 py-2 bg-green-500 text-white rounded-md text-sm hover:bg-green-600"
+                            (click)="guardarTema(unidad)">
+                        ✔️ Guardar
+                    </button>
+                    <button
+                            class="px-4 py-2 bg-red-500 text-white rounded-md text-sm hover:bg-red-600"
+                            (click)="cancelarAgregarTema(unidad)">
+                        ❌ Cancelar
+                    </button>
+                </div>
+
+                @if (RolUser === 'Docente') {
+                    <button
+                            *ngIf="!unidad.mostrarInputTema"
+                            class="mt-2 w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-md text-sm hover:bg-gray-300"
+                            (click)="activarInputTema(unidad)">
+                        ➕ Crear Tema
+                    </button>
+                }
+            </div>
+        </div>
+    }
+}
+
+<div class="flex flex-row justify-start"><!-- Input para escribir el nombre de la unidad -->
+    @if (mostrarInput) {
+        <div class="flex flex-row items-center w-full transition-all duration-300 ease-in-out transform scale-100 opacity-100">
+            <input type="text"
+                   [(ngModel)]="tituloUnidad"
+                   (keyup.enter)="guardarUnidad()"
+                   class="border border-gray-300 px-4 py-2 rounded-md w-full mr-2"
+                   placeholder="Escribe el título de la Unidad y presiona Enter">
+            <button
+                    class="ml-2 text-red-500 hover:text-red-600"
+                    (click)="ocultarInputUnidad()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                    <path stroke="none" d="M0 0h24V0H0z" fill="none"/>
+                    <path d="M18 6l-12 12"/>
+                    <path d="M6 6l12 12"/>
+                </svg>
+            </button>
+            <button
+                    class="ml-2 text-green-500 hover:text-green-600"
+                    (click)="guardarUnidad()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                    <path stroke="none" d="M0 0h24V0H0z" fill="none"/>
+                    <path d="M5 12l5 5l10 -10"/>
+                </svg>
+            </button>
+        </div>
+    }
+    @if (RolUser === 'Docente') {
+        @if (!mostrarInput) {
+            <!-- Botón Crear Unidad -->
+            <button (click)="mostrarInputUnidad()"
+                    class="px-4 py-2 bg-gray-100 rounded-md text-lg w-full flex items-center justify-center hover:shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="icon icon-tabler icons-tabler-outline icon-tabler-plus mr-2">
+                    <path stroke="none" d="M0 0h24V0H0z" fill="none"/>
+                    <path d="M12 5l0 14"/>
+                    <path d="M5 12l14 0"/>
+                </svg>
+                Crear Unidad
+            </button>
+        }
+    }
+</div>
+
+
+
+

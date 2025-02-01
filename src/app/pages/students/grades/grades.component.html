@@ -1,0 +1,43 @@
+<table class="table-auto border-collapse border-t border-b border-gray-300 w-full text-center shadow-lg rounded-lg overflow-hidden">
+    <!-- Primera fila -->
+    <thead class="bg-gray-100 text-gray-500">
+        <tr>
+            <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg" rowspan="2">Materia</th>
+            <ng-container *ngFor="let promedio of materias[0]?.promedios">
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg" [attr.colspan]="promedio.niveles.length + 1">
+                    {{ promedio.nombreNivel }}
+                </th>
+            </ng-container>
+            <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg" rowspan="2">Promedio</th>
+        </tr>
+        <!-- Segunda fila -->
+        <tr class="bg-gray-100 text-gray-500">
+            <ng-container *ngFor="let promedio of materias[0]?.promedios">
+                <th class="border-t border-b border-gray-200 py-2 px-4 font-medium" *ngFor="let nivel of promedio.niveles">
+                    {{ nivel.nombreNivel }}
+                </th>
+                <th class="border-t border-b border-gray-200 py-2 px-4 font-medium">Prom</th>
+            </ng-container>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let materia of materias" class="hover:bg-gray-100 transition">
+            <td class="border-t border-b border-gray-300 py-2 px-4 font-medium text-gray-700">
+                {{ materia.nombreMateria }}
+            </td>
+            <ng-container *ngFor="let promedio of materia.promedios">
+                <ng-container *ngFor="let nivel of promedio.niveles">
+                    <td class="border-t border-b border-gray-300 py-2 px-4 text-gray-600">
+                        {{ nivel.promedio | number:'1.2-2' }}
+                    </td>
+                </ng-container>
+                <td class="border-t border-b border-gray-300 py-2 px-4 text-gray-800 font-semibold">
+                    {{ promedio.promedio | number:'1.2-2' }}
+                </td>
+            </ng-container>
+            <td class="border-t border-b border-gray-300 py-2 px-4 font-medium text-gray-700">
+                {{ materia.promedio | number:'1.2-2' }}
+            </td>
+        </tr>
+    </tbody>
+</table>

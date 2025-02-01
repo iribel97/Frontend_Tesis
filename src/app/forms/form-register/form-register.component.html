@@ -1,202 +1,95 @@
-<form [formGroup]="formRegister" (ngSubmit)="onSubmit()">
-    <div class="grid grid-cols-2 gap-x-4">
-        <div class="relative flex items-center mt-1 col-span-1">
-            <app-input
-                    id="ci"
-                    label="Cedula"
-                    type="text"
-                    placeholder="Ingrese su numero de cedula"
-                    formControlName="ci"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="10"
-                    [maxlength]="10"
-                    pattern="^[0-9 ]+$"
-                    permissivePattern="^[0-9 ]*$"
-                    (errorsChange)="onErrorsChange($event)"
-            ></app-input>
-        </div>
-        <div class="relative flex items-center mt-1 col-span-1">
-            <app-input
-                    id="name"
-                    label="Nombre"
-                    type="text"
-                    placeholder="Ingrese su nombre"
-                    formControlName="name"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="3"
-                    [maxlength]="50"
-                    pattern="^[a-zA-Z ]+$"
-                    permissivePattern="^[a-zA-Z ]*$"
-                    (errorsChange)="onErrorsChange($event)"
-            ></app-input>
-        </div>
-
-        <div class="relative flex items-center mt-1 col-span-1">
-            <app-input
-                    id="last_name"
-                    label="Apellido"
-                    type="text"
-                    placeholder="Ingrese su apellido"
-                    formControlName="last_name"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="3"
-                    [maxlength]="50"
-                    pattern="^[a-zA-Z ]+$"
-                    permissivePattern="^[a-zA-Z ]+$"
-                    (errorsChange)="onErrorsChange($event)"
-            ></app-input>
-        </div>
-
-        <div class="relative flex items-center mt-1 col-span-1">
-            <app-input
-                    id="email"
-                    label="Correo Electrónico"
-                    type="email"
-                    placeholder="Ingrese su correo electrónico"
-                    formControlName="email"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="5"
-                    [maxlength]="50"
-                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                    permissivePattern="^[a-zA-Z0-9._%+-@]*$"
-                    (errorsChange)="onErrorsChange($event)"
-            ></app-input>
-        </div>
-
-        <div class="relative flex items-center mt-1 col-span-1">
-            <app-input
-                    id="password"
-                    label="Contraseña"
-                    type="password"
-                    placeholder="Ingrese su contraseña"
-                    formControlName="password"
-                    [enablePasswordValidation]="true"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="8"
-                    [maxlength]="20"
-                    (errorsChange)="onErrorsChange($event)"
-            ></app-input>
-        </div>
-        <div class="relative flex items-center mt-1 col-span-1">
-            <app-input
-                    id="phone"
-                    label="Telefono"
-                    type="text"
-                    placeholder="Ingrese su numero de telefono"
-                    formControlName="phone"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="10"
-                    [maxlength]="10"
-                    pattern="^[0-9 ]+$"
-                    permissivePattern="^[0-9 ]*$"
-                    (errorsChange)="onErrorsChange($event)"
-            ></app-input>
-        </div>
-        <div class="relative flex items-center mt-1 col-span-2">
-            <app-input
-                    class="w-full"
-                    id="address"
-                    label="Direccion"
-                    type="text"
-                    placeholder="Ingrese su dirección"
-                    formControlName="address"
-                    [required]="true"
-                    [sendform]="sendform"
-                    [minlength]="5"
-                    [maxlength]="50"
-                    (errorsChange)="onErrorsChange($event)"
-            ></app-input>
-        </div>
-        <div class="relative flex items-center mt-1 col-span-1">
-            <app-select
-                    class="w-full"
-                    id="gender"
-                    placeholder="Seleccione su género"
-                    [options]="['Masculino', 'Femenino']"
-                    [sendform]="sendform"
-                    formControlName="gender"
-                    [required]="true"
-
-                    (errorsChange)="onErrorsChange($event)"
-            ></app-select>
-        </div>
-        <div class="relative flex items-center mt-1 col-span-1">
-            <app-date-input
-                    class="w-full"
-                    id="birth_date"
-                    placeholder="Fecha de Nacimiento"
-                    formControlName="birth_date"
-                    [required]="true"
-                    [sendform]="sendform"
-                    (errorsChange)="onErrorsChange($event)"
-            ></app-date-input>
-        </div>
-
-        <div class="relative flex flex-col mt-1 col-span-2 mb-5">
-            <p class="font-serif text-lg text-darkGray ml-2">Información de empresa</p>
-            <p class="font-serif text-sm text-darkGray-500 ml-2">Esta información es opcional, peo se recomienda para emergencias</p>
-        </div>
-
-        <div class="relative flex items-center mt-1 col-span-1">
-             <app-input
-                    id="company"
-                    label="Nombre de la Empresa"
-                    type="text"
-                    placeholder="Nombre de la Empresa"
-                    formControlName="company"
-                    [sendform]="sendform"
-                    [minlength]="3"
-                    [maxlength]="50"
-                    (errorsChange)="onErrorsChange($event)"
-            ></app-input>
-        </div>
-
-        <div class="relative flex items-center mt-1 col-span-1">
-             <app-input
-                    id="company_phone"
-                    label="Nombre de la Empresa"
-                    type="text"
-                    placeholder="Telefono de la Empresa"
-                    formControlName="company_phone"
-                    [sendform]="sendform"
-                    [minlength]="3"
-                    [maxlength]="50"
-                    pattern="^[0-9 ]+$"
-                    permissivePattern="^[0-9 ]*$"
-                    (errorsChange)="onErrorsChange($event)"
-            ></app-input>
-        </div>
-
-        <div class="relative flex items-center mt-1 col-span-2">
-            <app-input
-                    class="w-full"
-                    id="company_address"
-                    label="Dirección de la Empresa"
-                    type="text"
-                    placeholder="Direccion de la empresa"
-                    formControlName="company_address"
-                    [sendform]="sendform"
-                    [minlength]="3"
-                    [maxlength]="50"
-                    (errorsChange)="onErrorsChange($event)"
-            ></app-input>
-        </div>
-
+<ui-toast #toast></ui-toast>
+<div class=" w-full">
+    <div *ngIf="currentStep === 1" class="w-full">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-1">Información Personal</h3>
+        <form [formGroup]="formRegister" (ngSubmit)="nextStep()" class="w-full grid grid-cols-1 md:grid-cols-2 gap-1">
+            <div class="mb-2">
+                <label for="ci" class="block text-sm font-medium text-gray-700">Cédula</label>
+                <input type="text" id="ci" formControlName="ci" required
+                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+            </div>
+            <div class="mb-2">
+                <label for="name" class="block text-sm font-medium text-gray-700">Nombres</label>
+                <input type="text" id="name" formControlName="name" required
+                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+            </div>
+            <div class="mb-2">
+                <label for="last_name" class="block text-sm font-medium text-gray-700">Apellidos</label>
+                <input type="text" id="last_name" formControlName="last_name" required
+                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+            </div>
+            <div class="mb-2 col-span-1 md:col-span-2">
+                <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                <input type="email" id="email" formControlName="email" required
+                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+            </div>
+            <div class="mb-2 ">
+                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                <input type="password" id="password" formControlName="password" required
+                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+            </div>
+            <div class="mb-2 ">
+                <label for="phone" class="block text-sm font-medium text-gray-700">Teléfono</label>
+                <input type="text" id="phone" formControlName="phone" required
+                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+            </div>
+            <div class="mb-2">
+                <label for="address" class="block text-sm font-medium text-gray-700">Dirección</label>
+                <input type="text" id="address" formControlName="address" required
+                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+            </div>
+            <div class="mb-2">
+                <label for="birth_date" class="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
+                <input type="date" id="birth_date" formControlName="birth_date" required
+                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+            </div>
+            <div class="mb-2">
+                <label for="gender" class="block text-sm font-medium text-gray-700">Género</label>
+                <select id="gender" formControlName="gender" required
+                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                    <option value="" disabled selected>Seleccione un género</option>
+                    <option *ngFor="let gender of genderOptions" [value]="gender.id">{{ gender.name }}</option>
+                </select>
+            </div>
+            <div class="col-span-1 md:col-span-2 flex justify-end">
+                <button type="submit"
+                    class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 sm:text-sm">
+                    Siguiente
+                </button>
+            </div>
+        </form>
     </div>
 
-
-    <div class="mt-6">
-        <button type="submit"
-                class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-[#4D869C] rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-            Registrarse
-        </button>
+    <div *ngIf="currentStep === 2" class="w-full">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Información Laboral</h3>
+        <form [formGroup]="formRegister" (ngSubmit)="onSubmit()" class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="mb-2">
+                <label for="company" class="block text-sm font-medium text-gray-700">Empresa</label>
+                <input type="text" id="company" formControlName="company" required
+                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+            </div>
+            <div class="mb-2">
+                <label for="company_phone" class="block text-sm font-medium text-gray-700">Teléfono de la
+                    Empresa</label>
+                <input type="text" id="company_phone" formControlName="company_phone" required
+                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+            </div>
+            <div class="mb-2">
+                <label for="company_address" class="block text-sm font-medium text-gray-700">Dirección de la
+                    Empresa</label>
+                <input type="text" id="company_address" formControlName="company_address" required
+                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+            </div>
+            <div class="col-span-1 md:col-span-2 flex justify-end">
+                <button type="button" (click)="previousStep()"
+                    class="mr-2 inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm">
+                    Anterior
+                </button>
+                <button type="submit"
+                    class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-300 sm:text-sm">
+                    Registrar
+                </button>
+            </div>
+        </form>
     </div>
-
-
-</form>
+</div>

@@ -1,0 +1,19 @@
+<div class="mb-4">
+    <label *ngIf="label" [for]="id" class="block text-sm font-medium text-darkGray">
+        {{ label }}
+    </label>
+    <textarea
+            [id]="id"
+            [rows]="rows"
+            [cols]="cols"
+            [formControl]="textareaControl"
+            [placeholder]="placeholder"
+            [class]="textareaClass"
+            [required]="required"
+            [minlength]="minlength ?? null"
+            [maxlength]="maxlength ?? null"
+            (keypress)="onKeyPress($event)"
+    ></textarea>
+    <div *ngIf="sendform && errorMessage" class="text-red-500 text-sm mt-1">
+        {{ errorMessage }}
+    </div>

@@ -1,0 +1,187 @@
+<div class="w-full p-3 rounded-lg bg-gray-50 border shadow-sm">
+    <button class="flex items-center gap-2 text-gray-900 hover:text-blue-600 transition mb-3"
+            (click)="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M5 12l14 0"/>
+            <path d="M5 12l6 6"/>
+            <path d="M5 12l6 -6"/>
+        </svg>
+        <span>Volver a materia</span>
+    </button>
+
+    <!-- Cabecera con el título de la asignación -->
+    <h1 class="text-2xl font-bold text-gray-900 mb-4">{{ asignacion.nombre }}</h1>
+
+    <!-- Descripción de la asignación -->
+    <p class="text-gray-700 mb-4">{{ asignacion.descripcion }}</p>
+
+    <!-- Detalles de la asignación -->
+    <div class="mb-6">
+        <p class="text-sm text-gray-600">
+            <strong class="text-gray-800">Fecha de
+                Inicio:</strong> {{ asignacion.fechaInicio }} {{ asignacion.horaInicio }}
+        </p>
+        <p class="text-sm text-gray-600">
+            <strong class="text-gray-800">Fecha de Fin:</strong> {{ asignacion.fechaFin }} {{ asignacion.horaFin }}
+        </p>
+        <p class="text-sm text-gray-600">
+            <strong class="text-gray-800">Nota Máxima:</strong> {{ asignacion.notaMax }}
+        </p>
+    </div>
+
+    <!-- Documentos -->
+    <div class="mb-6">
+        @if (asignacion.documentos.length > 0) {
+            <ul class="grid grid-cols-1 lg:grid-cols-8 gap-x-4 gap-y-2 list-disc list-inside text-gray-700">
+                @for (doc of asignacion.documentos; track doc.id) {
+                    <li class="flex items-center mb-3">
+                        <button class="button button--descargar" type="button"
+                                (click)="utilityService.descargarDocumento(doc.base64, doc.nombre, doc.mime)"
+                                title="{{doc.nombre}}">
+                            <span class="button__text">Descargar</span>
+                            <span class="button__icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35"
+                                     id="bdd05811-e15d-428c-bb53-8661459f9307"
+                                     data-name="Layer 2" class="svg">
+                                    <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+                                    <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+                                    <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+                                </svg>
+                            </span>
+                        </button>
+                    </li>
+                    <p class="text-sm block lg:hidden">{{ doc.nombre }}</p>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+
+<!-- Entrega del Estudiante -->
+<div class="mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-2">Datos de entrega</h2>
+    <!-- Botón para calificar -->
+    <div class="mt-6">
+        <button
+                class="px-4 py-2 text-white bg-green-600 hover:bg-green-700 rounded-lg shadow transition"
+                (click)="openModal('calificarEntrega')">
+            Calificar
+        </button>
+    </div>
+
+    <p class="text-sm text-gray-600">
+        <strong class="text-gray-800">Estudiante:</strong> {{ asignacion.entregaEst.nombresEstudiante }}
+    </p>
+    <p class="text-sm text-gray-600">
+        <strong class="text-gray-800">Estado:</strong>
+        <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-lg text-xs font-medium"
+              [ngClass]="{
+                'bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500': asignacion.entregaEst.estado === 'Entregado',
+                'bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-500': asignacion.entregaEst.estado === 'Retrasado',
+                'bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500': asignacion.entregaEst.estado === 'Calificado',
+                'bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500': asignacion.entregaEst.estado === 'NoEntregado',
+                'bg-gray-100 text-gray-800 dark:bg-gray-800/30 dark:text-gray-500': asignacion.entregaEst.estado === 'Pendiente'
+              }">
+        {{ asignacion.entregaEst.estado }}
+    </span>
+    </p>
+    @if (asignacion.entregaEst.nota) {
+        <p class="text-sm text-gray-600">
+            <strong class="text-gray-800">Nota:</strong> {{ asignacion.entregaEst.nota }}
+        </p>
+        <p class="text-sm text-gray-600">
+            <strong class="text-gray-800">Comentario:</strong> {{ asignacion.entregaEst.contenido }}
+        </p>
+    }
+
+    @if (asignacion.entregaEst.documentos.length > 0) {
+        <p class="text-sm text-gray-600">
+            <strong class="text-gray-800">Fecha de
+                Entrega:</strong> {{ asignacion.entregaEst.fechaEntrega }} {{ asignacion.entregaEst.horaEntrega }}
+        </p>
+    }
+
+
+    <!-- Documentos enviados por el estudiante -->
+    <h3 class="text-md font-semibold text-gray-800 mt-4 mb-2">Documentos del Estudiante</h3>
+    @if (asignacion.entregaEst.documentos.length > 0) {
+        <ul class="grid grid-cols-1 lg:grid-cols-8 gap-x-4 gap-y-2 list-disc list-inside text-gray-700 mb-3">
+            @for (doc of asignacion.entregaEst.documentos; track doc.id) {
+                <li class="flex items-center mb-3">
+                    <button class="button button--descargar" type="button"
+                            (click)="utilityService.descargarDocumento(doc.base64, doc.nombre, doc.mime)"
+                            title="{{doc.nombre}}">
+                        <span class="button__text">Descargar</span>
+                        <span class="button__icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35"
+                                     id="bdd05811-e15d-428c-bb53-8661459f9307"
+                                     data-name="Layer 2" class="svg">
+                                    <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+                                    <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+                                    <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+                                </svg>
+                            </span>
+                    </button>
+                </li>
+                <p class="text-sm block lg:hidden">{{ doc.nombre }}</p>
+            }
+        </ul>
+    } @else {
+        <p class="text-gray-600 mb-3">No hay documentos entregados.</p>
+    }
+
+    @if (asignacion.entregaEst.estado === 'Pendiente') {
+        <ui-button (click)="openModal('openSendSutmit')">Enviar Entrega</ui-button>
+    }
+
+    <ui-modal modalId="openSendSutmit" [isOpen]="false">
+        <h2 class="text-lg font-semibold text-gray-900 mb-2"
+            style="margin-bottom: 1rem;">Enviar Entrega</h2>
+        <form-sutmit-assignment [idAssignment]="idAssignment"/>
+    </ui-modal>
+
+    <!-- Modal para Calificar Entrega -->
+    <ui-modal modalId="calificarEntrega" [isOpen]="false">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Calificar Entrega</h2>
+        <form (submit)="enviarCalificacion($event)">
+            <!-- Campo para la nota -->
+            <div class="mb-4">
+                <label for="nota"
+                       class="block text-sm font-medium text-gray-700 mb-1">
+                    Nota (1 a 10)
+                </label>
+                <input
+                        type="number"
+                        id="nota"
+                        name="nota"
+                        min="1"
+                        max="10"
+                        step="0.1"
+                        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
+                        [(ngModel)]="nota"
+                        required
+                >
+            </div>
+
+            <!-- Botones del modal -->
+            <div class="flex justify-end gap-4">
+                <button type="button"
+                        class="px-4 py-2 bg-gray-500 text-white hover:bg-gray-600 rounded-lg"
+                        (click)="modalService.closeModal('calificarEntrega')">
+                    Cancelar
+                </button>
+                <button
+                        type="submit"
+                        class="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg">
+                    Enviar Calificación
+                </button>
+            </div>
+        </form>
+    </ui-modal>
+
+</div>
+<ui-toast #toast></ui-toast>

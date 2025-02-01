@@ -1,15 +1,30 @@
 <app-template-auth>
-    <div data-title>
-        <p class="font-serif text-3xl text-darkGray">Iniciar sesión</p>
+    <!-- Contenido del fondo -->
+    <div background-content>
+        <h1 class="text-4xl font-bold text-white">Texto del fondo proyectado</h1>
+        <p>Esto aparecerá sobre el fondo del área animada.</p>
     </div>
-    <div data-description>
-        <p class="font-serif text-darkGray-500">Conectate y vive una experiencia de aprendizaje diferente</p>
+
+    <!-- Contenido principal -->
+    <div main-content class="flex flex-col items-center p-5 justify-center h-screen w-full ">
+        <div >
+            <div>
+                <p class="font-serif text-3xl text-darkGray">Iniciar sesión</p>
+            </div>
+            <div>
+                <p class="font-serif text-darkGray-500">Conectate y vive una experiencia de aprendizaje diferente</p>
+            </div>
+            <div>
+                <app-form-login></app-form-login>
+                <button type="button" (click)="navigateToRegister()"
+                        class="w-full bg-mainBackground text-primary border-primary border mt-5 py-2 px-4 rounded-lg hover:bg-quaternary focus:outline-none focus:bg-primary-hover">
+                    Registrarse
+                </button>
+            </div>
+        </div>
+
     </div>
-    <div data-component>
-        <app-form-login></app-form-login>
-        <button type="button" (click)="navigateToRegister()"
-            class="w-full bg-mainBackground text-primary border-primary border mt-5 py-2 px-4 rounded-lg hover:bg-quaternary focus:outline-none focus:bg-primary-hover">
-        Registrarse
-    </button>
-    </div>
+
+
 </app-template-auth>
+

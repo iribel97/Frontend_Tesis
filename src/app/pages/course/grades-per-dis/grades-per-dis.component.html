@@ -1,0 +1,71 @@
+<div *ngFor="let nivel of niveles">
+    <div class="border border-gray-300 rounded-md mb-4">
+        <button (click)="toggleNivel(nivel)"
+            class="w-full flex justify-between items-center text-left px-4 py-2 text-gray-900 font-semibold bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring transition duration-300">
+            <span>{{ nivel.nombreNivel }}</span>
+            <span class="text-gray-600">Promedio: {{ nivel.promedio | number:'1.2-2' }}</span>
+        </button>
+        <div [hidden]="!nivel.open" class="px-4 pt-2 pb-4 bg-gray-50">
+            <div *ngFor="let subNivel of nivel.niveles">
+                <div class="border border-gray-200 rounded-md mb-2">
+                    <button (click)="toggleSubNivel(subNivel)"
+                        class="w-full flex justify-between items-center text-left px-4 py-2 text-gray-800 font-medium bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring transition duration-300">
+                        <span>{{ subNivel.nombreNivel }}</span>
+                        <span class="text-gray-600">Promedio: {{ subNivel.promedio | number:'1.2-2' }}</span>
+                    </button>
+                    <div [hidden]="!subNivel.open" class="px-4 py-2 bg-white border-t border-gray-200">
+                        <div *ngFor="let siguienteNivel of subNivel.siguientNivel">
+                            <div class="border border-gray-200 rounded-md mb-2">
+                                <button (click)="toggleSiguienteNivel(siguienteNivel)"
+                                    class="w-full flex justify-between items-center text-left px-4 py-2 text-gray-800 font-medium bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring transition duration-300">
+                                    <span>{{ siguienteNivel.nombreNivel }}</span>
+                                    <span class="text-gray-600">Promedio: {{ siguienteNivel.promedio | number:'1.2-2' }}</span>
+                                </button>
+                                <div [hidden]="!siguienteNivel.open"
+                                    class="px-4 py-2 bg-white border-t border-gray-200">
+                                    <div *ngFor="let nivelEntrega of siguienteNivel.nivelEntregas">
+                                        <div class="border border-gray-200 rounded-md mb-2">
+                                            <button (click)="toggleNivelEntrega(nivelEntrega)"
+                                                class="w-full flex justify-between items-center text-left px-4 py-2 text-gray-800 font-medium bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring transition duration-300">
+                                                <span>{{ nivelEntrega.nombreNivel }}</span>
+                                                <span class="text-gray-600">Promedio: {{ nivelEntrega.promedio }}</span>
+                                            </button>
+                                            <div [hidden]="!nivelEntrega.open"
+                                                class="px-4 py-2 bg-white border-t border-gray-200">
+                                                <ul class="list-none pl-0">
+                                                    <li *ngFor="let asignacion of nivelEntrega.asignaciones"
+                                                        class="mb-2">
+                                                        <div
+                                                            class="flex justify-between items-center bg-gray-100 p-2 rounded-md shadow-sm">
+                                                            <div>
+                                                                <span class="font-semibold">{{ asignacion.nombreAsig
+                                                                    }}</span>
+                                                                <span
+                                                                    class="ml-4 px-2 py-1 rounded text-white text-xs font-medium"
+                                                                    [class.bg-green-500]="asignacion.estado === 'Entregado'"
+                                                                    [class.bg-yellow-500]="asignacion.estado === 'Atrasado'"
+                                                                    [class.bg-blue-500]="asignacion.estado === 'Calificado'"
+                                                                    [class.bg-red-500]="asignacion.estado === 'NoEntregado'"
+                                                                    [class.bg-gray-500]="asignacion.estado === 'Pendiente'">
+                                                                    {{ asignacion.estado }}
+                                                                </span>
+                                                            </div>
+                                                            <div class="text-right">
+                                                                <span class="text-sm text-gray-600">Nota: {{
+                                                                    asignacion.nota }} / {{ asignacion.notaMax }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

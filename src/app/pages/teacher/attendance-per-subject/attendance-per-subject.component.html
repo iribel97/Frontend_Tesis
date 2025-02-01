@@ -1,0 +1,130 @@
+<div class="container mx-auto mt-5">
+    <h1 class="text-xl font-semibold mb-4">Toma de Asistencia</h1>
+
+    <form [formGroup]="attendanceForm" (ngSubmit)="onSubmit()">
+        <div class="flex items-center gap-4">
+            <ui-datapiker
+                    class="w-full"
+                    formControlName="fecha"
+                    [disableFutureDates]="false">
+            </ui-datapiker>
+        </div>
+    </form>
+
+    <div *ngIf="asistencias && asistencias.length > 0; else noRecords" class="mt-5">
+        <h2 class="text-lg font-bold mb-4">Detalle de Asistencias</h2>
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombres</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Apellidos
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Observaciones
+                </th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let asistencia of asistencias">
+                <td class="px-6 py-4 text-sm text-gray-900">{{ asistencia?.nombresEstudiante }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ asistencia?.apellidosEstudiante }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">
+                    <!-- Select del estado -->
+                    <select
+                            [(ngModel)]="asistencia.estado"
+                            class="px-2 py-1 border rounded-md focus:outline-none focus:ring focus:border-blue-500">
+                        <option value="Presente">Presente</option>
+                        <option value="Ausente">Ausente</option>
+                        <option value="Justificado">Justificado</option>
+                    </select>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900">
+                    <textarea
+                            [(ngModel)]="asistencia.observaciones"
+                            class="px-2 py-1 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-500"
+                            placeholder="Escribe observaciones"
+                            rows="3">
+                    </textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <ng-template #noRecords>
+        <div class="mt-5">
+            <div *ngIf="studentsList.length > 0; else noStudents">
+                <h2 class="text-lg font-bold mb-4">Listado de Estudiantes</h2>
+
+                <!-- Tabla para el listado de estudiantes -->
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Nombres
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Apellidos
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Estado
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Observaciones
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tr *ngFor="let student of studentsList">
+                        <td class="px-6 py-4 text-sm text-gray-900">{{ student?.nombresEstudiante }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">{{ student?.apellidosEstudiante }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                            <select
+                                    [(ngModel)]="student.estado"
+                                    class="px-2 py-1 border rounded-md focus:outline-none focus:ring focus:border-blue-500">
+                                <option value="Presente">Presente</option>
+                                <option value="Ausente">Ausente</option>
+                                <option value="Justificado">Justificado</option>
+                            </select>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                            <textarea
+                                    [(ngModel)]="student.observaciones"
+                                    class="px-2 py-1 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-500"
+                                    placeholder="Escribe observaciones"
+                                    rows="3">
+                            </textarea>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- No hay estudiantes -->
+            <ng-template #noStudents>
+                <p class="text-lg font-bold text-red-500">No se encontraron estudiantes.</p>
+            </ng-template>
+        </div>
+    </ng-template>
+
+    <div class="mt-5 text-right">
+        <!-- Botón dinámico -->
+        <button
+                *ngIf="asistencias.length > 0; else registrarButton"
+                (click)="actualizarAsistencias()"
+                class="px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 focus:outline-none">
+            Actualizar
+        </button>
+
+        <ng-template #registrarButton>
+            <button
+                    *ngIf="studentsList.length > 0"
+                    (click)="registrarAsistencias()"
+                    class="px-4 py-2 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 focus:outline-none">
+                Registrar
+            </button>
+        </ng-template>
+    </div>
+</div>
+<ui-toast #toast/>

@@ -1,21 +1,21 @@
 <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
     <div class="grid grid-cols-2 gap-x-4">
         <div class="relative flex items-center mt-1 col-span-2">
-            <app-input
+            <ui-input
                     class="w-full"
-                    id="user"
-                    label="Usuario"
+                    id="cedula"
+                    label="Cedula"
                     type="text"
-                    placeholder="Ingrese su usuario"
-                    formControlName="user"
+                    placeholder="Ingrese su cedula"
+                    formControlName="cedula"
                     [required]="true"
                     [sendform]="sendform"
-            ></app-input>
+            ></ui-input>
         </div>
 
 
         <div class="relative flex items-center mt-1 col-span-2">
-            <app-input
+            <ui-input
                     class="w-full"
                     id="password"
                     label="Contraseña"
@@ -27,7 +27,7 @@
                     [sendform]="sendform"
                     [minlength]="8"
                     [maxlength]="20"
-            ></app-input>
+            ></ui-input>
         </div>
 
 
@@ -48,4 +48,4 @@
         </button>
     </div>
 </form>
-
+<ui-toast #toast/>
