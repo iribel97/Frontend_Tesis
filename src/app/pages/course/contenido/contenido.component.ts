@@ -1,14 +1,14 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
-import {TeachersService} from "../../../services/teacher/teachers.service";
-import {StudentsService} from "../../../services/students/students.service";
-import {UtilityService} from "../../../shared/service/utility/utility.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormsModule} from "@angular/forms";
-import {FormMaterialComponent} from "../../../forms/teacher/form-material/form-material.component";
-import {ModalComponent} from "../../../shared/ui/modal/modal.component";
-import {ModalService} from "../../../shared/service/modal/modal.service";
-import {AuthService} from "../../../services/auth/auth.service";
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { NgForOf, NgIf } from "@angular/common";
+import { TeachersService } from "../../../services/teacher/teachers.service";
+import { StudentsService } from "../../../services/students/students.service";
+import { UtilityService } from "../../../shared/service/utility/utility.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormMaterialComponent } from "../../../forms/teacher/form-material/form-material.component";
+import { ModalComponent } from "../../../shared/ui/modal/modal.component";
+import { ModalService } from "../../../shared/service/modal/modal.service";
+import { AuthService } from "../../../services/auth/auth.service";
 
 @Component({
     selector: 'app-contenido',
@@ -17,12 +17,17 @@ import {AuthService} from "../../../services/auth/auth.service";
         FormsModule,
         FormMaterialComponent,
         ModalComponent,
-        NgForOf
+        NgForOf,
+        FormsModule,
+        ReactiveFormsModule,
     ],
     templateUrl: './contenido.component.html',
     styleUrl: './contenido.component.css'
 })
 export class ContenidoComponent implements OnInit {
+    assignmentForm: FormGroup;
+    sistemaCalificaciones: any[] = [];
+
     constructor(
         private teachersService: TeachersService,
         private studentsService: StudentsService,
@@ -32,9 +37,28 @@ export class ContenidoComponent implements OnInit {
         private cdr: ChangeDetectorRef, // ¡Inyectar aquí!
         private modalService: ModalService,
         private authService: AuthService,
+        private fb: FormBuilder,
     ) {
         this.RolUser = this.authService.getRolUsuario();
         console.log("RolUser:", this.RolUser);
+        this.assignmentForm = this.fb.group({
+            visualizar: [false],
+            nombre: ['', Validators.required],
+            descripcion: ['', Validators.required],
+            fechaInicio: ['', Validators.required],
+            horaInicio: ['', Validators.required],
+            fechaFin: ['', Validators.required],
+            horaFin: ['', Validators.required],
+            idTema: [null],
+            calif: this.fb.group({
+                registro: [null],
+                lvl1: [null],
+                lvl2: [null],
+                lvl3: [null],
+                lvl4: [null]
+            }),
+            documentos: this.fb.array([])
+        });
     }
 
     tema: any = {
@@ -54,7 +78,8 @@ export class ContenidoComponent implements OnInit {
     mostrarInputTema: boolean = false; // Controla la visibilidad del input del tema
     tituloTema: string = ''; // Título del tema a crear
     temas: Array<{ idTema: string; nombre: string }> = []; // Lista de temas
-
+    isAddAssignmentModalOpen = false;
+    selectedTemaId: number | null = null;
 
     ngOnInit(): void {
 
@@ -349,7 +374,7 @@ export class ContenidoComponent implements OnInit {
     // Abrir el modal para crear o editar un material
     AbrirModalMaterias(material: any | null): void {
         // Asignar el material seleccionado
-        this.materialSeleccionado = material ? {...material} : null;
+        this.materialSeleccionado = material ? { ...material } : null;
 
         // Verifica que el valor es correcto antes de abrir el modal
         console.log('Material seleccionado para el formulario:', this.materialSeleccionado);
@@ -384,9 +409,124 @@ export class ContenidoComponent implements OnInit {
         this.materialSeleccionado = null; // Limpiar el estado
     }
 
+    openModal(modalId: string, temaId?: number): void {
+        if (modalId === 'addAssignmentModal') {
+            this.isAddAssignmentModalOpen = true;
+            if (temaId !== undefined) {
+                this.selectedTemaId = temaId;
+                console.log('ID del tema:', temaId);
+                this.assignmentForm.patchValue({ idTema: temaId });
+            }
+            this.getCalificaciones(this.materia.idDistributivo); // Llamar al método para obtener el sistema de calificaciones
+        }
+        this.modalService.openModal(modalId);
+    }
+
+    // traer el sistema de calificaciones por id de distributivo
+    getCalificaciones(idDistributivo: number): void {
+        this.teachersService.getCalificaciones(idDistributivo).subscribe(
+            (data) => {
+                console.log('Sistema de calificaciones:', data);
+                this.sistemaCalificaciones = data;
+                // Asignar el primer sistema de calificaciones al formulario (si existe)
+                if (this.sistemaCalificaciones.length > 0) {
+                    this.assignmentForm.patchValue({
+                        calif: {
+                            registro: this.sistemaCalificaciones[0].califID.registro,
+                            lvl1: this.sistemaCalificaciones[0].califID.lvl1,
+                            lvl2: this.sistemaCalificaciones[0].califID.lvl2,
+                            lvl3: this.sistemaCalificaciones[0].califID.lvl3,
+                            lvl4: this.sistemaCalificaciones[0].califID.lvl4
+                        }
+                    });
+                }
+            },
+            (error) => {
+                console.error('Error al obtener el sistema de calificaciones:', error);
+            }
+        );
+    }
+
+    closeModal(modalId: string): void {
+        if (modalId === 'addAssignmentModal') {
+            this.isAddAssignmentModalOpen = false;
+        }
+        this.modalService.closeModal(modalId);
+    }
+
+    get documentos(): FormArray {
+        return this.assignmentForm.get('documentos') as FormArray;
+    }
+
+    onFileChange(event: any): void {
+        const files = event.target.files;
+        for (let file of files) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64 = reader.result as string;
+                this.documentos.push(this.fb.group({
+                    nombre: file.name,
+                    base64: base64.split(',')[1],
+                    mime: file.type
+                }));
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    onSubmitAssignment(): void {
+        // mostar en consola el sistema de calificacion seleccionado
+        if (this.assignmentForm.valid) {
+            const formValue = this.assignmentForm.value;
+            const formattedData = {
+                visualizar: formValue.visualizar,
+                nombre: formValue.nombre,
+                descripcion: formValue.descripcion,
+                fechaInicio: formValue.fechaInicio,
+                horaInicio: formValue.horaInicio,
+                fechaFin: formValue.fechaFin,
+                horaFin: formValue.horaFin,
+                idTema: formValue.idTema,
+                calif: {
+                    registro: formValue.calif.registro,
+                    lvl1: formValue.calif.lvl1,
+                    lvl2: formValue.calif.lvl2,
+                    lvl3: formValue.calif.lvl3,
+                    lvl4: formValue.calif.lvl4
+                },
+                documentos: formValue.documentos.map((doc: any) => ({
+                    nombre: doc.nombre,
+                    base64: doc.base64,
+                    mime: doc.mime
+                }))
+            };
+            console.log('Datos del formulario de asignación:', JSON.stringify(formattedData, null, 2));
+        } else {
+            console.error('Formulario inválido');
+        }
+    }
+
+    onCalifChange(event: any): void {
+        const selectedCalifID = event.target.value;
+        const selectedCalifIDString = selectedCalifID.toString();
+        const textBeforeColon = selectedCalifIDString.split(':')[0];
+        const selectedCalif = this.sistemaCalificaciones[textBeforeColon];
+        if (selectedCalif) {
+            this.assignmentForm.patchValue({
+                calif: {
+                    registro: selectedCalif.califID.registro,
+                    lvl1: selectedCalif.califID.lvl1,
+                    lvl2: selectedCalif.califID.lvl2,
+                    lvl3: selectedCalif.califID.lvl3,
+                    lvl4: selectedCalif.califID.lvl4
+                }
+            });
+        }
+    }
+
     irADetalleAsignacion(idAsignacion: number, idDistributivo: number): void {
         console.log("idAsignacion:", idAsignacion, "idDistributivo:", idDistributivo);
-        this.router.navigate(['/course/assignment', idAsignacion], {state: {data: {idDistributivo}}});
+        this.router.navigate(['/course/assignment', idAsignacion], { state: { data: { idDistributivo } } });
     }
 
 }

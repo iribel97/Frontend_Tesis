@@ -63,6 +63,11 @@ export class TeachersService {
         return this.http.put<any>(`${this.apiUrl}/api/docente/materia/contenido/tema`, data);
     }
 
+    // traer sistema de calificaión de acuerdo al id del distributivo
+    getCalificaciones(idDistributivo: any): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/docente/materia/calificaciones/" + idDistributivo);
+    }
+
     // Traer toda la info en caso de ser tutor de un curso
     getTutoria(): Observable<any> {
         return this.http.get<any>(this.apiUrl + "/api/docente/tutor/notas");

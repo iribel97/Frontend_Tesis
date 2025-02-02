@@ -23,7 +23,7 @@ export class FormAddScheduleComponent implements OnInit {
   dayOfWeekOptions: { id: number; name: string }[] = [
     { id: 1, name: 'Lunes' },
     { id: 2, name: 'Martes' },
-    { id: 3, name: 'Miércoles' },
+    { id: 3, name: 'Miercoles' },
     { id: 4, name: 'Jueves' },
     { id: 5, name: 'Viernes' },
   ];

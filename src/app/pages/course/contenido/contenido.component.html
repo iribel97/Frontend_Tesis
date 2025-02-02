@@ -176,7 +176,7 @@
                                         }
                                     </div>
                                 </div>
-                                <!-- Asignaciones -->
+                                                                <!-- Asignaciones -->
                                 <h4 class="text-2xl font-semibold text-gray-700 mb-1">Asignaciones</h4>
                                 @if (tema.asignaciones.length === 0) {
                                     <p class="text-gray-700">No hay asignaciones registradas para este tema.</p>
@@ -195,6 +195,74 @@
                                         }
                                     </ul>
                                 }
+                                
+                                <!-- Botón para agregar asignación (solo visible para docentes) -->
+                                <div *ngIf="rolUser === 'Docente'" class="mt-4">
+                                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                            (click)="openModal('addAssignmentModal', tema.idTema)">
+                                        Agregar Asignación
+                                    </button>
+                                </div>
+                                
+                                <!-- Modal para agregar asignación -->
+                                <ui-modal modalId="addAssignmentModal" [isOpen]="isAddAssignmentModalOpen">
+                                    <div class="p-6">
+                                        <h2 class="text-2xl font-semibold mb-4">Agregar Asignación</h2>
+                                        <form [formGroup]="assignmentForm" (ngSubmit)="onSubmitAssignment()">
+                                            <div class="mb-4">
+                                                <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+                                                <input id="nombre" type="text" formControlName="nombre" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                            </div>
+                                            <div class="mb-4">
+                                                <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
+                                                <textarea id="descripcion" formControlName="descripcion" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"></textarea>
+                                            </div>
+                                            <div class="w-full flex flex-wrap">
+                                                <div class="mb-4 w-1/2 pr-2">
+                                                    <label for="fechaInicio" class="block text-sm font-medium text-gray-700">Fecha de Inicio</label>
+                                                    <input id="fechaInicio" type="date" formControlName="fechaInicio" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                                </div>
+                                                <div class="mb-4  w-1/2 pl-2">
+                                                    <label for="horaInicio" class="block text-sm font-medium text-gray-700">Hora de Inicio</label>
+                                                    <input id="horaInicio" type="time" formControlName="horaInicio" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                                </div>
+                                            </div>
+
+                                            <div class="w-full flex flex-wrap">
+                                                <div class="mb-4 w-1/2 pr-2">
+                                                    <label for="fechaFin" class="block text-sm font-medium text-gray-700">Fecha de Fin</label>
+                                                    <input id="fechaFin" type="date" formControlName="fechaFin" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                                </div>
+                                                <div class="mb-4 w-1/2 pl-2">
+                                                    <label for="horaFin" class="block text-sm font-medium text-gray-700">Hora de Fin</label>
+                                                    <input id="horaFin" type="time" formControlName="horaFin" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                                </div>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label for="calif" class="block text-sm font-medium text-gray-700">Sistema de Calificaciones</label>
+                                                <select id="calif" formControlName="calif" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" (change)="onCalifChange($event)">
+                                                    <option *ngFor="let calificacion of sistemaCalificaciones" [ngValue]="calificacion.califID">{{ calificacion.descripcion }}</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="w-full flex flex-wrap">
+                                                <div class="mb-4 w-1/4 flex flex-wrap items-center">
+                                                    <input id="visualizar" type="checkbox" formControlName="visualizar" class="mr-1">
+                                                    <label for="visualizar" class="text-sm font-medium text-gray-700">Visualizar</label>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="mb-4">
+                                                <label for="documentos" class="block text-sm font-medium text-gray-700">Documentos</label>
+                                                <input id="documentos" type="file" (change)="onFileChange($event)" multiple class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                            </div>
+                                            <div class="flex justify-end mt-4">
+                                                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">Guardar</button>
+                                                <button type="button" class="ml-2 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring focus:ring-gray-300" (click)="closeModal('addAssignmentModal')">Cerrar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </ui-modal>
                             </div>
                         </div>
                     }
