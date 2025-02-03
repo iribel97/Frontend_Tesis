@@ -42,6 +42,7 @@ export class ContenidoComponent implements OnInit {
         this.RolUser = this.authService.getRolUsuario();
         console.log("RolUser:", this.RolUser);
         this.assignmentForm = this.fb.group({
+            id: [null], // Campo para almacenar el ID de la asignación
             visualizar: [false],
             nombre: ['', Validators.required],
             descripcion: ['', Validators.required],
@@ -409,13 +410,39 @@ export class ContenidoComponent implements OnInit {
         this.materialSeleccionado = null; // Limpiar el estado
     }
 
-    openModal(modalId: string, temaId?: number): void {
+    openModal(modalId: string, temaId?: number, asignacion?: any): void {
         if (modalId === 'addAssignmentModal') {
             this.isAddAssignmentModalOpen = true;
             if (temaId !== undefined) {
                 this.selectedTemaId = temaId;
                 console.log('ID del tema:', temaId);
                 this.assignmentForm.patchValue({ idTema: temaId });
+            }
+            if (asignacion) {
+                this.assignmentForm.patchValue({
+                    id: asignacion.idAsignacion,
+                    visualizar: asignacion.activo,
+                    nombre: asignacion.nombre,
+                    descripcion: asignacion.descripcion,
+                    fechaInicio: asignacion.fechaInicio,
+                    horaInicio: asignacion.horaInicio,
+                    fechaFin: asignacion.fechaFin,
+                    horaFin: asignacion.horaFin,
+                    calif: {
+                        registro: asignacion.idCalificacion.registro,
+                        lvl1: asignacion.idCalificacion.lvl1,
+                        lvl2: asignacion.idCalificacion.lvl2,
+                        lvl3: asignacion.idCalificacion.lvl3,
+                        lvl4: asignacion.idCalificacion.lvl4
+                    },
+                    documentos: asignacion.documentos ? asignacion.documentos.map((doc: any) => this.fb.group({
+                        id: doc.id,
+                        nombre: doc.nombre,
+                        base64: doc.base64,
+                        mime: doc.mime
+                    })) : [] // Asegúrate de que documentos sea un array vacío si es null o undefined
+
+                });
             }
             this.getCalificaciones(this.materia.idDistributivo); // Llamar al método para obtener el sistema de calificaciones
         }
@@ -426,7 +453,6 @@ export class ContenidoComponent implements OnInit {
     getCalificaciones(idDistributivo: number): void {
         this.teachersService.getCalificaciones(idDistributivo).subscribe(
             (data) => {
-                console.log('Sistema de calificaciones:', data);
                 this.sistemaCalificaciones = data;
                 // Asignar el primer sistema de calificaciones al formulario (si existe)
                 if (this.sistemaCalificaciones.length > 0) {
@@ -475,10 +501,10 @@ export class ContenidoComponent implements OnInit {
     }
 
     onSubmitAssignment(): void {
-        // mostar en consola el sistema de calificacion seleccionado
         if (this.assignmentForm.valid) {
             const formValue = this.assignmentForm.value;
             const formattedData = {
+                id: formValue.id, // Incluir el ID de la asignación
                 visualizar: formValue.visualizar,
                 nombre: formValue.nombre,
                 descripcion: formValue.descripcion,
@@ -495,12 +521,46 @@ export class ContenidoComponent implements OnInit {
                     lvl4: formValue.calif.lvl4
                 },
                 documentos: formValue.documentos.map((doc: any) => ({
+                    id: doc.id,
                     nombre: doc.nombre,
                     base64: doc.base64,
                     mime: doc.mime
                 }))
             };
-            console.log('Datos del formulario de asignación:', JSON.stringify(formattedData, null, 2));
+            if (formValue.id) {
+                // Editar asignación existente
+                this.teachersService.updateAsignacion(formattedData).subscribe(
+                    (response) => {
+                        if (response.error === false && response.codigo === 200) {
+                            console.log('Asignación actualizada exitosamente');
+                            this.closeModal('addAssignmentModal');
+                            this.loadContenidoDocente(this.idMateria);
+                        } else {
+                            console.error('Error al actualizar la asignación:', response.mensaje);
+                        }
+                    },
+                    (error) => {
+                        console.error('Error al actualizar la asignación:', error);
+                    }
+                );
+            } else {
+                // Crear nueva asignación
+                this.teachersService.uploadAsignacion(formattedData).subscribe(
+                    (response) => {
+                        console.log('Respuesta del backend:', response);
+                        if (response.error === false && response.codigo === 200) {
+                            console.log('Asignación guardada exitosamente');
+                            this.closeModal('addAssignmentModal');
+                            this.loadContenidoDocente(this.idMateria);
+                        } else {
+                            console.error('Error al guardar la asignación:', response.mensaje);
+                        }
+                    },
+                    (error) => {
+                        console.error('Error al guardar la asignación:', error);
+                    }
+                );
+            }
         } else {
             console.error('Formulario inválido');
         }

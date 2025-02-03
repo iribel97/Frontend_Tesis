@@ -101,6 +101,15 @@ export class TeachersService {
         return this.http.put<any>(this.apiUrl + "/api/docente/materia/contenido/material", data);
     }
 
+    // subir una asignación
+    uploadAsignacion(data: any): Observable<any> {
+        return this.http.post<any>(this.apiUrl + "/api/docente/materia/asignacion", data);
+    }
+
+    // actualizar una asignación
+    updateAsignacion(data: any): Observable<any> {
+        return this.http.put<any>(this.apiUrl + "/api/docente/materia/asignacion", data);
+    }
 
     // traer estudiantes por id del curso
     getEstudiantesCurso(idCurso: any): Observable<any> {

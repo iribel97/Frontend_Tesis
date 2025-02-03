@@ -191,6 +191,12 @@
                                                         class="text-blue-600 hover:underline cursor-pointer">
                                                     Ir a la Asignación
                                                 </button>
+                                                @if (RolUser === 'Docente') {
+                                                    <button class=" text-white font-bold py-2 px-4 rounded"
+                                                            (click)="openModal('addAssignmentModal', tema.idTema, asignacion)">
+                                                            ✏️
+                                                    </button>
+                                                }
                                             </li>
                                         }
                                     </ul>
