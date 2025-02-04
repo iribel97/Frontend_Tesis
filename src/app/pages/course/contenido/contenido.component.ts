@@ -585,6 +585,10 @@ export class ContenidoComponent implements OnInit {
     }
 
     irADetalleAsignacion(idAsignacion: number, idDistributivo: number): void {
+        if (this.RolUser === 'Docente') {
+            this.router.navigate(['/course/assignment/view', idAsignacion], { state: { data: { idDistributivo } } });
+            return;
+        }
         console.log("idAsignacion:", idAsignacion, "idDistributivo:", idDistributivo);
         this.router.navigate(['/course/assignment', idAsignacion], { state: { data: { idDistributivo } } });
     }

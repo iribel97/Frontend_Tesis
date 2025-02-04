@@ -32,6 +32,7 @@ import { DashboardTeacherComponent } from './pages/teacher/dashboard-teacher/das
 import { DashboardStudentComponent } from './pages/students/dashboard-student/dashboard-student.component';
 import { DashboardRepresentativeComponent } from './pages/representative/dashboard-representative/dashboard-representative.component';
 import { CitationTeacherComponent } from './pages/teacher/citation-teacher/citation-teacher.component';
+import { AssigmentViewDocentComponent } from './pages/course/assigment-view-docent/assigment-view-docent.component';
 
 export const routes: Routes = [
     {
@@ -50,6 +51,7 @@ export const routes: Routes = [
             {path: 'course/schedule', component: ScheduleComponent},
             {path: 'course/:id', component: HomeCourseComponent},
             {path: 'course/assignment/:id', component: AssignmentViewComponent},
+            {path: 'course/assignment/view/:id', component: AssigmentViewDocentComponent},
             {path: 'admin/all-user', component: UsersTableComponent},
             {path: 'admin/distributive', component: DistributiveComponent},
             {path: 'admin/ratingSystem', component: RatingSystemComponent},

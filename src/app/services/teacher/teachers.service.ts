@@ -111,6 +111,11 @@ export class TeachersService {
         return this.http.put<any>(this.apiUrl + "/api/docente/materia/asignacion", data);
     }
 
+    // traer detalles de una asignación
+    getAsignacion(idAsignacion: any): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/docente/materia/asignacion/" + idAsignacion);
+    }
+
     // traer estudiantes por id del curso
     getEstudiantesCurso(idCurso: any): Observable<any> {
         return this.http.get<any>(this.apiUrl + "/api/general/controller/estudiantes/curso/" + idCurso);
