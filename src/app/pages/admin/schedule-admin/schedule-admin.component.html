@@ -32,33 +32,33 @@
     </div>
 
     <!-- Tabla de horarios -->
-    <div *ngIf="horarios.length > 0" class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+    <div *ngIf="horarios.length > 0">
+        <table class="table-auto border-collapse border-t border-b border-gray-300 shadow-lg rounded-lg overflow-hidden w-full divide-y divide-gray-200">
+            <thead class="bg-gray-100 text-gray-500">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hora</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lunes
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Hora</th>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Lunes
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Martes
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Martes
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Miércoles
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Miércoles
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jueves
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Jueves
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Viernes
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Viernes
                     </th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
 
                 <tr *ngFor="let horario of horarios">
-                    <td class="px-6 py-4 text-sm text-gray-900">
+                    <td class="px-6 py-4 text-gray-900 text-center">
                         {{ horario.horario.horaInicio }} - {{ horario.horario.horaFin }}
                     </td>
-                    <td *ngIf="horario.id == 5" colspan="5" class="px-6 py-4 text-sm text-gray-900 text-center">Receso
+                    <td *ngIf="horario.id == 5" colspan="5" class="px-6 py-4 font-medium text-gray-900 text-center">Receso
                     </td>
 
-                    <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
+                    <td *ngIf="horario.id != 5" class="px-6 py-4 font-medium text-gray-900 text-center">
                         {{ horario.lunes?.materia || ' ' }}<br />
                         @if (rolUser == 'Docente') {
                         <span class="text-xs text-gray-500">{{ horario.lunes?.curso || '' }}</span>
@@ -67,7 +67,7 @@
                         }
 
                     </td>
-                    <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
+                    <td *ngIf="horario.id != 5" class="px-6 py-4 font-medium text-gray-900 text-center">
                         {{ horario.martes?.materia || ' ' }}<br />
                         @if (rolUser == 'Docente') {
                         <span class="text-xs text-gray-500">{{ horario.martes?.curso || '' }}</span>
@@ -75,7 +75,7 @@
                         <span class="text-xs text-gray-500">{{ horario.martes?.docente || ' ' }}</span>
                         }
                     </td>
-                    <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
+                    <td *ngIf="horario.id != 5" class="px-6 py-4 font-medium text-gray-900 text-center">
                         {{ horario.miercoles?.materia || ' ' }}<br />
                         @if (rolUser == 'Docente') {
                         <span class="text-xs text-gray-500">{{ horario.miercoles?.curso || '' }}</span>
@@ -83,7 +83,7 @@
                         <span class="text-xs text-gray-500">{{ horario.miercoles?.docente || ' ' }}</span>
                         }
                     </td>
-                    <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
+                    <td *ngIf="horario.id != 5" class="px-6 py-4 font-medium text-gray-900 text-center">
                         {{ horario.jueves?.materia || ' ' }}<br />
                         @if (rolUser == 'Docente') {
                         <span class="text-xs text-gray-500">{{ horario.jueves?.curso || '' }}</span>
@@ -91,7 +91,7 @@
                         <span class="text-xs text-gray-500">{{ horario.jueves?.docente || ' ' }}</span>
                         }
                     </td>
-                    <td *ngIf="horario.id != 5" class="px-6 py-4 text-sm text-gray-900">
+                    <td *ngIf="horario.id != 5" class="px-6 py-4 font-medium text-gray-900 text-center">
                         {{ horario.viernes?.materia || ' ' }}<br />
                         @if (rolUser == 'Docente') {
                         <span class="text-xs text-gray-500">{{ horario.viernes?.curso || '' }}</span>

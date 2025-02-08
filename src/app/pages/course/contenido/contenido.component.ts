@@ -402,6 +402,7 @@ export class ContenidoComponent implements OnInit {
 
         // Limpiar el material seleccionado y cerrar el modal
         this.CerrarModalMaterias();
+        this.loadContenidoDocente(this.idMateria);
     }
 
     // Cerrar el modal

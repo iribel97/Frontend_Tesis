@@ -50,6 +50,11 @@
     z-index: 3; /* Ajusta según sea necesario */
 }
 
+.card:hover .botonP {
+    color: var(--text-color-hover);
+    z-index: 3; /* Ajusta según sea necesario */
+}
+
 .card:active {
     transform: scale(1) translateZ(0);
     box-shadow: 0 15px 24px rgba(0,0,0,0.11),

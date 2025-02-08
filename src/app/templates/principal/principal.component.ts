@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {BreadcrumbService} from "../../services/breadcrumb.service";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {ClickOutsideDirective} from "../../shared/directivas/click-outside.directive";
@@ -10,10 +10,21 @@ import {Observable} from "rxjs";
 import {StudentsService} from "../../services/students/students.service";
 import {UsuarioDTO, Genero, EstadoUsu} from '../../interface/response/UsuarioDTO';
 import {TeachersService} from '../../services/teacher/teachers.service';
+import { FormChangPassComponent } from '../../forms/form-chang-pass/form-chang-pass.component';
 
 @Component({
     selector: 'app-principal',
-    imports: [RouterOutlet, NgClass, ClickOutsideDirective, midudevComponent, SpinnerComponent, NgIf, NgForOf, RouterLink, RouterLinkActive],
+    imports: [RouterOutlet, 
+        NgClass, 
+        ClickOutsideDirective, 
+        midudevComponent, 
+        SpinnerComponent, 
+        NgIf, 
+        NgForOf, 
+        RouterLink, 
+        RouterLinkActive,
+        FormChangPassComponent,
+    ],
     templateUrl: './principal.component.html',
     styleUrl: './principal.component.css'
 })
@@ -37,7 +48,7 @@ export class PrincipalComponent implements OnInit {
         nacimiento: '',
         genero: Genero.OTRO,
         rol: '',
-        estado: EstadoUsu.ACTIVO,
+        estado: EstadoUsu.Activo,
         docente: undefined,
         estudiante: undefined,
         representante: undefined

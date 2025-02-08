@@ -66,6 +66,21 @@ export class AdminService {
         return this.http.get<any>(`${this.apiUrl}/api/general/controller/grados`);
     }
 
+    // crear un grado
+    createGrado(grado: any): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/api/admin/grado`, grado);
+    }
+
+    // Editar un grado
+    editGrado(grado: any): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/api/admin/grado`, grado);
+    }
+
+    // Eliminar grado por id
+    deleteGrado(id: number): Observable<any> {
+        return this.http.delete<any>(`${this.apiUrl}/api/admin/grado/${id}`);
+    }
+
     // Crear materia
     createMateria(materia: any): Observable<any> {
         return this.http.post<any>(`${this.apiUrl}/api/admin/materia`, materia);

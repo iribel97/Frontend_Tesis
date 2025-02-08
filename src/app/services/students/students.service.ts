@@ -12,6 +12,11 @@ export class StudentsService {
     constructor(private http: HttpClient) {
     }
 
+    // cambiar la contraseña
+    changePassword(data: any): Observable<any> {
+        return this.http.put<any>(this.apiUrl + "/api/general/controller/cambiar/contrasena", data);
+    }
+
     // Obtener materias del estudiante
     getMaterias(): Observable<any> {
         return this.http.get<any>(this.apiUrl + "/api/estudiante/materias");

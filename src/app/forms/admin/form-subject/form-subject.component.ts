@@ -12,7 +12,7 @@ import { ToastComponent } from '../../../shared/ui/toast/toast.component';
   templateUrl: './form-subject.component.html',
   styleUrl: './form-subject.component.css'
 })
-export class FormSubjectComponent implements OnInit{
+export class FormSubjectComponent implements OnInit {
 
   formErrors: { [key: string]: string } = {};
   formRegister!: FormGroup;
@@ -86,9 +86,15 @@ export class FormSubjectComponent implements OnInit{
   getGrades() {
     this.adminService.getGrados().subscribe(
       data => {
+        console.log('Grades:', data);
         this.gradesOption = data;
       }
     );
+  }
+
+  // Método para recargar los grados
+  reloadGrades() {
+    this.getGrades();
   }
 
 }

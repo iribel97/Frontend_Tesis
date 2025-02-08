@@ -80,33 +80,7 @@ export class AssignmentViewComponent implements OnInit {
         this.modalService.openModal(modalId);
     }
 
-    // Método para enviar la calificación al backend
-    enviarCalificacion(event: Event): void {
-        event.preventDefault();
-
-        const payload = {
-            idEntrega: this.idAssignment,
-            nota: this.nota.toString(), // Convertir a cadena según el formato del backend
-        };
-
-        this.http.put('http://localhost:8080/api/docente/entrega/calificar', payload).subscribe({
-            next: (response: any) => {
-                if (!response.error) {
-                    this.toast.showToast('success', '¡Éxito!', 'Calificación enviada correctamente.', 10000);
-                } else {
-                    this.toast.showToast('error', 'Error al calificar', response.mensaje, 10000);
-                }
-            },
-            error: (error) => {
-                console.error('Error al enviar la calificación', error);
-                this.toast.showToast('error', 'Error', 'No se pudo enviar la calificación.', 10000);
-            },
-            complete: () => {
-                this.modalService.closeModal('calificarEntrega'); // Cerrar el modal
-            }
-        });
-    }
-
+    
     goBack() {
         this.router.navigate([`/course/${this.idDistributivo}`]);
     }

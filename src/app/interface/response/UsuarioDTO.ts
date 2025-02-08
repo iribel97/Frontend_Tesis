@@ -40,7 +40,7 @@ export interface UsuarioDTO {
   }
   
   export enum EstadoUsu {
-    ACTIVO = 'ACTIVO',
-    INACTIVO = 'INACTIVO',
-    SUSPENDIDO = 'SUSPENDIDO'
+    Activo = 'Activo',
+    Inactivo = 'Inactivo',
+    Suspendido = 'Suspendido'
   }

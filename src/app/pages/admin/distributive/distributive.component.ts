@@ -7,6 +7,7 @@ import { FormSubjectComponent } from '../../../forms/admin/form-subject/form-sub
 import { TabsComponent } from "../../../shared/ui/tabs/tabs.component";
 import { CreateDistributivoComponent } from "../../../forms/admin/create-distributivo/create-distributivo.component";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormAddGradeComponent } from '../../../forms/admin/form-add-grade/form-add-grade.component';
 
 @Component({
     selector: 'app-distributive',
@@ -18,7 +19,8 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
         TabsComponent,
         CreateDistributivoComponent,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FormAddGradeComponent,
     ],
     templateUrl: './distributive.component.html',
     styleUrl: './distributive.component.css'
@@ -59,6 +61,8 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
     searchMateriaTerm: string = ''; // Término de búsqueda para materias
 
     grados: any[] = [];   // Lista de grados
+    editingGradoId: number | null = null;
+    editingGradoName: string = '';
 
     currentPage: number = 1; // Página actual
     itemsPerPage: number = 10; // Elementos por página
@@ -104,6 +108,46 @@ export class DistributiveComponent implements AfterViewInit, OnInit {
             },
             error: (err) => {
                 console.error('Error al cargar grados:', err);
+            }
+        });
+    }
+
+    onGradeAdded(): void {
+        this.fetchGrados();
+    }
+
+    editGrado(grado: any): void {
+        this.editingGradoId = grado.id;
+        this.editingGradoName = grado.name;
+    }
+
+    saveGrado(grado: any): void {
+        const request = {
+            id: grado.id,
+            nombre: this.editingGradoName
+        };
+
+        console.log('Request:', request);
+
+        this.adminService.editGrado(request).subscribe({
+            next: (data) => {
+                this.editingGradoId = null;
+                this.fetchGrados();
+            },
+            error: (err) => {
+                console.error('Error al editar el grado:', err);
+            }
+        });
+    }
+
+    deleteGrado(id: number): void {
+        this.adminService.deleteGrado(id).subscribe({
+            next: (data) => {
+                console.log('Grado eliminado:', data);
+                this.fetchGrados();
+            },
+            error: (err) => {
+                console.error('Error al eliminar el grado:', err);
             }
         });
     }

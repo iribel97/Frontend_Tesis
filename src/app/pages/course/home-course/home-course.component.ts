@@ -28,7 +28,7 @@ export class HomeCourseComponent implements AfterViewInit, OnInit {
     @ViewChild('tab1Content', {static: true}) tab1Content!: TemplateRef<any>;
     @ViewChild('tab2Content', {static: true}) tab2Content!: TemplateRef<any>;
     @ViewChild('tab3Content', {static: true}) tab3Content!: TemplateRef<any>;
-    @ViewChild('tab4Content', {static: true}) tab4Content!: TemplateRef<any>;
+    // @ViewChild('tab4Content', {static: true}) tab4Content!: TemplateRef<any>;
 
     tabs: { id: string; title: string; content: TemplateRef<any> }[] = [];
     materia: any = null; // Datos completos de la materia desde el backend
@@ -47,10 +47,16 @@ export class HomeCourseComponent implements AfterViewInit, OnInit {
     ngAfterViewInit(): void {
         this.tabs = [
             {id: 'tab1', title: 'Contenido', content: this.tab1Content},
-            {id: 'tab2', title: 'Notas', content: this.tab2Content},
+            //{id: 'tab2', title: 'Notas', content: this.tab2Content},
             {id: 'tab3', title: 'Asistencias', content: this.tab3Content},
-            {id: 'tab4', title: 'Conducta', content: this.tab4Content},
+            // {id: 'tab4', title: 'Conducta', content: this.tab4Content},
         ];
+
+        // Agregar el tab de "Notas" solo si el rol del usuario es "Estudiante"
+        if (this.rolUser === 'Estudiante') {
+            this.tabs.splice(1, 0, {id: 'tab2', title: 'Notas', content: this.tab2Content});
+        }
+
         // Forzar la detección de cambios
         this.cdr.detectChanges();
     }

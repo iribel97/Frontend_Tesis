@@ -67,9 +67,10 @@ export class FormRegisterUserComponent implements OnInit {
       this.formErrors = this.getFormErrors();
       console.log('Form has errors:', this.formErrors);
     } else {
+      console.log('Form is valid:', this.formRegister.value);
       const mappedData = this.mapFormData(this.formRegister.value);
   
-      this.adminService.registerUser(mappedData.rol, mappedData).subscribe(
+      this.adminService.registerUser(mappedData.rol.name, mappedData).subscribe(
         (response) => {
           this.userAdded.emit(response); // Emitir evento cuando se agrega un usuario
           this.formRegister.reset();

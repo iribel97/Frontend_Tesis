@@ -196,7 +196,6 @@ export class DashboardAdminComponent implements OnInit {
   loadMixedChartData(): void {
     this.adminService.getStudentsCountPerGrade().subscribe(
       (data: any) => {
-        console.log(data);
         const totalEstudiantes = data.map((item: any) => item.totalEstudiantes);
         const asigEstudiantes = data.map((item: any) => item.asigEstudiantes);
 

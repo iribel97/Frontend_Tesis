@@ -36,7 +36,6 @@
         class="table-auto border-collapse border-t border-b border-gray-300 shadow-lg rounded-lg overflow-hidden w-full divide-y divide-gray-200">
         <thead class="bg-gray-100 text-gray-500">
             <tr>
-                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Cédula</th>
                 <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Nombres</th>
                 <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Apellidos
                 </th>
@@ -49,7 +48,6 @@
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
             <tr *ngFor="let user of paginatedUsers" class="hover:bg-gray-100 transition">
-                <td class="px-6 py-4 font-medium text-gray-900">{{ user.cedula }}</td>
                 <td class="px-6 py-4 font-medium text-gray-900">{{ user.nombres }}</td>
                 <td class="px-6 py-4 font-medium text-gray-900">{{ user.apellidos }}</td>
                 <td class="px-6 py-4 font-medium text-gray-900">{{ user.correo }}</td>

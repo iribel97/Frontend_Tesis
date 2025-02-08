@@ -42,6 +42,16 @@ export class OpAdminService {
         return this.http.get<any>(this.apiUrl + "/api/adminop/estudiantes/matriculados");
     }
 
+    // suspender estudiante por numero de cedula
+    suspendEstudiante(cedula: string): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/api/adminop/estudiante/suspender/${cedula}`, {});
+    }
+
+    // activar estudiante por numero de cedula
+    activateEstudiante(cedula: string): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/api/adminop/estudiante/activar/${cedula}`, {});
+    }
+
     // traer las configuraciones de horas
     getConfigHoras(): Observable<any> {
         return this.http.get<any>(this.apiUrl + "/api/adminop/horariosConfig");
