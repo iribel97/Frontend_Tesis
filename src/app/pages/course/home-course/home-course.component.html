@@ -8,30 +8,30 @@
             </h2>
         </section><!-- Horarios -->
         @if (materia?.horarios.length > 0) {
-            <section class="mb-5 w-full lg:w-3/4">
-                <table class="table-auto w-full border-collapse border border-gray-300">
-                    <thead>
+        <section class="mb-5 w-full lg:w-3/4">
+            <table class="table-auto w-full border-collapse border border-gray-300">
+                <thead>
                     <tr class="bg-gray-100">
                         <th class="border border-gray-300 px-4 py-2 text-left">Día</th>
                         <th class="border border-gray-300 px-4 py-2 text-left">Hora Inicio</th>
                         <th class="border border-gray-300 px-4 py-2 text-left">Hora Fin</th>
                     </tr>
-                    </thead>
-                    <tbody>
-                        @for (horario of materia?.horarios; track horario.dia) {
-                            <tr class="hover:bg-gray-50">
-                                <td class="border border-gray-300 px-4 py-2">{{ horario.dia }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ horario.horaInicio }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ horario.horaFin }}</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </section>
+                </thead>
+                <tbody>
+                    @for (horario of materia?.horarios; track horario.dia) {
+                    <tr class="hover:bg-gray-50">
+                        <td class="border border-gray-300 px-4 py-2">{{ horario.dia }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ horario.horaInicio }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ horario.horaFin }}</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
         } @else {
-            <section class="mb-5 w-3/4">
-                <p class="text-gray-700">No hay horarios registrados para esta materia.</p>
-            </section>
+        <section class="mb-5 w-3/4">
+            <p class="text-gray-700">No hay horarios registrados para esta materia.</p>
+        </section>
         }
     </section><!-- Acordeón dinámico para unidades -->
     <ui-tabs [tabs]="tabs"></ui-tabs>
@@ -43,12 +43,13 @@
     <ng-template #tab2Content>
         <app-grades-per-dis></app-grades-per-dis>
     </ng-template>
+
     <ng-template #tab3Content>
         @if (rolUser == 'Estudiante') {
-            <app-attendance-personal></app-attendance-personal>
+        <app-attendance-personal></app-attendance-personal>
         }
         @if (rolUser == 'Docente') {
-            <app-attendance-per-subject/>
+        <app-attendance-per-subject />
         }
 
     </ng-template>

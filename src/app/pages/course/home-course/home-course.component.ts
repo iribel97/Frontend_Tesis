@@ -45,17 +45,15 @@ export class HomeCourseComponent implements AfterViewInit, OnInit {
     }
 
     ngAfterViewInit(): void {
+        
         this.tabs = [
             {id: 'tab1', title: 'Contenido', content: this.tab1Content},
-            //{id: 'tab2', title: 'Notas', content: this.tab2Content},
             {id: 'tab3', title: 'Asistencias', content: this.tab3Content},
+            {id: 'tab2', title: 'Notas', content: this.tab2Content},
             // {id: 'tab4', title: 'Conducta', content: this.tab4Content},
         ];
 
-        // Agregar el tab de "Notas" solo si el rol del usuario es "Estudiante"
-        if (this.rolUser === 'Estudiante') {
-            this.tabs.splice(1, 0, {id: 'tab2', title: 'Notas', content: this.tab2Content});
-        }
+        console.log('Rol del usuario:', this.rolUser); // Útil para depuración
 
         // Forzar la detección de cambios
         this.cdr.detectChanges();

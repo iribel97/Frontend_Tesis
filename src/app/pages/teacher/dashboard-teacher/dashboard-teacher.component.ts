@@ -171,8 +171,10 @@ export class DashboardTeacherComponent implements OnInit {
 
   // cargar el promedio de los distributivos que imparte el docente
   loadDashboardPromedios() {
-    this.teachersService.getDashboardPromedios().subscribe((data: any) => {
+    this.teachersService.getNotas().subscribe((data: any) => {
       this.promDistri = data;
-    });
+      console.log(data);
+    }
+    );
   }
 }

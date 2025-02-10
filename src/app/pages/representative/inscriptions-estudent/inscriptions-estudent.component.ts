@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { RepresentService } from '../../../services/representative/represent.service';
 import { NgForOf, NgIf } from '@angular/common';
 import { InscriptionComponent } from '../../../forms/representative/inscription/inscription.component';
+import { OpAdminService } from '../../../services/opAdmin/op-admin.service';
+import { UtilityService } from '../../../shared/service/utility/utility.service';
 
 @Component({
   selector: 'app-inscriptions-estudent',
@@ -13,8 +15,13 @@ export class InscriptionsEstudentComponent implements OnInit {
 
   estudiantes: any[] = [];
   isModalOpen = false;
+  selectedStudent: any = null;
+  showStudentInfoModal: boolean = false;
 
-  constructor(private representService: RepresentService) { }
+  constructor(private representService: RepresentService,
+    private opAdminService: OpAdminService,
+    protected utilityService: UtilityService
+  ) { }
 
   ngOnInit(): void {
     this.loadEstudiantesInscritos();
@@ -58,5 +65,22 @@ export class InscriptionsEstudentComponent implements OnInit {
         }
       );
     }
+  }
+
+  viewStudentInfo(cedula: string): void {
+    this.opAdminService.getInscripcionByCedula(cedula).subscribe(
+      data => {
+        this.selectedStudent = data;
+        this.showStudentInfoModal = true;
+      },
+      error => {
+        console.error('Error al obtener la información del estudiante:', error);
+      }
+    );
+  }
+
+  closeStudentInfoModal(): void {
+    this.showStudentInfoModal = false;
+    this.selectedStudent = null;
   }
 }

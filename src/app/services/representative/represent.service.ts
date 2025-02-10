@@ -47,4 +47,24 @@ export class RepresentService {
     getDashboard(): Observable<any> {
         return this.http.get<any>(this.apiUrl + "/api/estudiante/dashboard/representante");
     }
+
+    // traer las asistencias de los estudiantes del representante
+    getAsistencias(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/representante/asistencias");
+    }
+
+    // traer as asignaciones pendientes por cedula del estudiante
+    getAsignaciones(cedula: string): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/estudiante/dashboard/representante/entregas/" + cedula);
+    }
+
+    // traer promedios generales de los estudiantes bajos
+    getPromedios(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/representante/promedio");
+    }
+
+    // traer promedios por cedula de estudiante
+    getPromedioByEst(cedula: string): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/estudiante/dashboard/representante/notas/" + cedula);
+    }
 }

@@ -26,57 +26,128 @@ export class DashboardRepresentativeComponent implements OnInit {
     { nombre: 'Estudiante 4', curso: 'Undécimo D', asistencia: 80, promedio: 7.0, conducta: 8.5, materiaBaja: 'Inglés', assignments: [{ name: 'Tarea 7', timeRemaining: '2 días' }, { name: 'Tarea 8', timeRemaining: '7 días' }], materias: { Matemáticas: 6.5, Historia: 7.0, Ciencias: 7.5 } }
   ];
 
-  students: any;
+  students: any[] = [];
+  estudiantes: any[] = []; // para el select de estudiantes
+  promedios: any[] = [];
 
-  constructor(private representService : RepresentService) { }
+  constructor(private representService: RepresentService) { }
 
   ngOnInit(): void {
     this.selectedStudent = this.representados[0]; // Selecciona el primer estudiante por defecto
     this.selectedStudentForGrades = this.representados[0]; // Selecciona el primer estudiante por defecto para el gráfico de promedio por materia
 
     this.getDashboard();
+    this.loadEstudiantes();
+    this.loadAttendanceChart();
+    this.getpromGeneral();
+  }
 
-    this.attendanceChart = new Chart('attendanceChartCanvas', {
-      type: 'bar',
-      data: {
-        labels: this.representados.map(rep => rep.nombre),
-        datasets: [
-          {
-            type: 'bar',
-            label: 'Asistencias',
-            data: this.representados.map(rep => rep.asistencia),
-            backgroundColor: 'rgb(168, 209, 209)'
-          },
-          {
-            type: 'bar',
-            label: 'Justificados',
-            data: this.representados.map(rep => 100 - rep.asistencia), // Ejemplo de datos
-            backgroundColor: 'rgba(255, 205, 86)'
-          },
-          {
-            type: 'bar',
-            label: 'Atrasado',
-            data: this.representados.map(rep => rep.promedio),
-            backgroundColor: 'rgb(253, 138, 138)'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
+  loadAttendanceChart(): void {
+    this.representService.getAsistencias().subscribe(
+      data => {
+        let labels = [];
+        let attendanceData = [];
+        let justifiedData = [];
+        let lateData = [];
+
+        if (data && data.length > 0) {
+          labels = data.map((item: any) => item.apellidos + ' ' + item.nombres);
+          attendanceData = data.map((item: any) => item.data.totalAsist);
+          justifiedData = data.map((item: any) => item.data.totalJustificadas);
+          lateData = data.map((item: any) => item.data.totalFaltas);
+        } else {
+          // Valores por defecto cuando no hay datos
+          labels = [' '];
+          attendanceData = [0];
+          justifiedData = [0];
+          lateData = [0];
         }
+
+        this.attendanceChart = new Chart('attendanceChartCanvas', {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                type: 'bar',
+                label: 'Asistencias',
+                data: attendanceData,
+                backgroundColor: 'rgb(168, 209, 209)'
+              },
+              {
+                type: 'bar',
+                label: 'Justificados',
+                data: justifiedData,
+                backgroundColor: 'rgba(255, 205, 86)'
+              },
+              {
+                type: 'bar',
+                label: 'Atrasado',
+                data: lateData,
+                backgroundColor: 'rgb(253, 138, 138)'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      },
+      error => {
+        console.log(error);
+        // Valores por defecto en caso de error
+        const labels = [''];
+        const attendanceData = [0];
+        const justifiedData = [0];
+        const lateData = [0];
+
+        this.attendanceChart = new Chart('attendanceChartCanvas', {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                type: 'bar',
+                label: 'Asistencias',
+                data: attendanceData,
+                backgroundColor: 'rgb(168, 209, 209)'
+              },
+              {
+                type: 'bar',
+                label: 'Justificados',
+                data: justifiedData,
+                backgroundColor: 'rgba(255, 205, 86)'
+              },
+              {
+                type: 'bar',
+                label: 'Atrasado',
+                data: lateData,
+                backgroundColor: 'rgb(253, 138, 138)'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
       }
-    });
+    );
   }
 
   // cargar información general de sus estudiantes
   getDashboard(): void {
     this.representService.getDashboard().subscribe(
       data => {
-        console.log(data);
         this.students = data;
       },
       error => {
@@ -85,15 +156,51 @@ export class DashboardRepresentativeComponent implements OnInit {
     );
   }
 
+  loadEstudiantes(): void {
+    this.representService.getEstudiantes().subscribe(
+      data => {
+        this.estudiantes = data;
+      },
+      error => {
+        console.error('Error al cargar los estudiantes:', error);
+      }
+    );
+  }
+
   onStudentChange(event: any): void {
-    const studentName = event.target.value;
-    this.selectedStudent = this.representados.find(student => student.nombre === studentName);
+    const studentCedula = event.target.value;
+    this.representService.getAsignaciones(studentCedula).subscribe(
+      data => {
+        this.selectedStudent = data;
+      },
+      error => {
+        console.error('Error al cargar las asignaciones:', error);
+      }
+    );
+  }
+
+  getpromGeneral(): void {
+    this.representService.getPromedios().subscribe(
+      data => {
+        this.promedios = data;
+      },
+      error => {
+        console.error('Error al cargar los promedios:', error);
+      }
+    );
   }
 
   onStudentChangeForGrades(event: any): void {
-    const studentName = event.target.value;
-    this.selectedStudentForGrades = this.representados.find(student => student.nombre === studentName);
-    this.updateGradesChart();
+    const studentCedula = event.target.value;
+    this.representService.getPromedioByEst(studentCedula).subscribe(
+      data => {
+        this.selectedStudentForGrades = data;
+        this.updateGradesChart();
+      },
+      error => {
+        console.error('Error al cargar las notas:', error);
+      }
+    );
   }
 
   updateGradesChart(): void {
@@ -101,15 +208,17 @@ export class DashboardRepresentativeComponent implements OnInit {
       this.gradesChart.destroy();
     }
 
-    const materias = this.selectedStudentForGrades.materias;
+    const labels = this.selectedStudentForGrades.map((item: any) => item.nombreMateria);
+    const data = this.selectedStudentForGrades.map((item: any) => item.promedio);
+
     this.gradesChart = new Chart('gradesChartCanvas', {
       type: 'bar',
       data: {
-        labels: Object.keys(materias),
+        labels: labels,
         datasets: [
           {
             label: 'Promedio',
-            data: Object.values(materias),
+            data: data,
             backgroundColor: 'rgb(168, 209, 209)',
           }
         ]

@@ -1,3 +1,9 @@
+<div class="mb-3">
+    <p class="text-xl font-semibold text-gray-800 dark:text-neutral-200">Calificaciones</p>
+</div>
+<div class="mb-4">
+    <p class="text-lg text-gray-600 dark:text-neutral-100">Visualice los promedios de las materias</p>
+</div>
 <table class="table-auto border-collapse border-t border-b border-gray-300 w-full text-center shadow-lg rounded-lg overflow-hidden">
     <!-- Primera fila -->
     <thead class="bg-gray-100 text-gray-500">
@@ -22,9 +28,16 @@
     </thead>
     <tbody>
         <tr *ngFor="let materia of materias" class="hover:bg-gray-100 transition">
-            <td class="border-t border-b border-gray-300 py-2 px-4 font-medium text-gray-700">
-                {{ materia.nombreMateria }}
-            </td>
+            @if ( rolUser ===  'Docente' ) {
+                <td class="border-t border-b border-gray-300 py-2 px-4 font-medium text-gray-700">
+                    {{ materia.nombreMateria }} - <span class="text-sm text-gray-400">{{ materia.curso }}</span>
+                </td>
+
+            } @else {
+                <td class="border-t border-b border-gray-300 py-2 px-4 font-medium text-gray-700">
+                    {{ materia.nombreMateria }}
+                </td>
+            }
             <ng-container *ngFor="let promedio of materia.promedios">
                 <ng-container *ngFor="let nivel of promedio.niveles">
                     <td class="border-t border-b border-gray-300 py-2 px-4 text-gray-600">

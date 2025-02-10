@@ -136,5 +136,14 @@ export class TeachersService {
         return this.http.put<any>(this.apiUrl + "/api/docente/citacion/estado/" + idCitacion, {});
     }
 
+    // viualizar todas las notas del docente
+    getNotas(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/docente/visualizar/notas");
+    }
+
+    // visualizar las asistencias generales
+    getAsistenciasGeneral(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/docente/asistencias/generales");
+    }
 
 }

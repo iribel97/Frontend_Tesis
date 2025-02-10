@@ -9,6 +9,7 @@
             <h3 class="text-2xl font-semibold mb-4">Estudiantes</h3>
             <div class="flex space-x-4 w-full">
                 <!-- Tarjeta de Representado -->
+                @if ( students.length > 0) {
                 <div class="w-64 p-4 bg-blue-100 shadow-md rounded-lg flex-shrink-0" *ngFor="let student of students">
                     <div class="flex flex-col items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24"
@@ -17,14 +18,24 @@
                                 d="m12,0C5.383,0,0,5.383,0,12s5.383,12,12,12,12-5.383,12-12S18.617,0,12,0Zm-5,21.797v-3.297c0-.827.673-1.5,1.5-1.5h7c.827,0,1.5.673,1.5,1.5v3.297c-1.501.769-3.201,1.203-5,1.203s-3.499-.434-5-1.203Zm11-.582v-2.715c0-1.379-1.122-2.5-2.5-2.5h-7c-1.378,0-2.5,1.121-2.5,2.5v2.715c-3.008-1.965-5-5.362-5-9.215C1,5.935,5.935,1,12,1s11,4.935,11,11c0,3.853-1.992,7.25-5,9.215Zm-6-15.215c-2.206,0-4,1.794-4,4s1.794,4,4,4,4-1.794,4-4-1.794-4-4-4Zm0,7c-1.654,0-3-1.346-3-3s1.346-3,3-3,3,1.346,3,3-1.346,3-3,3Z" />
                         </svg>
 
-                        <h3 class="text-lg font-semibold mb-4">{{student.nombreEstudiante}}</h3>
+                        <div class="items-center justify-center h-full">
+                            <h3 class="text-lg text-center font-semibold mb-4">{{student.nombreEstudiante}}</h3>
+                        </div>
                         <p class="text-sm text-gray-600">Curso: {{student.curso}}</p>
                         <p class="text-sm text-gray-600">Asistencia: {{student.porcentajeAsist | number:'1.2-2'}}%</p>
                         <p class="text-sm text-gray-600">Promedio de Notas: {{student.promedio | number:'1.2-2'}}</p>
-                        <p class="text-sm text-gray-600">Promedio de Conducta: A</p>
                     </div>
                 </div>
-                
+                } @else{
+
+                <div class="w-64 p-4 bg-blue-100 shadow-md rounded-lg flex-shrink-0">
+                    <div class="flex flex-col items-center">
+                        Aún no ha inscrito estudiantes
+                    </div>
+                </div>
+                }
+
+
             </div>
         </div>
     </div>
@@ -37,11 +48,13 @@
             <div class="w-full h-96 flex flex-col items-center justify-start">
                 <h3 class="text-2xl font-semibold mb-4">Materia más baja por estudiante</h3>
 
+                @if (promedios.length > 0) {
                 <div class="grid grid-cols-1 pt-5 w-full gap-2 max-[500px]:grid-cols-1 px-5 overflow-y-auto">
-                    <div *ngFor="let student of representados"
+                    <div *ngFor="let student of promedios"
                         class="group w-full rounded-lg bg-[#d8e5ff] p-5 transition relative duration-300 cursor-pointer hover:translate-y-[3px] hover:shadow-[0_-8px_0px_0px_#A8D1D1]">
-                        <p class="text-2xl">{{ student.nombre }}</p>
-                        <p class="text-sm">{{ student.curso }} - Matemáticas - {{ student.promedio }}</p>
+                        <p class="text-2xl">{{ student.nombreEstudiante }}</p>
+                        <p class="text-sm">{{ student.curso }} - {{ student.nombreMateria }} - {{ student.promedio }}
+                        </p>
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                             id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512"
                             style="enable-background:new 0 0 512 512;" xml:space="preserve"
@@ -52,55 +65,79 @@
 
                     </div>
                 </div>
+                } @else {
+                <div class="w-full h-full rounded-lg">
+                    <div class="bg-white p-4 rounded-lg">
+                        <p class="text-gray-700">No hay estudiantes inscritos</p>
+                    </div>
+                </div>
+                }
 
             </div>
         </div>
         <div class="w-1/2 mb-4">
             <div class="w-full h-96 flex flex-col items-center justify-start">
                 <h3 class="text-2xl font-semibold mb-4">Asignaciones pendientes</h3>
+                @if(estudiantes.length > 0) {
                 <div class="w-full h-full rounded-lg">
-                    <label for="studentSelect" class="block text-lg font-semibold mb-2">Selecciona un
-                        Estudiante</label>
+                    <label for="studentSelect" class="block text-lg font-semibold mb-2">Selecciona un Estudiante</label>
                     <div class="relative">
                         <select id="studentSelect"
                             class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             (change)="onStudentChange($event)">
                             <option value="" disabled selected>Seleccione un estudiante</option>
-                            <option *ngFor="let student of representados" [value]="student.nombre">{{ student.nombre }}
-                            </option>
+                            <option *ngFor="let student of estudiantes" [value]="student.cedula">{{ student.apellidos }}
+                                {{ student.nombres }}</option>
                         </select>
-
                     </div>
-                    <div *ngIf="selectedStudent" class="mt-6 max-h-60 overflow-y-auto">
-                        <h3 class="text-xl font-semibold text-gray-700 mb-4">Asignaciones Pendientes</h3>
-                        <div class="bg-white p-4 rounded-lg">
-                            <ul class="space-y-2">
-                                <li *ngFor="let assignment of selectedStudent.assignments"
-                                    class="flex justify-between items-center p-2 border-b border-gray-200">
-                                    <span class="font-medium text-gray-800">{{ assignment.name }}</span>
-                                    <span class="text-sm text-gray-600">Tiempo restante: {{ assignment.timeRemaining
-                                        }}</span>
-                                </li>
-                            </ul>
+                    <div *ngIf="selectedStudent && selectedStudent.length > 0" class="mt-6 max-h-60 overflow-y-auto">
+                        <div class="bg-white p-2 rounded-lg">
+
+                            <div *ngFor="let assignment of selectedStudent"
+                                class="flex flex-wrap w-full justify-between items-center p-2 border-b border-gray-200">
+                                <div class="w-1/3">
+                                    <span class="font-medium text-gray-800">{{ assignment.nombreAsig }}</span>
+                                </div>
+                                <div class="w-1/3">
+                                    <span class="text-sm text-gray-600">Fecha entrega: {{ assignment.fechaFin }}</span>
+                                </div>
+                                <div class="w-1/3">
+                                    <span class="text-sm text-gray-600">Materia: {{ assignment.nombreMateria }}</span>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
+                    <div *ngIf="selectedStudent && selectedStudent.length === 0" class="mt-6">
+                        <p class="text-gray-700">No hay asignaciones pendientes para este estudiante.</p>
+                    </div>
                 </div>
+                } @else {
+                <div class="w-full h-full rounded-lg">
+                    <div class="bg-white p-4 rounded-lg">
+                        <p class="text-gray-700">No hay estudiantes inscritos</p>
+                    </div>
+                </div>
+                }
             </div>
         </div>
     </div>
     <div class="flex flex-col gap-4 items-center justify-between mt-10">
         <h3 class="text-2xl font-semibold">Promedio por Materia</h3>
         <div class="w-full h-full rounded-lg">
+            @if(estudiantes.length > 0) {
             <label for="studentSelectForGrades" class="block text-lg font-semibold mb-2">Selecciona un
                 Estudiante</label>
-            <div class="relative">
-                <select id="studentSelectForGrades"
-                    class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    (change)="onStudentChangeForGrades($event)">
-                    <option value="" disabled selected>Seleccione un estudiante</option>
-                    <option *ngFor="let student of representados" [value]="student.nombre">{{ student.nombre }}</option>
-                </select>
-            </div>
+                <div class="relative">
+                    <select id="studentSelect"
+                        class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        (change)="onStudentChangeForGrades($event)">
+                        <option value="" disabled selected>Seleccione un estudiante</option>
+                        <option *ngFor="let student of estudiantes" [value]="student.cedula">{{ student.apellidos }}
+                            {{ student.nombres }}</option>
+                    </select>
+                </div>
+            }
             <div *ngIf="selectedStudentForGrades" class="mt-6 w-full">
                 <canvas id="gradesChartCanvas"></canvas>
             </div>

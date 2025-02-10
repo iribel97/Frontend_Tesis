@@ -77,7 +77,7 @@ export class OpAdminService {
 
     // traer una inscripción por cedula
     getInscripcionByCedula(cedula: string): Observable<any> {
-        return this.http.get<any>(`${this.apiUrl}/api/adminop/inscripcion/${cedula}`);
+        return this.http.get<any>(`${this.apiUrl}/api/general/controller/inscripcion/${cedula}`);
     }
 
     // obtener docentes
