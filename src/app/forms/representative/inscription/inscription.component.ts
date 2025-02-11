@@ -135,6 +135,11 @@ export class InscriptionComponent implements OnInit {
         }
     }
 
+    onGenderChange(event: any): void {
+        const selectedGender = event.target.value;
+        console.log('Género seleccionado:', selectedGender);
+    }
+    
     resetForm(): void {
         this.form.reset();
         this.sendform = false;

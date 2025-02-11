@@ -1,38 +1,116 @@
+<ui-toast #toast></ui-toast>
 <div class="container mx-auto">
-    <h1 class="text-xl font-semibold mb-4">Matrículas Generadas</h1>
-    <div *ngIf="matriculas.length > 0" class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+    <h1 class="text-xl font-semibold">Matrículas Generadas</h1>
+    <div class="flex justify-between items-center mb-4">
+        <p class="text-gray-600">A continuación se muestra la lista de estudiantes matriculados en el sistema.</p>
+        <button (click)="openModal()"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-circle-plus mr-2">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                <path d="M9 12h6" />
+                <path d="M12 9v6" />
+            </svg>
+            Matricular
+        </button>
+    </div>
+
+
+    <div *ngIf="matriculas.length > 0">
+        <table
+            class="table-auto border-collapse border-t border-b border-gray-300 shadow-lg rounded-lg overflow-hidden w-full divide-y divide-gray-200">
+            <thead class="bg-gray-100 text-gray-500 dark:bg-neutral-800">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cédula</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombres</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grado</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Nombres</th>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Grado</th>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Estado</th>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Acciones</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                <tr *ngFor="let matricula of matriculas">
-                    <td class="px-6 py-4 text-sm text-gray-900">{{ matricula.cedulaEstudiante }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">{{ matricula.nombreEstudiante }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">{{ matricula.grado }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">{{ matricula.estado }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">
+                <tr *ngFor="let matricula of matriculas" class="hover:bg-gray-100 transition">
+                    <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ matricula.nombreEstudiante }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ matricula.grado }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ matricula.estado }}</td>
+                    @if ( matricula.estado !== 'Matriculado') {
+                    <td class="px-6 py-4 font-medium text-gray-900 text-center">
                         <div class="inline-flex">
-                            <button class="bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-700 flex items-center mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
-                            </button>
-                            <button class="bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-700 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-backspace"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-11l-5 -5a1.5 1.5 0 0 1 0 -2l5 -5z" /><path d="M12 10l4 4m0 -4l-4 4" /></svg>
+                            <button (click)="confirmDeleteMatricula(matricula.id)"
+                                class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-700 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-backspace">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M20 6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-11l-5 -5a1.5 1.5 0 0 1 0 -2l5 -5z" />
+                                    <path d="M12 10l4 4m0 -4l-4 4" />
+                                </svg>
                             </button>
                         </div>
                     </td>
+                    }
                 </tr>
+
             </tbody>
         </table>
     </div>
 
     <div *ngIf="matriculas.length === 0" class="text-center py-4 text-gray-500">
         No hay matrículas generadas.
+    </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-xl font-semibold mb-4">Crear Matrícula</h2>
+        <form (ngSubmit)="createMatricula()">
+            <div class="mb-4">
+                <label for="studentSelect" class="block text-lg font-semibold mb-2">Selecciona un Estudiante</label>
+                <select id="studentSelect" [(ngModel)]="selectedStudent" name="student" required
+                    class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" disabled selected>Seleccione un estudiante</option>
+                    <option *ngFor="let student of estudiantes" [value]="student.cedula">{{ student.apellidos }} {{
+                        student.nombres }}</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="gradeSelect" class="block text-lg font-semibold mb-2">Selecciona un Grado Académico</label>
+                <select id="gradeSelect" [(ngModel)]="selectedGrade" name="grade" required
+                    class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" disabled selected>Seleccione un grado</option>
+                    <option *ngFor="let grade of grados" [value]="grade.name">{{ grade.name }}</option>
+                </select>
+            </div>
+            <div class="mb-4 flex justify-between items-center">
+                <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                    Crear Matrícula
+                </button>
+
+            </div>
+        </form>
+        <button (click)="closeModal()" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-700">
+            Cerrar
+        </button>
+
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div *ngIf="isDeleteModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-xl font-semibold mb-4">Confirmar Eliminación</h2>
+        <p>¿Estás seguro de que deseas eliminar esta matrícula?</p>
+        <div class="mt-4 flex justify-end">
+            <button (click)="deleteMatricula()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 mr-2">
+                Eliminar
+            </button>
+            <button (click)="closeDeleteModal()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-700">
+                Cancelar
+            </button>
+        </div>
     </div>
 </div>

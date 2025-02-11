@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { DecimalPipe, NgForOf } from "@angular/common";
+import { DecimalPipe, NgForOf, NgIf } from "@angular/common";
 import { StudentsService } from '../../../services/students/students.service';
 import { TeachersService } from '../../../services/teacher/teachers.service';
+import { RepresentService } from '../../../services/representative/represent.service';
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-grades',
   imports: [
     NgForOf,
-    DecimalPipe
+    DecimalPipe,
+    NgIf,
   ],
   templateUrl: './grades.component.html',
   styleUrl: './grades.component.css'
@@ -15,10 +18,15 @@ import { TeachersService } from '../../../services/teacher/teachers.service';
 export class GradesComponent implements OnInit {
 
   materias: any[] = [];
-
+  estudiantes: any[] = [];
+  selectedStudent: string = '';
   rolUser: string = ''; // Rol del usuario
 
-  constructor(private studentsService: StudentsService, private teachersService : TeachersService) { }
+  constructor(
+    private studentsService: StudentsService, 
+    private teachersService : TeachersService,
+    private representService: RepresentService,
+  ) { }
 
   ngOnInit(): void {
     this.getInfoUser();
@@ -31,11 +39,10 @@ export class GradesComponent implements OnInit {
         this.rolUser = data.rol; // Asigna la información del usuario al objeto local
         if (this.rolUser === 'Docente') {
           this.loadNotasDocente();
+        } else if (this.rolUser === 'Representante') {
+          this.loadEstudiantes();
         } else {
-
-          // Llamar al servicio para obtener la materia correspondiente
           this.getGrades();
-
         }
       } else {
         console.error('Datos incompletos recibidos:', data);
@@ -64,6 +71,29 @@ export class GradesComponent implements OnInit {
       },
       error => {
         console.log(error);
+      }
+    );
+  }
+
+  loadEstudiantes(): void {
+    this.representService.getEstudiantes().subscribe(
+      data => {
+        this.estudiantes = data;
+      },
+      error => {
+        console.error('Error al cargar los estudiantes:', error);
+      }
+    );
+  }
+
+  onStudentChange(event: any): void {
+    const studentCedula = event.target.value;
+    this.representService.getPromedioByEst(studentCedula).subscribe(
+      data => {
+        this.materias = data;
+      },
+      error => {
+        console.error('Error al cargar los promedios:', error);
       }
     );
   }

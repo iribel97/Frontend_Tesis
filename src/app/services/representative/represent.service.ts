@@ -67,4 +67,29 @@ export class RepresentService {
     getPromedioByEst(cedula: string): Observable<any> {
         return this.http.get<any>(this.apiUrl + "/api/estudiante/dashboard/representante/notas/" + cedula);
     }
+
+    // traer los grados académicos
+    getGrados(): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/general/controller/grados");
+    }
+
+    // crear una matricula
+    createMatricula(matricula: any): Observable<any> {
+        return this.http.post<any>(this.apiUrl + "/api/representante/matricula", matricula);
+    }
+
+    // eliminar una matricula por id
+    deleteMatricula(id: number): Observable<any> {
+        return this.http.delete<any>(this.apiUrl + "/api/representante/matricula/" + id);
+    }
+
+    // editar una matricula
+    updateMatricula(matricula: any): Observable<any> {
+        return this.http.put<any>(this.apiUrl + "/api/representante/matricula", matricula);
+    }
+
+    // traer asistencias generales por cedula del studiante
+    getAsistenciasByEst(cedula: string): Observable<any> {
+        return this.http.get<any>(this.apiUrl + "/api/estudiante/dashboard/representante/asistencias/" + cedula);
+    }
 }

@@ -1,22 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForOf } from "@angular/common";
+import { NgForOf, NgIf } from "@angular/common";
 import { StudentsService } from "../../../services/students/students.service";
 import { TeachersService } from '../../../services/teacher/teachers.service';
+import { RepresentService } from '../../../services/representative/represent.service';
 
 @Component({
     selector: 'app-attendance',
     templateUrl: './attendance.component.html',
     imports: [
-        NgForOf
+        NgForOf,
+        NgIf,
     ],
     styleUrls: ['./attendance.component.css']
 })
 export class AttendanceComponent implements OnInit {
     data: any;
-
+    estudiantes: any[] = [];
+    selectedStudent: string = '';
     rolUser: string = ''; // Rol del usuario
 
-    constructor(private studentsService: StudentsService, private teachersService: TeachersService) {
+    constructor(
+        private studentsService: StudentsService,
+        private teachersService: TeachersService,
+        private representService: RepresentService,
+    ) {
     }
 
     ngOnInit(): void {
@@ -30,11 +37,10 @@ export class AttendanceComponent implements OnInit {
                 this.rolUser = data.rol; // Asigna la información del usuario al objeto local
                 if (this.rolUser === 'Docente') {
                     this.getDataDocente();
+                } else if (this.rolUser === 'Representante') {
+                    this.loadEstudiantes();
                 } else {
-
-                    // Llamar al servicio para obtener la materia correspondiente
                     this.getdata();
-
                 }
             } else {
                 console.error('Datos incompletos recibidos:', data);
@@ -53,5 +59,28 @@ export class AttendanceComponent implements OnInit {
             console.log(data);
             this.data = data;
         });
+    }
+
+    loadEstudiantes(): void {
+        this.representService.getEstudiantes().subscribe(
+            data => {
+                this.estudiantes = data;
+            },
+            error => {
+                console.error('Error al cargar los estudiantes:', error);
+            }
+        );
+    }
+
+    onStudentChange(event: any): void {
+        const studentCedula = event.target.value;
+        this.representService.getAsistenciasByEst(studentCedula).subscribe(
+            data => {
+                this.data = data;
+            },
+            error => {
+                console.error('Error al cargar las asistencias:', error);
+            }
+        );
     }
 }

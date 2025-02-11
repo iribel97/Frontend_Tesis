@@ -2,15 +2,28 @@
     <p class="text-xl font-semibold text-gray-800 dark:text-neutral-200">Calificaciones</p>
 </div>
 <div class="mb-4">
-    <p class="text-lg text-gray-600 dark:text-neutral-100">Visualice los promedios de las materias</p>
+    <p class="text-lg text-gray-600 dark:text-neutral-100">Visualice los promedios de cada periodo de las materias</p>
 </div>
-<table class="table-auto border-collapse border-t border-b border-gray-300 w-full text-center shadow-lg rounded-lg overflow-hidden">
+@if (estudiantes.length > 0) {
+    <div *ngIf="rolUser === 'Representante'" class="mb-4 w-1/4">
+        <label for="studentSelect" class="block text-lg font-semibold mb-2">Selecciona un Estudiante</label>
+        <select id="studentSelect" (change)="onStudentChange($event)"
+            class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="" disabled selected>Seleccione un estudiante</option>
+            <option *ngFor="let student of estudiantes" [value]="student.cedula">{{ student.apellidos }} {{ student.nombres }}</option>
+        </select>
+    </div>
+
+}
+<table
+    class="table-auto border-collapse border-t border-b border-gray-300 w-full text-center shadow-lg rounded-lg overflow-hidden">
     <!-- Primera fila -->
     <thead class="bg-gray-100 text-gray-500">
         <tr>
             <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg" rowspan="2">Materia</th>
             <ng-container *ngFor="let promedio of materias[0]?.promedios">
-                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg" [attr.colspan]="promedio.niveles.length + 1">
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg"
+                    [attr.colspan]="promedio.niveles.length + 1">
                     {{ promedio.nombreNivel }}
                 </th>
             </ng-container>
@@ -19,7 +32,8 @@
         <!-- Segunda fila -->
         <tr class="bg-gray-100 text-gray-500">
             <ng-container *ngFor="let promedio of materias[0]?.promedios">
-                <th class="border-t border-b border-gray-200 py-2 px-4 font-medium" *ngFor="let nivel of promedio.niveles">
+                <th class="border-t border-b border-gray-200 py-2 px-4 font-medium"
+                    *ngFor="let nivel of promedio.niveles">
                     {{ nivel.nombreNivel }}
                 </th>
                 <th class="border-t border-b border-gray-200 py-2 px-4 font-medium">Prom</th>
@@ -28,15 +42,15 @@
     </thead>
     <tbody>
         <tr *ngFor="let materia of materias" class="hover:bg-gray-100 transition">
-            @if ( rolUser ===  'Docente' ) {
-                <td class="border-t border-b border-gray-300 py-2 px-4 font-medium text-gray-700">
-                    {{ materia.nombreMateria }} - <span class="text-sm text-gray-400">{{ materia.curso }}</span>
-                </td>
+            @if ( rolUser === 'Docente' ) {
+            <td class="border-t border-b border-gray-300 py-2 px-4 font-medium text-gray-700">
+                {{ materia.nombreMateria }} - <span class="text-sm text-gray-400">{{ materia.curso }}</span>
+            </td>
 
             } @else {
-                <td class="border-t border-b border-gray-300 py-2 px-4 font-medium text-gray-700">
-                    {{ materia.nombreMateria }}
-                </td>
+            <td class="border-t border-b border-gray-300 py-2 px-4 font-medium text-gray-700">
+                {{ materia.nombreMateria }}
+            </td>
             }
             <ng-container *ngFor="let promedio of materia.promedios">
                 <ng-container *ngFor="let nivel of promedio.niveles">
