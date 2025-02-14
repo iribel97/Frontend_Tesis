@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone, ViewChild, EventEmitter, Output, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SelectComponent } from '../../../shared/ui/select/select.component';
 import { ToastComponent } from '../../../shared/ui/toast/toast.component';
@@ -14,6 +14,8 @@ import { InputComponent } from '../../../shared/ui/input/input.component';
 })
 export class FormCoursesAddComponent implements OnInit {
   @ViewChild('toast', { static: true }) toast!: ToastComponent;
+
+  @Input() selectedCourse: any = null;
 
   formErrors: { [key: string]: string } = {};
   sendform = false;
@@ -46,6 +48,16 @@ export class FormCoursesAddComponent implements OnInit {
         this.cdr.detectChanges();
       });
     });
+
+    if (this.selectedCourse) {
+      this.populateFormForEdit();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedCourse'] && changes['selectedCourse'].currentValue) {
+      this.populateFormForEdit();
+    }
   }
 
   cargarDatos(): void {
@@ -66,7 +78,6 @@ export class FormCoursesAddComponent implements OnInit {
     this.opAdminService.getDocentes().subscribe(
       data => {
         this.docentesOptions = data.map((item: any) => {
-          console.log('Docente:', item);
           return {
             id: item.docente.id,
             name: item.apellidos + ' ' + item.nombres
@@ -85,21 +96,40 @@ export class FormCoursesAddComponent implements OnInit {
       const formValue = this.formRegister.value;
       const sanitizedData = this.sanitizeFormData(formValue);
 
-      this.opAdminService.addCurso(sanitizedData).subscribe(
-        response => {
-          if (!response.error) {
-            this.toast.showToast('success', response.detalles, response.mensaje, 10000);
-            this.formSubmitted.emit();
-            this.resetForm();
-          } else {
-            this.toast.showToast('error', response.detalles, response.mensaje, 10000);
+      if (this.selectedCourse) {
+        sanitizedData.id = this.selectedCourse.id;
+        this.opAdminService.editCurso(sanitizedData).subscribe(
+          response => {
+            if (!response.error) {
+              this.toast.showToast('success', response.detalles, response.mensaje, 10000);
+              this.formSubmitted.emit();
+              this.resetForm();
+            } else {
+              this.toast.showToast('error', response.detalles, response.mensaje, 10000);
+            }
+          },
+          error => {
+            this.toast.showToast('error', error.error.detalles, error.error.mensaje, 10000);
+            console.error('Error del servidor:', error);
           }
-        },
-        error => {
-          this.toast.showToast('error', error.error.detalles, error.error.mensaje, 10000);
-          console.error('Error del servidor:', error);
-        }
-      );
+        );
+      } else {
+        this.opAdminService.addCurso(sanitizedData).subscribe(
+          response => {
+            if (!response.error) {
+              this.toast.showToast('success', response.detalles, response.mensaje, 10000);
+              this.formSubmitted.emit();
+              this.resetForm();
+            } else {
+              this.toast.showToast('error', response.detalles, response.mensaje, 10000);
+            }
+          },
+          error => {
+            this.toast.showToast('error', error.error.detalles, error.error.mensaje, 10000);
+            console.error('Error del servidor:', error);
+          }
+        );
+      }
     }
   }
 
@@ -116,5 +146,18 @@ export class FormCoursesAddComponent implements OnInit {
     this.formRegister.reset();
     this.sendform = false;
     this.cdr.detectChanges();
+  }
+
+  populateFormForEdit(): void {
+    if (this.selectedCourse) {
+      const selectedGrado = this.gradosOptions.find(grado => grado.id === this.selectedCourse.idGrado);
+      const selectedTutor = this.docentesOptions.find(docente => docente.id === this.selectedCourse.idTutor);
+      this.formRegister.patchValue({
+        paralelo: this.selectedCourse.paralelo,
+        cantidadEstudiantes: this.selectedCourse.maxEstudiantes,
+        gradoId: selectedGrado,
+        tutorId: selectedTutor
+      });
+    }
   }
 }

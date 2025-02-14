@@ -6,41 +6,60 @@
 </div>
 
 <div class="mb-4 flex justify-end items-center space-x-4">
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="openModal('addCourse')">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        (click)="openModal('addCourse')">
         Agregar Curso
     </button>
 </div>
 
 <div>
-    <table class="table-auto border-collapse border-t border-b border-gray-300 shadow-lg rounded-lg overflow-hidden w-full divide-y divide-gray-200">
+    <table
+        class="table-auto border-collapse border-t border-b border-gray-300 shadow-lg rounded-lg overflow-hidden w-full divide-y divide-gray-200">
         <thead class="bg-gray-100 text-gray-500 dark:bg-neutral-800">
             <tr>
                 <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Tutor</th>
                 <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Curso</th>
-                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Cantidad de Estudiantes</th>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Cantidad de Estudiantes
+                </th>
                 <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Asignados</th>
                 <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Acciones</th>
             </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
             @if (courses.length === 0) {
-                <tr class="hover:bg-gray-100 transition">
-                    <td class="px-6 py-4 font-medium text-gray-900 text-center" colspan="5">No hay cursos registrados</td>
-                </tr>
+            <tr class="hover:bg-gray-100 transition">
+                <td class="px-6 py-4 font-medium text-gray-900 text-center" colspan="5">No hay cursos registrados</td>
+            </tr>
 
             }
             <tr *ngFor="let course of courses" class="hover:bg-gray-100 transition">
                 <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ course.tutor }}</td>
-                <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ course.nombreGrado }} - {{ course.paralelo }}</td>
+                <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ course.nombreGrado }} - {{
+                    course.paralelo }}</td>
                 <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ course.maxEstudiantes }}</td>
                 <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ course.cant }}</td>
                 <td class="px-6 py-4 font-medium text-gray-900 text-center">
-                    <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded mr-2">
-                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
+                    <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded mr-2" (click)="openEditModal('addCourse', course)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                            <path d="M16 5l3 3" />
+                        </svg>
                     </button>
-                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
-                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-backspace"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-11l-5 -5a1.5 1.5 0 0 1 0 -2l5 -5z" /><path d="M12 10l4 4m0 -4l-4 4" /></svg>
+                    @if (course.cant == 0) {
+                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" (click)="openDeleteModal('deleteCourse', course.id)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-backspace">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M20 6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-11l-5 -5a1.5 1.5 0 0 1 0 -2l5 -5z" />
+                            <path d="M12 10l4 4m0 -4l-4 4" />
+                        </svg>
                     </button>
+                    }
                 </td>
             </tr>
         </tbody>
@@ -48,6 +67,17 @@
 </div>
 
 <ui-modal modalId="addCourse" [isOpen]="false">
-    <p class="text-lg font-semibold mb-4">Agregar Curso</p>
-    <form-courses-add (formSubmitted)="onFormSubmitted()"></form-courses-add>
+    <p class="text-lg font-semibold mb-4">{{ modalTitle }}</p>
+    <form-courses-add [selectedCourse]="selectedCourse" (formSubmitted)="onFormSubmitted()"></form-courses-add>
+</ui-modal>
+
+<ui-modal modalId="deleteCourse" [isOpen]="false">
+    <p class="text-lg font-semibold mb-4">Eliminar Curso</p>
+    <h2 class="text-xl font-semibold mb-4">Confirmar Eliminación</h2>
+    <p>¿Estás seguro de que deseas eliminar este curso?</p>
+    <div class="mt-4 flex justify-end">
+        <button (click)="deleteCourse()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 mr-2">
+            Eliminar
+        </button>
+    </div>
 </ui-modal>

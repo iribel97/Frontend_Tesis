@@ -168,7 +168,6 @@
     </nav>
 </header>
 <!-- ========== END HEADER ========== -->
-
 <!-- ========== MAIN CONTENT ========== -->
 <div class="-mt-px">
     <!-- Breadcrumb -->
@@ -200,12 +199,16 @@
         [ngClass]="{'bg-opacity-50': isSidebarVisible, 'bg-opacity-0 pointer-events-none': !isSidebarVisible}"
         (click)="toggleSidebar()"></div>
     <!-- Sidebar -->
+    
+
+    
     <div id="hs-application-sidebar" role="dialog" tabindex="-1" aria-label="Sidebar" class="fixed inset-y-0 start-0 z-[60] w-[260px] h-full bg-white border-e border-gray-200 dark:bg-primary-dark dark:border-neutral-700
       transition-all duration-300 ease-in-out transform lg:block
       -translate-x-full opacity-0" [ngClass]="{
         'translate-x-0 opacity-100': isSidebarVisible || isLargeScreen,
         '-translate-x-full opacity-0': !isSidebarVisible && !isLargeScreen
      }">
+     @if (this.infoUser.estado !== 'Suspendido') {
         <div class="relative flex flex-col h-full max-h-full">
             <div class="flex row items-center px-6 pt-4">
                 <svg-midudev [size]="{ width: 25, height: 25 }"></svg-midudev>
@@ -514,17 +517,26 @@
             </div>
             <!-- End Content -->
         </div>
+    }
     </div>
+
     <!-- End Sidebar -->
 
     <!-- Content -->
     <div class="flex-grow lg:pl-[260px]">
         <div class="bg-white dark:bg-primary-dark mx-5 my-5 rounded-xl shadow p-4 sm:p-6 space-y-4 sm:space-y-6 ">
-            @if (this.infoUser.estado === 'Inactivo') {
-                <form-chang-pass [cedula]="infoUser.cedula"></form-chang-pass>
+            
+            @if (this.infoUser.estado === 'Suspendido') {
+                <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                    <span class="font-medium">Cuenta suspendida:</span> Su cuenta está actualmente suspendida. Por favor, acérquese a la secretaría para resolver el estado de su cuenta.
+                </div>
             } @else {
-                <!-- your content goes here ... -->
-                <router-outlet></router-outlet>
+                @if (this.infoUser.estado === 'Inactivo') {
+                    <form-chang-pass [cedula]="infoUser.cedula"></form-chang-pass>
+                } @else {
+                    <!-- your content goes here ... -->
+                    <router-outlet></router-outlet>
+                }
             }
         </div>
     </div>

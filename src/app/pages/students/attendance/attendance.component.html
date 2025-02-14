@@ -44,9 +44,9 @@
             <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.totalJustificadas }}</td>
             <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.totalFaltas }}</td>
             <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.totalAsistencias }}</td>
-            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.porcentajeAsistencias }} %</td>
-            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.porcentajeFaltas }} %</td>
-            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.porcentajeJustificadas }} %</td>
+            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.porcentajeAsistencias.toFixed(2) }} %</td>
+            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.porcentajeFaltas.toFixed(2) }} %</td>
+            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.porcentajeJustificadas.toFixed(2) }} %</td>
         </tr>
         </tbody>
     </table>
