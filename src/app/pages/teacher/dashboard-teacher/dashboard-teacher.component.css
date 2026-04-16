@@ -1,0 +1,100 @@
+.timeline {
+    width: 100%;
+    padding: 2%;
+}
+
+.timeline-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.timeline-marker {
+    width: 20px;
+    height: 20px;
+    background-color: #2196F3;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.timeline-content {
+    background-color: #d7e0ff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    position: relative;
+}
+
+.timeline-time {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.timeline-subject {
+    margin: 0;
+}
+
+.timeline-item:nth-child(odd) .timeline-content {
+    margin-left: 60px;
+}
+
+.timeline-item:nth-child(even) .timeline-content {
+    margin-right: 60px;
+}
+
+
+/* From Uiverse.io by HamzaWac19393 */
+.card {
+    width: 190px;
+    height: 254px;
+    transition: all 0.4s;
+    border-radius: 10px;
+    font-size: 30px;
+    font-weight: 900;
+}
+
+.card:hover {
+    border-radius: 15px;
+    cursor: pointer;
+    transform: scale(1.2);
+    background-color: #c1cbf2;
+}
+
+.first-content {
+    height: 100%;
+    width: 100%;
+    transition: all 0.4s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    border-radius: 15px;
+}
+
+.card:hover .first-content {
+    height: 0px;
+    opacity: 0;
+}
+
+.second-content {
+    height: 0%;
+    width: 100%;
+    opacity: 0;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    transition: all 0.4s;
+    font-size: 0px;
+    transform: rotate(90deg) scale(-1);
+}
+
+.card:hover .second-content {
+    opacity: 1;
+    height: 100%;
+    font-size: 0.8rem;
+    transform: rotate(0deg);
+}

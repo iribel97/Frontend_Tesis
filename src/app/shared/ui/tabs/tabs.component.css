@@ -1,0 +1,24 @@
+.tab-container {
+    border-bottom: 2px solid #e5e7eb; /* Cambia al color gris deseado */
+}
+
+.tab-button {
+    padding: 4px;
+    border-bottom-width: 1px;
+    border-color: transparent;
+}
+
+.tab-button.active {
+    border-color: #3b82f6; /* Color activo - azul o similar */
+    color: #3b82f6;
+}
+
+.tab-button.inactive {
+    color: #6b7280; /* Gris para tab inactiva */
+    border-color: #e5e7eb; /* Cambia al mismo gris deseado */
+}
+
+.tab-button:hover {
+    color: #4b5563; /* Cambio de color al pasar */
+    border-color: #d1d5db; /* Border hover - también gris */
+}

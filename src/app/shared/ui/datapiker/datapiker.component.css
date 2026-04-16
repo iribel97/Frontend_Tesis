@@ -1,0 +1,73 @@
+.datepicker-container {
+    position: relative;  /* Padre posicionable */
+    max-width: 280px;    /* Tamaño máximo */
+    min-width: 200px;    /* Tamaño mínimo */
+    width: 100%;         /* Ocupa el 100% del espacio disponible */
+}
+
+.datepicker-input {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.datepicker-input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.datepicker-calendar {
+    position: absolute;
+    right: 0;  /* Se posiciona hacia la derecha */
+    top: calc(100% + 5px);  /* Aparece debajo del input */
+    width: 100%;  /* Ancho definido por el contenedor */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 10;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-day {
+    text-align: center;
+    padding: 8px 0;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.calendar-day:not(.disabled):hover {
+    cursor: pointer;
+    background-color: #e0f2ff;
+    color: #0056b3;
+}
+
+.disabled {
+    color: #999;
+    cursor: not-allowed;
+}
+
+.selected {
+    background-color: #007BFF;
+    color: white;
+}

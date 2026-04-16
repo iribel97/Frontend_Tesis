@@ -1,0 +1,281 @@
+<div>
+    <p class="text-xl font-semibold text-gray-800 dark:text-neutral-200">Inscripciones</p>
+</div>
+<div class="mb-10">
+    <p class="text-lg text-gray-600 dark:text-neutral-100">Observe las inscripciones pendientes</p>
+</div>
+<div class="container mx-auto mt-5">
+
+    <!-- Tabla de inscripciones -->
+    <table class="table-auto border-collapse border-t border-b border-gray-300 shadow-lg rounded-lg overflow-hidden w-full divide-y divide-gray-200">
+        <thead class="bg-gray-100 text-gray-500 dark:bg-neutral-800">
+            <tr>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Apellidos
+                </th>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Nombres</th>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Correo
+                    Electrónico</th>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Grado</th>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Fecha
+                    registrado</th>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Estado</th>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @if (paginatedStudents.length === 0) {
+            <tr class="hover:bg-gray-100 transition">
+                <td class="px-6 py-4 font-medium text-gray-900 text-center" colspan="8">No hay inscripciones pendientes.</td>
+            </tr>
+            }
+            <tr *ngFor="let student of paginatedStudents" class="hover:bg-gray-100 transition">
+                <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ student.apellidos }}</td>
+                <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ student.nombres }}</td>
+                <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ student.email }}</td>
+                <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ student.grado }}</td>
+                <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ student.fechaIns }}</td>
+                <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ student.estado }}</td>
+                <td class="px-6 py-4 font-medium text-gray-900 text-center">
+                    <button class="bg-blue-500 px-2 py-1 rounded text-white mr-2"
+                        (click)="viewStudentInfo(student.cedula)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <circle cx="12" cy="12" r="2" />
+                            <path d="M22 12c-2 -5.333 -7 -8 -10 -8s-8 2.667 -10 8c2 5.333 7 8 10 8s8 -2.667 10 -8" />
+                        </svg>
+                    </button>
+                    <button class="bg-green-500 px-2 py-1 rounded text-white mr-2"
+                        (click)="openModal(student)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M5 12l5 5l10 -10" />
+                        </svg>
+                    </button>
+                    <button class="bg-red-500 px-2 py-1 rounded text-white" (click)="rejectStudent(student.cedula)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M18 6l-12 12" />
+                            <path d="M6 6l12 12" />
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Controles de paginación (sólo si hay más de 10 elementos filtrados) -->
+    <div *ngIf="students.length > itemsPerPage" class="flex justify-center mt-4">
+        <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="changePage(i + 1)"
+            [class.bg-gray-400]="currentPage === i + 1" class="px-3 py-1 mx-1 border rounded">
+            {{ i + 1 }}
+        </button>
+    </div>
+</div>
+
+<!-- Modal -->
+    <div *ngIf="showModal" class="fixed z-10 inset-0 overflow-y-auto">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                Seleccionar Curso
+                            </h3>
+                            <div class="mt-2">
+                                <label for="cursoSelect" class="block text-sm font-medium text-gray-700">Seleccione un curso:</label>
+                                <select id="cursoSelect" (change)="loadSelectedCurso($event)" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    <option value="" disabled selected>Seleccione un curso</option>
+                                    <option *ngFor="let curso of cursos" [value]="curso.id">
+                                        {{ curso.nombreGrado }} - {{ curso.paralelo }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" (click)=" acceptInscripcion()">
+                        Guardar
+                    </button>
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm" (click)="closeModal()">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Modal para ver información del estudiante -->
+<div *ngIf="showStudentInfoModal" class="fixed inset-0 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/2 z-50">
+        <h2 class="text-lg font-semibold text-gray-900 mb-2">Información del Estudiante</h2>
+        <div class="grid grid-cols-6 gap-y-3">
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Cédula</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.cedula }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Nombres</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.nombres }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Apellidos</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.apellidos }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Correo Electrónico</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.email }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Teléfono</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.telefono }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Fecha de Nacimiento</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.fechaNacimiento }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-4">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Dirección</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.direccion }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Género</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.genero }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Grado</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.grado }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Fecha de Inscripción</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.fechaIns }}</p>
+                </div>
+            </div>
+            <!-- DATOS DEL PADRE -->
+            <div class="w-full col-span-6">
+                <h3 class="text-md font-semibold text-gray-800">Datos del Padre</h3>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Nombres</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.nombresPadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Apellidos</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.apellidosPadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Teléfono</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.telefonoPadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Correo Electrónico</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.correoPadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Ocupación</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.ocupacionPadre }}</p>
+                </div>
+            </div>
+            <!-- DATOS DE LA MADRE -->
+            <div class="w-full col-span-6">
+                <h3 class="text-md font-semibold text-gray-800">Datos de la Madre</h3>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Nombres</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.nombresMadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Apellidos</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.apellidosMadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Teléfono</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.telefonoMadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Correo Electrónico</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.correoMadre }}</p>
+                </div>
+            </div>
+            <div class="w-full col-span-2">
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-600">Ocupación</label>
+                    <p class="text-sm text-gray-900">{{ selectedStudent?.ocupacionMadre }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="w-full col-span-6">
+            <h3 class="text-md font-semibold text-gray-800">Documentos</h3>
+        </div>
+        <div *ngIf="selectedStudent?.documentos?.length > 0; else noDocuments">
+            <div class="flex flex-wrap gap-4">
+                <div *ngFor="let doc of selectedStudent.documentos"
+                    class="flex items-center justify-center p-4 border rounded-lg shadow-sm bg-white">
+                    <button
+                        class=" text-white p-3 rounded-full shadow-sm hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300"
+                        (click)="utilityService.descargarDocumento(doc.base64, doc.nombre, doc.mime)"
+                        title="{{doc.nombre}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 16l-6-6h4V4h4v6h4z" />
+                            <path d="M20 18H4v-2h16v2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <ng-template #noDocuments>
+            <p class="text-gray-500">No hay documentos disponibles.</p>
+        </ng-template>
+        <div class="flex justify-end gap-2 mt-4">
+            <button class="bg-gray-500 text-white px-4 py-2 rounded" (click)="closeStudentInfoModal()">Cerrar</button>
+        </div>
+    </div>
+    <div class="fixed inset-0 bg-black opacity-50 z-40" (click)="closeStudentInfoModal()"></div>
+</div>

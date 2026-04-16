@@ -1,0 +1,8 @@
+/* Estilo general para el modal */
+.fixed {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.bg-black {
+    backdrop-filter: blur(5px);
+}

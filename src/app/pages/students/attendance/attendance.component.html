@@ -1,0 +1,54 @@
+<div>
+    <p class="text-xl font-semibold text-gray-800 dark:text-neutral-200">Asistencia</p>
+</div>
+<div>
+    <p class="text-lg text-gray-600 dark:text-neutral-100">Consulte las asistencias del año lectivo</p>
+</div>
+@if(estudiantes.length > 0) {
+    <div *ngIf="rolUser === 'Representante'" class="mb-4">
+        <label for="studentSelect" class="block text-lg font-semibold mb-2">Selecciona un Estudiante</label>
+        <select id="studentSelect" (change)="onStudentChange($event)"
+            class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="" disabled selected>Seleccione un estudiante</option>
+            <option *ngFor="let student of estudiantes" [value]="student.cedula">{{ student.apellidos }} {{ student.nombres }}</option>
+        </select>
+    </div>
+}
+<div class="card mt-3">
+    <table class="table-auto border-collapse border-t border-b border-gray-300 w-full text-center shadow-lg rounded-lg overflow-hidden">
+        <thead class="bg-gray-100 text-gray-500">
+        <tr >
+            <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Materia</th>
+            <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Total Asistido</th>
+            <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Total Justificadas</th>
+            <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Total Faltas</th>
+            <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Total</th>
+            <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">% Asistencia</th>
+            <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">% Faltas</th>
+            <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">% Justificadas</th>
+        </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let materia of data" class="hover:bg-gray-100 transition">
+            @if ( rolUser ===  'Docente' ) {
+                <td class="px-6 py-4 font-medium text-gray-900">
+                    {{ materia.nombreMateria }} - <span class="text-sm text-gray-400">{{ materia.curso }}</span>
+                </td>
+
+            } @else {
+                <td class="px-6 py-4 font-medium text-gray-900">
+                    {{ materia.nombreMateria }}
+                </td>
+            }
+            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.totalAsist }}</td>
+            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.totalJustificadas }}</td>
+            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.totalFaltas }}</td>
+            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.totalAsistencias }}</td>
+            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.porcentajeAsistencias.toFixed(2) }} %</td>
+            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.porcentajeFaltas.toFixed(2) }} %</td>
+            <td class="px-6 py-4 font-medium text-gray-900">{{ materia.data.porcentajeJustificadas.toFixed(2) }} %</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+

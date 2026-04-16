@@ -1,0 +1,116 @@
+.select-g {
+    position: relative; /* Define un contexto de posición relativo para el dropdown */
+    margin-bottom: 1rem;
+}
+
+.select-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.select-box:hover {
+    border-color: #007bff;
+}
+
+.placeholder, .selected-item, .selected-items {
+    color: #555;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+}
+
+.icon svg {
+    transition: transform 0.3s;
+}
+
+.dropdown {
+    position: absolute; /* Asegura que el dropdown esté por debajo del select-box */
+    top: calc(100% + 0.25rem); /* Coloca el dropdown justo debajo del select-box */
+    left: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    z-index: 1000; /* Asegura que el dropdown pueda superponerse a otros elementos */
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.dropdown li {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    transition: background-color 0.2s;
+}
+
+.dropdown li:hover {
+    background-color: #f0f0f0;
+}
+
+.checkmark svg {
+    color: #007bff;
+}
+
+.text-red-500 {
+    color: #ff0000;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.mt-1 {
+    margin-top: 0.25rem;
+}
+
+.search-input {
+    width: calc(100% - 24px); /* Ajusta el tamaño del input para que encaje en el contenedor del dropdown */
+    padding: 8px;
+    margin: 4px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: #007bff; /* Cambia el borde cuando el campo está enfocado */
+}
+
+.dropdown {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    left: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    padding: 0; /* Elimina cualquier padding adicional en el dropdown */
+}
+
+.dropdown li {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    transition: background-color 0.2s;
+}
+
+.dropdown li:hover {
+    background-color: #f0f0f0;
+}

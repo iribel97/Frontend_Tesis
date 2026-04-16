@@ -1,0 +1,42 @@
+<div class="container mx-auto p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Panel Izquierdo: Datos Generales -->
+        <div class="bg-gray-100 shadow-md rounded-lg p-6">
+            <h2 class="text-lg font-bold mb-4">Resumen de Asistencias</h2>
+            <ul class="text-gray-700 space-y-2">
+                <li><strong>Total Asistidos:</strong> {{ asistencia?.datos?.totalAsist }}</li>
+                <li><strong>Total Justificadas:</strong> {{ asistencia?.datos?.totalJustificadas }}</li>
+                <li><strong>Total Faltas:</strong> {{ asistencia?.datos?.totalFaltas }}</li>
+                <li><strong>Total:</strong> {{ asistencia?.datos?.totalAsistencias }}</li>
+                <li><strong>Porcentaje de Asistencias:</strong> {{ asistencia?.datos?.porcentajeAsistencias }} %
+                </li>
+                <li><strong>Porcentaje de Faltas:</strong> {{ asistencia?.datos?.porcentajeFaltas }} %</li>
+                <li><strong>Porcentaje Justificadas:</strong> {{ asistencia?.datos?.porcentajeJustificadas }} %
+                </li>
+            </ul>
+        </div>
+
+        <!-- Panel Derecho: Tabla de Asistencias -->
+        <div class="bg-white shadow-md rounded-lg p-6 overflow-x-auto">
+            <h2 class="text-lg font-bold mb-4">Detalle de Asistencias</h2>
+            <table class="table-auto w-full text-left border-collapse">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="px-4 py-2">Fecha</th>
+                        <th class="px-4 py-2">Día</th>
+                        <th class="px-4 py-2">Estado</th>
+                        <th class="px-4 py-2">Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let asistencia of asistencia?.asistencias" class="border-b hover:bg-gray-50">
+                        <td class="px-4 py-2">{{ asistencia.fecha }}</td>
+                        <td class="px-4 py-2">{{ asistencia.diaSemana }}</td>
+                        <td class="px-4 py-2">{{ asistencia.estado }}</td>
+                        <td class="px-4 py-2">{{ asistencia.observaciones }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

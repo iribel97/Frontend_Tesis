@@ -1,0 +1,8 @@
+.svg-color .svg-path {
+    fill: gray;
+    transition: fill 0.3s ease;
+}
+
+.svg-color:hover .svg-path {
+    fill: black;
+}

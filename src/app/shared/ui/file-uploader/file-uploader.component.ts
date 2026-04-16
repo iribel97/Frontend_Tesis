@@ -1,0 +1,217 @@
+import {Component, forwardRef, Input} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
+import {DocumentIn} from "../../../DocumentIn";
+
+@Component({
+    selector: 'ui-file-uploader',
+    templateUrl: './file-uploader.component.html',
+    styleUrls: ['./file-uploader.component.css'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => FileUploaderComponent),
+            multi: true,
+        },
+    ],
+    imports: [
+        DecimalPipe,
+        NgIf,
+        NgForOf
+    ]
+})
+export class FileUploaderComponent implements ControlValueAccessor {
+    @Input() required = false; // Define si el campo es requerido
+    @Input() multiple = false; // Define si permite múltiples archivos
+    @Input() view: 'single' | 'multiple' = 'single'; // Define la vista (por defecto: single)
+    @Input() label: string = ''; // Texto del label
+    @Input() inputId: string = `file-uploader-${Math.random().toString(36).substring(2)}`;
+
+    files: File[] = []; // Lista de archivos seleccionados
+    progress: { [key: string]: number } = {}; // Mapa para el progreso de cada archivo
+    uploadInProgress = false; // Estado de subida
+
+    // Implementación de ControlValueAccessor
+    private onChange: (files: DocumentIn[] | null) => void = () => {
+    };
+    onTouched = () => {
+    };
+
+    /** Manejar entrada de archivos desde el input */
+    handleFileInput(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        const fileList = input.files;
+
+        if (fileList) {
+            const selectedFiles = Array.from(fileList);
+
+            // Validar y filtrar archivos únicos por instancia
+            this.files = this.multiple
+                ? this.removeDuplicateFiles([...this.files, ...selectedFiles])
+                : [selectedFiles[0]];
+
+            // Convertir los archivos agregados a objetos DocumentIn y notificar cambios
+            this.convertFilesToDocuments(this.files).then(documents => {
+                if (JSON.stringify(documents) !== JSON.stringify(this.files)) {
+                    this.onChange(documents);
+                }
+            });
+        }
+    }
+
+    // Convierte un array de archivos en objetos DocumentIn
+    private convertFilesToDocuments(files: File[]): Promise<DocumentIn[]> {
+        return Promise.all(files.map(file => this.convertToDocument(file)));
+    }
+
+    /** Convertir un archivo a un objeto DocumentIn */
+    private convertToDocument(file: File): Promise<DocumentIn> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64Content = (reader.result as string).split(',')[1]; // Eliminamos el encabezado del base64
+                const document: DocumentIn = {
+                    nombre: file.name,
+                    base64: base64Content,
+                    mime: file.type || 'application/octet-stream', // Tipo del archivo
+                };
+                resolve(document);
+            };
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file); // Leer archivo como base64
+        });
+    }
+
+    /** Eliminar archivo */
+    removeFile(index: number): void {
+        const file = this.files[index];
+        delete this.progress[file.name]; // Elimina el progreso del archivo
+        this.files.splice(index, 1); // Remueve el archivo de la lista
+
+        // Convertir los archivos restantes a DocumentIn[]
+        Promise.all(
+            this.files.map(file => this.convertToDocument(file))
+        ).then(documentArray => {
+            if (documentArray.length !== this.files.length) {
+                this.onChange(documentArray);
+            }
+        });
+    }
+
+    /** Simular subida de archivos */
+    startUploadSimulation(): void {
+        this.uploadInProgress = true;
+
+        this.files.forEach((file, index) => {
+            const fileName = file.name || `Archivo_${index}`; // Garantiza un índice válido
+            this.progress[fileName] = 0; // Inicia el progreso en 0
+
+            const interval = setInterval(() => {
+                if (this.progress[fileName] >= 100) {
+                    clearInterval(interval);
+                    if (index === this.files.length - 1) {
+                        // Finaliza cuando el último archivo termine
+                        this.uploadInProgress = false;
+                    }
+                } else {
+                    this.progress[fileName] += Math.floor(Math.random() * 10) + 5; // Incremento de progreso aleatorio
+                }
+            }, 300); // Incrementa cada 300ms
+        });
+    }
+
+    writeValue(documents: DocumentIn[] | null): void {
+        // Convierte documentos en archivos si es necesario
+        if (documents) {
+            this.files = []; // Agrega inicialización si se pasa desde el formulario
+        } else {
+            this.files = [];
+        }
+    }
+
+    registerOnChange(fn: (documents: DocumentIn[] | null) => void): void {
+        this.onChange = fn;
+    }
+
+    registerOnTouched(fn: any): void {
+        this.onTouched = fn;
+    }
+
+    getProgressForFirstFile(): number {
+        if (this.files.length > 0 && this.files[0]?.name) {
+            return this.progress[this.files[0].name] || 0; // Retorna el progreso del primer archivo o 0
+        }
+        return 0; // Si no hay archivo, el progreso es 0
+    }
+
+    isValidProgressForFirstFile(): boolean {
+        // Verifica que haya al menos un archivo y que su nombre sea válido
+        if (this.files.length > 0 && this.files[0]?.name) {
+            return this.progress[this.files[0].name] !== undefined;
+        }
+        return false;
+    }
+
+    /** Disparar el dialogo de selección de archivos */
+    triggerFileInput(inputId: string): void {
+        const inputElement = document.getElementById(inputId) as HTMLInputElement;
+        console.log('el input es:', inputElement);
+        if (inputElement) {
+            inputElement.click(); // Simula el clic para abrir el diálogo de selección de archivos
+        }
+    }
+
+    /** Manejar cuando el archivo se arrastra sobre la caja de carga */
+    onDragOver(event: DragEvent): void {
+        event.preventDefault(); // Prevenir el comportamiento por defecto
+        event.stopPropagation();
+    }
+
+    /** Manejar cuando el archivo se sale del área de carga */
+    onDragLeave(event: DragEvent): void {
+        event.preventDefault(); // Prevenir el comportamiento por defecto
+        event.stopPropagation();
+    }
+
+    /** Manejar cuando los archivos se sueltan en la caja de carga */
+    onDrop(event: DragEvent): void {
+        event.preventDefault(); // Prevenir el comportamiento por defecto
+        event.stopPropagation();
+
+        if (event.dataTransfer?.files) {
+            const fileList = event.dataTransfer.files;
+            const filesArray = this.removeDuplicateFiles([...this.files, ...Array.from(fileList)]);
+
+            // Si `multiple` es true, combinar y evitar duplicados
+            const uniqueFiles = this.multiple
+                ? [...this.files, ...filesArray].filter((file, index, array) => array.findIndex(f => f.name === file.name) === index)
+                : filesArray.slice(0, 1); // De lo contrario, solo el archivo actual.
+
+            // Validar si hay cambios antes de actualizar la lista de archivos
+            const previousFiles = JSON.stringify(this.files);
+            const updatedFiles = JSON.stringify(uniqueFiles);
+
+            if (previousFiles !== updatedFiles) {
+                this.files = uniqueFiles;
+
+                // Convertir los archivos a objetos DocumentIn[]
+                Promise.all(
+                    this.files.map(file => this.convertToDocument(file))
+                ).then(documents => {
+                    this.onChange(documents); // Notificar al formulario reactivo
+                });
+            }
+        }
+    }
+
+    private removeDuplicateFiles(files: File[]): File[] {
+        return files.filter((file, index, array) => array.findIndex(f => f.name === file.name) === index);
+    }
+
+    private updateValue(documents: DocumentIn[] | null): void {
+        if (documents !== null && JSON.stringify(documents) !== JSON.stringify(this.files)) {
+            this.onChange(documents ?? null);
+        }
+    }
+
+}

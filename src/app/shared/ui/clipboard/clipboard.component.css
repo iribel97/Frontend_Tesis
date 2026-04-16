@@ -1,0 +1,57 @@
+/**
+ * Ajusta la transición del ícono y el tooltip.
+ */
+button span svg {
+    transition: transform 0.3s ease;
+}
+
+button span svg.js-clipboard-default {
+    transform: rotate(0deg);
+}
+
+button:hover span svg.js-clipboard-default {
+    transform: rotate(6deg); /* Efecto de rotación al pasar el ratón */
+}
+
+button span svg.js-clipboard-success {
+    animation: success-bounce 0.6s ease;
+}
+
+/* Tooltip */
+.hs-tooltip-content {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+button:hover .hs-tooltip-content {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Animación de éxito */
+@keyframes success-bounce {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* Aparece suavemente con animación */
+span[role="tooltip"] {
+    opacity: 0; /* Tooltip por defecto invisible */
+    visibility: hidden; /* Evitar interacción cuando no está visible */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+span[role="tooltip"].opacity-100 {
+    opacity: 1;
+    visibility: visible;
+}
+
+button:hover + span[role="tooltip"] {
+    opacity: 1;
+    visibility: visible;
+}

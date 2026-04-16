@@ -1,0 +1,77 @@
+<ui-toast #toast />
+<form [formGroup]="formRegister" (ngSubmit)="onSubmit()">
+    <div class="grid grid-cols-2 gap-x-4">
+        <div class="flex items-center mt-1 col-span-1">
+            <ui-input class="w-full" id="cedula" label="Cédula" type="text" placeholder="Ingrese su número de cédula"
+                formControlName="cedula" [required]="true" [sendform]="sendform" [minlength]="10" [maxlength]="10"
+                pattern="^[0-9 ]+$" permissivePattern="^[0-9 ]*$"></ui-input>
+        </div>
+        <div class="flex items-center mt-1 col-span-1">
+            <ui-input class="w-full" id="nombres" label="Nombres" type="text" placeholder="Ingrese sus nombres"
+                formControlName="nombres" [required]="true" [sendform]="sendform" [minlength]="3" [maxlength]="50"
+                pattern="^[a-zA-Z ]+$" permissivePattern="^[a-zA-Z ]*$"></ui-input>
+        </div>
+        <div class="flex items-center mt-1 col-span-1">
+            <ui-input class="w-full" id="apellidos" label="Apellidos" type="text" placeholder="Ingrese sus apellidos"
+                formControlName="apellidos" [required]="true" [sendform]="sendform" [minlength]="3" [maxlength]="50"
+                pattern="^[a-zA-ZÀ-ÿñÑ ]+$" permissivePattern="^[a-zA-ZÀ-ÿñÑ ]*$"></ui-input>
+        </div>
+        <div class="flex items-center mt-1 col-span-1">
+            <ui-input class="w-full" id="correo" label="Correo Electrónico" type="email"
+                placeholder="Ingrese su correo electrónico" formControlName="correo" [required]="true"
+                [sendform]="sendform" [minlength]="5" [maxlength]="50"
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                permissivePattern="^[a-zA-Z0-9._%+-@]*$"></ui-input>
+        </div>
+        <div class="flex items-center mt-1 col-span-1">
+            <ui-input class="w-full" id="telefono" label="Teléfono" type="text"
+                placeholder="Ingrese su número de teléfono" formControlName="telefono" [required]="true"
+                [sendform]="sendform" [minlength]="10" [maxlength]="10" pattern="^[0-9 ]+$"
+                permissivePattern="^[0-9 ]*$"></ui-input>
+        </div>
+        <div class="flex items-center mt-1 col-span-2">
+            <ui-input class="w-full" id="direccion" label="Dirección" type="text" placeholder="Ingrese su dirección"
+                formControlName="direccion" [required]="true" [sendform]="sendform" [minlength]="5"
+                [maxlength]="50"></ui-input>
+        </div>
+        <div class="flex flex-col mt-1 col-span-1">
+            <label for=""> Fecha de nacimiento</label>
+            <ui-datapiker class="w-full" labelText="Fecha de Nacimiento" formControlName="fechaNacimiento"
+                [required]="true"></ui-datapiker>
+        </div>
+        <div class="flex items-center mt-1 col-span-1">
+            <ui-select class="w-full" id="genero" labelText="Género" placeholderText="Seleccione su género"
+                [options]="genderOptions" [sendform]="sendform" formControlName="genero" [required]="true"></ui-select>
+        </div>
+        <div class="flex items-center mt-1 col-span-1">
+            <ui-select class="w-full" id="rol" labelText="Rol" placeholderText="Seleccione su rol"
+                [options]="roleOptions" [sendform]="sendform" formControlName="rol" [required]="true"></ui-select>
+        </div>
+        @if ( formRegister.get('rol')?.value.name === 'Docente' ){
+
+
+        <div class="col-span-2 grid grid-cols-2 gap-x-4">
+            <div class="flex items-center mt-1 col-span-1">
+                <ui-input class="w-full" id="titulo" label="Título" type="text" placeholder="Ingrese su título"
+                    formControlName="titulo" [required]="true" [sendform]="sendform"></ui-input>
+            </div>
+            <div class="flex items-center mt-1 col-span-1">
+                <ui-input class="w-full" id="especialidad" label="Especialidad" type="text"
+                    placeholder="Ingrese su especialidad" formControlName="especialidad" [required]="true"
+                    [sendform]="sendform"></ui-input>
+            </div>
+            <div class="flex items-center mt-1 col-span-1">
+                <ui-input class="w-full" id="aniosExperiencia" label="Años de Experiencia" type="number"
+                    placeholder="Ingrese sus años de experiencia" formControlName="aniosExperiencia" [required]="true"
+                    [sendform]="sendform"></ui-input>
+            </div>
+        </div>
+        }
+    </div>
+    <div class="mt-6">
+        <button type="submit"
+            class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+            Guardar
+        </button>
+    </div>
+</form>

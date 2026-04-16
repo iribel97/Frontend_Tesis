@@ -1,0 +1,28 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+        <ui-textarea
+                id="contenido"
+                formControlName="contenido"
+                label="Contenido"
+                [required]="false"
+                [minlength]="5"
+                [maxlength]="100"
+                placeholder="Escribe tu contenido"
+                [sendform]="sendform"
+                (errorsChange)="onErrorsChange($event)"/>
+        <ui-file-uploader
+                formControlName="documentIn"
+                [multiple]="true"
+                [view]="'multiple'"
+                [required]="false"
+        />
+    </div>
+    <ui-button
+            [buttonType]="'submit'"
+            [disabled]="false"
+            [id]="'saveButton'"
+    >
+        Create
+    </ui-button>
+</form>
+<ui-toast #toast/>

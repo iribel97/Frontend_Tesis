@@ -1,0 +1,303 @@
+<ui-tabs [tabs]="tabs"></ui-tabs>
+<ng-template #DistributivoContent>
+    <!-- Título -->
+    <div>
+        <p class="text-xl font-semibold text-gray-800 dark:text-neutral-200">Distributivo</p>
+    </div>
+    <div>
+        <p class="text-lg text-gray-600 dark:text-neutral-100">Distribuye las materias a docentes y cursos</p>
+    </div>
+
+    <!-- Filtro por Ciclo Académico -->
+    <div class="mt-4 flex items-center space-x-4 justify-between">
+        <div class="flex flex-row items-center space-x-4">
+            <label for="ciclo" class="block text-sm font-medium text-gray-700 dark:text-neutral-200">
+                Ciclo Académico:
+            </label>
+            <div class="relative">
+                <select id="ciclo"
+                    class="py-2 px-3 border border-gray-300 bg-white dark:bg-neutral-800 text-gray-700 dark:text-neutral-200 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    (change)="onCicloChange($event)">
+                    <option value="" disabled selected>Seleccione un ciclo</option>
+                    <option *ngFor="let ciclo of ciclos" [value]="ciclo.id">{{ ciclo.nombre }}</option>
+                    <option value="addCiclo">Agregar ciclo</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <ui-modal modalId="addCicloModal" [isOpen]="isAddCicloModalOpen">
+            <p class="text-lg font-semibold mb-4">Agregar Ciclo</p>
+            <form [formGroup]="cicloForm" (ngSubmit)="onSubmitCiclo()">
+                <div class="mb-4">
+                    <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+                    <input id="nombre" formControlName="nombre" type="text"
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" />
+                </div>
+                <div class="mb-4">
+                    <label for="cantPeriodos" class="block text-sm font-medium text-gray-700">Cantidad de
+                        Periodos</label>
+                    <input id="cantPeriodos" formControlName="cantPeriodos" type="number"
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" />
+                </div>
+                <div class="mb-4">
+                    <label for="fechaInicio" class="block text-sm font-medium text-gray-700">Fecha de Inicio</label>
+                    <input id="fechaInicio" formControlName="fechaInicio" type="date"
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" />
+                </div>
+                <div class="mb-4">
+                    <label for="fechaFin" class="block text-sm font-medium text-gray-700">Fecha de Fin</label>
+                    <input id="fechaFin" formControlName="fechaFin" type="date"
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" />
+                </div>
+                <div class="mb-4">
+                    <label for="pruebaInscrip" class="block text-sm font-medium text-gray-700">Prueba de
+                        Inscripción</label>
+                    <input id="pruebaInscrip" formControlName="pruebaInscrip" type="checkbox" class="mt-1 block" />
+                </div>
+                <div class="mb-4">
+                    <label for="activo" class="block text-sm font-medium text-gray-700">Activo</label>
+                    <input id="activo" formControlName="activo" type="checkbox" class="mt-1 block" />
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit"
+                        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
+                        Guardar
+                    </button>
+                    <button type="button" (click)="closeModal('addCicloModal')"
+                        class="ml-2 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring focus:ring-gray-300">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </ui-modal>
+
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            (click)="openModal('addDistributivo')">
+            Crear distributivo
+        </button>
+    </div>
+
+    <!-- Tabla de Distributivo -->
+    <div class="mt-6">
+        <table
+            class="table-auto border-collapse border-t border-b border-gray-300 shadow-lg rounded-lg overflow-hidden w-full divide-y divide-gray-200">
+            <thead class="bg-gray-100 text-gray-500 dark:bg-neutral-800">
+                <tr>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">
+                        Docente
+                    </th>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">
+                        Materia
+                    </th>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">
+                        Grado
+                    </th>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">
+                        Aula
+                    </th>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">
+                        Horas Semanales
+                    </th>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">
+                        Horas Asignadas
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <tr *ngFor="let item of paginatedDistributivos" class="hover:bg-gray-100 transition">
+                    <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ item.docente }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ item.materia }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ item.grado }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ item.aula }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ item.horasSemanales }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ item.horasAsignadas }}</td>
+
+                </tr>
+                <tr *ngIf="paginatedDistributivos.length === 0">
+                    <td colspan="6" class="px-6 py-4 font-medium text-gray-900 text-center">No hay datos disponibles
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginación -->
+    <div class="mt-4 flex justify-center items-center">
+        <button class="px-3 py-1 mx-1 text-sm font-medium text-white bg-gray-700 rounded-md disabled:opacity-50"
+            [disabled]="currentPage === 1" (click)="previousPage()">
+            Anterior
+        </button>
+        <span class="mx-2 text-sm text-gray-700 dark:text-neutral-200">
+            Página {{ currentPage }} de {{ totalPages }}
+        </span>
+        <button class="px-3 py-1 mx-1 text-sm font-medium text-white bg-gray-700 rounded-md disabled:opacity-50"
+            [disabled]="currentPage === totalPages" (click)="nextPage()">
+            Siguiente
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #MateriasContent>
+    <p class="text-lg font-semibold mb-4">Materias</p>
+    <!-- Campo de búsqueda para filtrar materias -->
+    <div class="mt-4 flex items-center space-x-4 justify-between mb-5">
+        <div class="flex flex-row items-center space-x-4">
+            <label for="searchMateria" class="block text-sm font-medium text-gray-700 dark:text-neutral-200">Buscar
+                Materia:</label>
+            <input id="searchMateria" type="text"
+                class="py-2 px-3 border border-gray-300 bg-white dark:bg-neutral-800 text-gray-700 dark:text-neutral-200 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Ingrese el nombre materia" (input)="onSearchMateria($event)">
+        </div>
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            (click)="openModal('addMateriaModal')">
+            Agregar Materia
+        </button>
+    </div>
+    <!-- Tabla de materias -->
+    <table
+        class="table-auto border-collapse border-t border-b border-gray-300 shadow-lg rounded-lg overflow-hidden w-full divide-y divide-gray-200">
+        <thead class="bg-gray-100 text-gray-500">
+            <tr>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Nombre</th>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Area</th>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Horas semanales</th>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Grado</th>
+                <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let materia of paginatedMaterias" class="hover:bg-gray-100 transition">
+                <td class="px-6 py-4 font-medium text-gray-900">
+                    <ng-container *ngIf="editingMateria === materia.id; else viewModeName">
+                        <input [(ngModel)]="materia.nombre" class="border-gray-300 border p-2 rounded-lg w-full" />
+                    </ng-container>
+                    <ng-template #viewModeName>
+                        {{ materia.nombre }}
+                    </ng-template>
+                </td>
+                <td class="px-6 py-4 font-medium text-gray-900">
+                    <ng-container *ngIf="editingMateria === materia.id; else viewModeArea">
+                        <input [(ngModel)]="materia.area" class="border-gray-300 border p-2 rounded-lg w-full" />
+                    </ng-container>
+                    <ng-template #viewModeArea>
+                        {{ materia.area }}
+                    </ng-template>
+                </td>
+                <td class="px-6 py-4 font-medium text-gray-900">
+                    <ng-container *ngIf="editingMateria === materia.id; else viewModeHoras">
+                        <input [(ngModel)]="materia.horasSemanales"
+                            class="border-gray-300 border p-2 rounded-lg w-full" />
+                    </ng-container>
+                    <ng-template #viewModeHoras>
+                        {{ materia.horasSemanales }}
+                    </ng-template>
+                </td>
+                <td class="px-6 py-4 font-medium text-gray-900">
+                    <ng-container *ngIf="editingMateria === materia.id; else viewModeGrado">
+                        <input [(ngModel)]="materia.nombreGrado" class="border-gray-300 border p-2 rounded-lg w-full" />
+                    </ng-container>
+                    <ng-template #viewModeGrado>
+                        {{ materia.nombreGrado }}
+                    </ng-template>
+                </td>
+                <td class="px-6 py-4 font-medium text-gray-900">
+                    <ng-container *ngIf="editingMateria === materia.id; else editMode">
+                        <button class="bg-green-500 px-2 py-1 rounded text-white mr-2" (click)="saveMateria(materia)">
+                            Guardar
+                        </button>
+                    </ng-container>
+                    <ng-template #editMode>
+                        <button class="bg-yellow-400 px-2 py-1 rounded text-white mr-2"
+                            (click)="editMateria(materia.id)">
+                            Editar
+                        </button>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Controles de paginación para materias -->
+    <div class="mt-4 flex justify-center items-center">
+        <button class="px-3 py-1 mx-1 text-sm font-medium text-white bg-gray-700 rounded-md disabled:opacity-50"
+            [disabled]="materiasCurrentPage === 1" (click)="previousPageMaterias()">
+            Anterior
+        </button>
+        <span class="mx-2 text-sm text-gray-700 dark:text-neutral-200">
+            Página {{ materiasCurrentPage }} de {{ materiasTotalPages }}
+        </span>
+        <button class="px-3 py-1 mx-1 text-sm font-medium text-white bg-gray-700 rounded-md disabled:opacity-50"
+            [disabled]="materiasCurrentPage === materiasTotalPages" (click)="nextPageMaterias()">
+            Siguiente
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #GradosContent>
+    <p class="text-lg font-semibold mb-4">Grados Académicos</p>
+    <div class="mt-4 flex justify-end items-center space-x-4 mb-5">
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            (click)="openModal('addGradoModal')">Agregar Grado
+        </button>
+    </div>
+    <div class="flex justify-center">
+        <table class="w-3/5 table-auto border-collapse border-t border-b border-gray-300 shadow-lg rounded-lg overflow-hidden divide-y divide-gray-200">
+            <thead class="bg-gray-100 text-gray-500">
+                <tr>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Nombre</th>
+                    <th class="border-t border-b border-gray-200 py-3 px-4 font-semibold text-lg">Opciones</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <tr *ngFor="let grado of grados" class="hover:bg-gray-100 transition">
+                    <td class="px-6 py-4 font-medium text-gray-900">
+                        <ng-container *ngIf="editingGradoId === grado.id; else viewMode">
+                            <input [(ngModel)]="editingGradoName" class="border-gray-300 border p-2 rounded-lg w-full" />
+                        </ng-container>
+                        <ng-template #viewMode>
+                            {{ grado.name }}
+                        </ng-template>
+                    </td>
+                    <td class="px-6 py-4 font-medium text-gray-900 text-center">
+                        <ng-container *ngIf="editingGradoId === grado.id; else editMode">
+                            <button class="bg-green-500 px-2 py-1 rounded text-white mr-2" (click)="saveGrado(grado)">
+                                Guardar
+                            </button>
+                        </ng-container>
+                        <ng-template #editMode>
+                            <button class="bg-yellow-400 px-2 py-1 rounded text-white mr-2" (click)="editGrado(grado)">
+                                Editar
+                            </button>
+                        </ng-template>
+                        <button class="bg-red-500 px-2 py-1 rounded text-white" (click)="deleteGrado(grado.id)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-template>
+
+<ui-modal modalId="addDistributivo" [isOpen]="false">
+    <p class="text-lg font-semibold mb-4">Crear distributivo</p>
+    <form-create-distributivo />
+</ui-modal>
+
+
+<div class="container mx-auto p-4">
+
+
+    <!-- Modal Agregar Materia -->
+    <ui-modal modalId="addMateriaModal" [isOpen]="false">
+        <p class="text-lg font-semibold mb-4">Agregar Materia</p>
+        <form-subject #formSubject></form-subject>
+    </ui-modal>
+
+    <!-- Modal Agregar Grado -->
+    <ui-modal modalId="addGradoModal" [isOpen]="false">
+        <p class="text-lg font-semibold mb-4">Agregar Grado</p>
+        <form-add-grade (gradeAdded)="onGradeAdded()"></form-add-grade>
+    </ui-modal>
+    
+</div>

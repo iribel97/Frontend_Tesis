@@ -1,0 +1,35 @@
+<div class="datepicker-container" (clickOutside)="closeCalendar()">
+    <input [(ngModel)]="selectedDate" (focus)="toggleCalendar()" readonly
+           class="datepicker-input" placeholder="Selecciona una fecha" />
+
+    <div *ngIf="showCalendar" class="datepicker-calendar">
+        <div class="calendar-header">
+            <button type="button" (click)="prevMonth()">Anterior</button>
+            <!-- Mostrar mes y año -->
+            <span>{{ monthsOfYear[currentMonth] }} {{ currentYear }}</span>
+            <button type="button" (click)="nextMonth()">Siguiente</button>
+        </div>
+
+        <div class="calendar-days">
+            <span class="calendar-day">Lu</span>
+            <span class="calendar-day">Ma</span>
+            <span class="calendar-day">Mi</span>
+            <span class="calendar-day">Ju</span>
+            <span class="calendar-day">Vi</span>
+            <span class="calendar-day">Sa</span>
+            <span class="calendar-day">Do</span>
+        </div>
+
+        <div class="calendar-days">
+            <ng-container *ngFor="let day of daysInMonth">
+                <div *ngIf="!day.empty" class="calendar-day"
+                     [class.disabled]="!day.selectable"
+                     [class.selected]="selectedDate === formatDate(currentYear, currentMonth, day.day)"
+                     (click)="selectDate(day.day)">
+                    {{ day.day }}
+                </div>
+                <div *ngIf="day.empty" class="calendar-day"></div>
+            </ng-container>
+        </div>
+    </div>
+</div>
